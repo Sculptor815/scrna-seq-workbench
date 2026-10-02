@@ -71,7 +71,7 @@ def filter_cells(obs, sample_key, config):
             vals = block[m]; med = float(vals.median()); mad = float((vals-med).abs().median())
             suggestions[str(sample)][m] = {"median":med,"mad":mad,
                                           "status":"degenerate_mad" if mad == 0 else "descriptive_only",
-                                          "suggested_lower":max(0,med-3*1.4826*mad) if mad else None,
+                                          "suggested_lower":max(0,med-3*1.4826*mad) if mad and m != "pct_counts_mt" else None,
                                           "suggested_upper":med+3*1.4826*mad if mad else None}
         checks = [(block.total_counts <= 0,"zero_counts")]
         for key,col,lower in (("min_genes","n_genes_by_counts",True), ("max_genes","n_genes_by_counts",False),

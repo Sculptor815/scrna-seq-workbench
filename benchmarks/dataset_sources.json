@@ -1,0 +1,116 @@
+{
+  "checked_on": "2026-10-02",
+  "datasets": [
+    {
+      "dataset": "kang",
+      "citation": "Kang et al. (2018). Multiplexed droplet single-cell RNA-sequencing using natural genetic variation.",
+      "publication_url": "https://doi.org/10.1038/nbt.4042",
+      "download": {
+        "file": "kang_2018.h5ad",
+        "url": "https://exampledata.scverse.org/pertpy/kang_2018.h5ad",
+        "sha256": "e6a5adac64dcdeb36eaba27db49b63e0c64bb0ed4a64c6705971506b41c39830",
+        "bytes": 38356412
+      },
+      "copy_description": "Pertpy processed copy",
+      "license": {
+        "identifier": null,
+        "status": "not_verified",
+        "note": "No dataset-specific redistribution license was verified for this exact downloaded copy. Software licenses and article licenses are not treated as dataset licenses.",
+        "source_url": "https://exampledata.scverse.org/pertpy/kang_2018.h5ad"
+      },
+      "attribution": "Credit the study authors and the distribution source, retain the DOI, input hash and transformation description.",
+      "redistributed_material": "Derived seed-0 UMAP coordinates with neutral cell IDs, reference labels, proposals, aggregate marker evidence and evaluation tables; no raw count matrix.",
+      "transformations": "See dimensions.json, legacy/protocol.json and evidence/kang/provenance.json.",
+      "original_cell_identifiers_published": false
+    },
+    {
+      "dataset": "haber",
+      "citation": "Haber et al. (2017). A single-cell survey of the small intestinal epithelium.",
+      "publication_url": "https://doi.org/10.1038/nature24489",
+      "download": {
+        "file": "haber_2017_regions.h5ad",
+        "url": "https://exampledata.scverse.org/pertpy/haber_2017_regions.h5ad",
+        "sha256": "efcb49770529ec14e1ba6b45b3d0086b3829e4a63a85c02793f0d7ad90b6db21",
+        "bytes": 35784747
+      },
+      "copy_description": "Pertpy regions copy",
+      "license": {
+        "identifier": null,
+        "status": "not_verified",
+        "note": "No dataset-specific redistribution license was verified for this exact downloaded copy. Software licenses and article licenses are not treated as dataset licenses.",
+        "source_url": "https://exampledata.scverse.org/pertpy/haber_2017_regions.h5ad"
+      },
+      "attribution": "Credit the study authors and the distribution source, retain the DOI, input hash and transformation description.",
+      "redistributed_material": "Derived seed-0 UMAP coordinates with neutral cell IDs, reference labels, proposals, aggregate marker evidence and evaluation tables; no raw count matrix.",
+      "transformations": "See dimensions.json, legacy/protocol.json and evidence/haber/provenance.json.",
+      "original_cell_identifiers_published": false
+    },
+    {
+      "dataset": "paul",
+      "citation": "Paul et al. (2015). Transcriptional heterogeneity and lineage commitment in myeloid progenitors.",
+      "publication_url": "https://doi.org/10.1016/j.cell.2015.11.013",
+      "download": {
+        "file": "paul15.h5",
+        "url": "https://exampledata.scverse.org/scanpy/paul15.h5",
+        "sha256": "6161984f758dd464992edc23f1a8ab89b2081600130c6aa93a1ab12b3ada5bfb",
+        "bytes": 10297693
+      },
+      "copy_description": "Scanpy distributed HDF5 file",
+      "license": {
+        "identifier": null,
+        "status": "not_verified",
+        "note": "No dataset-specific redistribution license was verified for this exact downloaded copy. Software licenses and article licenses are not treated as dataset licenses.",
+        "source_url": "https://exampledata.scverse.org/scanpy/paul15.h5"
+      },
+      "attribution": "Credit the study authors and the distribution source, retain the DOI, input hash and transformation description.",
+      "redistributed_material": "Derived seed-0 UMAP coordinates with neutral cell IDs, reference labels, proposals, aggregate marker evidence and evaluation tables; no raw count matrix.",
+      "transformations": "See dimensions.json, legacy/protocol.json and evidence/paul/provenance.json.",
+      "original_cell_identifiers_published": false
+    },
+    {
+      "dataset": "zeisel",
+      "citation": "Zeisel et al. (2015). Cell types in the mouse cortex and hippocampus revealed by single-cell RNA-seq.",
+      "publication_url": "https://doi.org/10.1126/science.aaa1934",
+      "download": {
+        "file": "cortex.txt",
+        "url": "https://exampledata.scverse.org/scvi-tools/expression_mRNA_17-Aug-2014.txt",
+        "sha256": "57531a8c98d0fadccf3b694ec010f9ff4ccf1214292a6bf7ca619d023be99782",
+        "bytes": 121129258
+      },
+      "copy_description": "scvi-tools distributed author expression table",
+      "license": {
+        "identifier": null,
+        "status": "not_verified",
+        "note": "No dataset-specific redistribution license was verified for this exact downloaded copy. Software licenses and article licenses are not treated as dataset licenses.",
+        "source_url": "https://exampledata.scverse.org/scvi-tools/expression_mRNA_17-Aug-2014.txt"
+      },
+      "attribution": "Credit the study authors and the distribution source, retain the DOI, input hash and transformation description.",
+      "redistributed_material": "Derived seed-0 UMAP coordinates with neutral cell IDs, reference labels, proposals, aggregate marker evidence and evaluation tables; no raw count matrix.",
+      "transformations": "See dimensions.json, legacy/protocol.json and evidence/zeisel/provenance.json.",
+      "original_cell_identifiers_published": false
+    },
+    {
+      "dataset": "baron",
+      "citation": "Baron et al. (2016). A single-cell transcriptomic map of the human and mouse pancreas reveals inter- and intra-cell population structure.",
+      "publication_url": "https://doi.org/10.1016/j.cels.2016.08.011",
+      "download": {
+        "file": "baron_GSE84133_RAW.tar",
+        "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE84nnn/GSE84133/suppl/GSE84133_RAW.tar",
+        "sha256": "aed2d208d47a36658aa0e63629afe5d4144ef465a8e3d9a0f377422b1f1073dc",
+        "bytes": 29122560
+      },
+      "copy_description": "GEO GSE84133; four human donor files",
+      "license": {
+        "identifier": null,
+        "status": "not_verified",
+        "note": "No dataset-specific redistribution license was verified for this exact downloaded copy. Software licenses and article licenses are not treated as dataset licenses.",
+        "source_url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE84nnn/GSE84133/suppl/GSE84133_RAW.tar"
+      },
+      "attribution": "Credit the study authors and the distribution source, retain the DOI, input hash and transformation description.",
+      "redistributed_material": "Derived seed-0 UMAP coordinates with neutral cell IDs, reference labels, proposals, aggregate marker evidence and evaluation tables; no raw count matrix.",
+      "transformations": "See dimensions.json, legacy/protocol.json and evidence/baron/provenance.json.",
+      "original_cell_identifiers_published": false
+    }
+  ],
+  "scope": "Attribution and license-status record, not a grant of permission from the original authors."
+}

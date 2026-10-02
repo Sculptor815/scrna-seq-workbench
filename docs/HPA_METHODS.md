@@ -17,6 +17,10 @@ HPA's [methods overview](https://www.proteinatlas.org/humanproteome/single%2Bcel
 | Refine mixed clusters | Record subcluster decision | Explicit subset/reclustering workflow remains manual |
 | Aggregate across studies | Ambiguous labels flagged as ineligible | HPA-style pCPM/TMM and atlas aggregation are not implemented |
 
-Do not copy a tissue's published QC cutoffs to all five datasets. Do not apply HPA's human reference labels to mouse matrices. Do not turn a partial imitation into a claim of exact reproduction.
+QC choices depend on the tissue, assay and gene coverage in the supplied matrix.
+HPA reference expression is human; mouse datasets need species-matched marker
+panels. The table above identifies which parts are implemented here.
 
-The existing five-study results remain a **legacy marker baseline**. The new packets follow the HPA-guided review contract, but they have no final human-approved HPA labels yet. We intentionally publish this distinction rather than retrofit the old benchmark description.
+The five-study scores measure the historical marker workflow. The new evidence
+packets are ready for human review; scores for those reviewed labels will be
+reported when that review is complete.

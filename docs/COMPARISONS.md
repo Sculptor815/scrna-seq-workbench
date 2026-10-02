@@ -1,10 +1,10 @@
 # Original publications and plugin comparisons
 
-These panels are for scientific inspection, not proof of equivalence or an HPA accuracy benchmark. Original images below remain hosted by their source. Internet access is required for those images. Two original assets could not be retrieved; their source links and the missing status are explicit.
+Compare the published study figures with the plugin's clusters and proposed cell types below. The published images load from their original websites, so they need an internet connection. Paul and Zeisel include source links because their image downloads were unavailable.
 
-**Read the axes and provenance:** original t-SNE/heatmaps are not UMAP. Every locally rendered comparison uses the plugin's existing scVI seed-0 UMAP. Its left panel replots author/reference broad labels on our coordinates; it is not an author embedding. The same label uses the same color in reference and proposal panels. Gray means Unknown.
+Each plugin comparison has three panels on the same scVI seed-0 UMAP: reference broad labels, Leiden clusters and proposed labels. Matching labels share colors; gray indicates Unknown. Published figures use the methods and cell subsets described in their captions, including t-SNE and BackSPIN heatmaps.
 
-The plugin panels are legacy unreviewed marker proposals. New [HPA-guided packets](../benchmarks/README.md) provide evidence and pending review forms; final HPA-reviewed scores are not available. No seed was selected for visual appeal.
+The proposed labels come from the historical marker workflow. [HPA-guided review packets](../benchmarks/README.md) provide marker measurements and forms for the next review step. That review is pending. Seed 0 was fixed for all five comparisons.
 
 ## Kang et al. 2018
 
@@ -32,7 +32,7 @@ Figure 1b: t-SNE of 7,216 epithelial cells. The benchmark uses the 9,842-cell re
 
 [Original publication / figure](https://doi.org/10.1016/j.cell.2015.11.013) · DOI: 10.1016/j.cell.2015.11.013
 
-Original figure unavailable for verification in this release. Publisher and image service returned HTTP 403. No original UMAP or figure is fabricated. Author-derived labels are compared below.
+The publisher and image service returned HTTP 403 when the original figure was requested. The comparison below uses the reference labels supplied with the downloaded data.
 
 **Original image status:** publisher figure access blocked; link only. The image below is solely our replot.
 
@@ -44,7 +44,7 @@ Original figure unavailable for verification in this release. Publisher and imag
 
 [Original publication / figure](https://linnarssonlab.org/cortex/) · DOI: 10.1126/science.aaa1934
 
-Author site provides a BackSPIN expression heatmap, not an original UMAP. The author heatmap asset returned HTTP 403. Seven major classes and finer author cluster labels are different annotation levels.
+The author site describes a BackSPIN expression heatmap; the linked image returned HTTP 403. The downloaded table includes seven major classes as well as finer cluster labels, which represent different annotation levels.
 
 **Original image status:** author heatmap link verified; asset fetch blocked. The image below is solely our replot.
 
@@ -66,7 +66,7 @@ Figure 1d: human donor 1 t-SNE; other panels show heatmaps and mouse data. The b
 ## Re-render locally
 
 ```text
-python scripts/render_comparisons.py
+python scripts/render_comparisons.py --outdir work/comparisons
 ```
 
-This uses the committed public coordinate/label tables. It does not download matrices or train models. Figure provenance and unresolved source access are recorded in [original_figures.json](../benchmarks/original_figures.json).
+Open the five PNGs in the new output directory. Rendering uses the committed coordinate and label tables; model fitting is a separate step. Existing output folders and destinations inside `docs/` or `benchmarks/` are refused. Figure sources are recorded in [original_figures.json](../benchmarks/original_figures.json).

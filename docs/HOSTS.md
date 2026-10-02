@@ -1,80 +1,96 @@
-# Host setup
+# Connect the plugin to your assistant
 
-All hosts use `plugins/scrna-seq-workbench` as the canonical instruction and code bundle.
-The same Python environment is required regardless of the model. Paths below are
-relative to this repository's root. Repository layout checks are not live host acceptance tests.
+First complete [Installation](INSTALLATION.md). The examples here assume you have
+cloned this repository and opened a terminal in its root directory. Each host
+uses the same five Skills and Python runner in `plugins/scrna-seq-workbench`.
 
 ## Codex
 
-The repository contains `.agents/plugins/marketplace.json`, a portable `plugin.json`
-and a `.codex-plugin/plugin.json` compatibility manifest.
+1. Open the repository as a project in the desktop app.
+2. The project catalog is `.agents/plugins/marketplace.json`. Restart the app if
+   the catalog does not appear in the plugin browser.
+3. Select **scRNA-seq Workbench** from `scrna-seq-workbench-marketplace` and install
+   or enable it. Start a new chat in the project.
+
+If you also have the Codex CLI, you can register the checkout explicitly:
 
 ```text
 codex plugin marketplace add .
 codex plugin marketplace list
 ```
 
-In the desktop plugin interface, select `scrna-seq-workbench` from
-`scrna-seq-workbench-marketplace` and enable it. Start a conversation with the cloned
-repository or your analysis project available and verify that the five skills appear.
-After publication, a GitHub repository can be registered instead of the local path.
-Client versions and managed policies can affect availability.
+Registering a catalog makes the plugin discoverable; use the desktop plugin
+browser to install it. After updating your checkout, refresh the local install
+and start a new chat. Repository changes may differ from the cached installed copy.
 
-Source: [OpenAI plugin packaging](https://developers.openai.com/plugins/build/plugins).
+See [OpenAI's packaging guide](https://developers.openai.com/plugins/build/plugins)
+for client-specific catalog behavior and managed-account restrictions.
 
 ## Claude Code
 
-For local development:
+From a terminal in the checkout, install through the included catalog:
 
 ```text
-claude plugin validate ./plugins/scrna-seq-workbench
+claude plugin marketplace add .
+claude plugin install scrna-seq-workbench@scrna-seq-workbench-marketplace
+claude
+```
+
+In the session, open `/plugin` and check the installed entry. Invoke a Skill with,
+for example, `/scrna-seq-workbench:scrna-qc`, followed by your request and file paths.
+
+For a single development session, load the plugin directly instead:
+
+```text
 claude --plugin-dir ./plugins/scrna-seq-workbench
 ```
 
-Ask Claude to use the Workbench skill by name. If using a marketplace, the root
-`.claude-plugin/marketplace.json` points to the same plugin directory. Register this
-repository with `/plugin marketplace add .`, then install
-`scrna-seq-workbench@scrna-seq-workbench-marketplace` through `/plugin`.
-Installing/enabling is a user action; this source package does not modify client settings.
+After updating the repository, update the installed plugin:
 
-Sources: [Claude plugins](https://code.claude.com/docs/en/plugins),
-[manifest reference](https://code.claude.com/docs/en/plugins-reference).
+```text
+claude plugin update scrna-seq-workbench@scrna-seq-workbench-marketplace
+```
+
+See [Claude's publishing and installation instructions](https://code.claude.com/docs/en/plugins/publish).
 
 ## DeepSeek Harness
 
-Open the **repository root as the Harness project**, not the nested plugin directory.
-The committed `.dsh/skills/<name>/SKILL.md` files expose the five workflows through
-Harness's filesystem skill provider. They are generated from the canonical Skills
-with adjusted resource paths; they use the same scripts, assets and references.
+1. Open the cloned **repository root** as the Harness project. It should contain
+   `.git`, `.dsh`, `plugins` and `README.md`.
+2. Enable the filesystem skill provider, skill registry/tool and file/terminal
+   access in your Harness installation.
+3. Start a new session and check that the five `.dsh/skills` entries are listed.
+4. Give Harness your Python environment path and the request below.
 
-This is a **project-skill integration**, not a Cordis service plugin or an assertion
-that Harness reads the Codex/Claude marketplace manifests. The host must have its
-skill registry, filesystem provider and skill tool enabled, plus file/shell tools.
-Check that all five named skills are visible before starting analysis. Open a fresh
-session if your installed release does not refresh the catalog.
+Harness uses the generated project Skills under `.dsh/skills`; its provider
+resolves project scope from the nearest Git root. Keeping this checkout as the
+project also keeps the resource paths intact. A GitHub ZIP download has no Git
+root; use `git clone` for this setup. To work from a different project, configure
+the provider's `customSkillDirs` to include the full absolute path to
+`plugins/scrna-seq-workbench/skills`. Keep the rest of the bundle in place.
 
-Current upstream documentation discovers project skills under `.dsh/skills` and
-`.agents/skills`; nested plugin directories are not recursively discovered.
-Project scope follows the nearest Git root, so keep this repository as its own
-project when using Harness. To use it from another project, add the canonical
-`plugins/scrna-seq-workbench/skills` directory through the filesystem provider's
-`customSkillDirs` configuration, following your installed version's settings.
-Do not copy only a SKILL.md file without its required resources.
+These are filesystem Skills. See the
+[Harness provider documentation](https://github.com/deepseek-ai/deepseek-harness/blob/master/packages/skill/skill-filesystem/README.md)
+for the settings supported by your installed release.
 
-Source: [DeepSeek Harness filesystem skills](https://github.com/deepseek-ai/deepseek-harness/blob/master/packages/skill/skill-filesystem/README.md).
+## Check the connection
 
-## A small acceptance session for any host
+Send this request after following the synthetic-data step in [Quickstart](QUICKSTART.md):
 
-First generate the synthetic fixture described in QUICKSTART. In a new session ask:
+> Use scrna-qc to inspect work/demo/raw.h5ad with work/demo/qc.json.
+> The species is human. Save the inspection to work/agent-inspection-01.
+> Use the Python environment I supplied during installation.
+> Run inspect-only and explain the QC measurements and proposed thresholds.
 
-> Use scrna-qc on work/demo/raw.h5ad. First inspect the data and tell me what is
-> missing. Do not filter yet. Treat truth_cell_type as synthetic test metadata,
-> not evidence that your annotation method is accurate.
+You should see the assistant load `scrna-qc`, resolve its scripts, run the command
+and explain `cell_qc.csv`, `threshold_suggestions.json` and `report.json`.
+Inspection produces no `filtered.h5ad`; filtering is a separate step.
 
-Check observable behavior: the right Skill loads; its resource paths resolve;
-the assistant checks counts and sample information; it invokes inspect-only;
-the output is new and has the expected report; no filtering is claimed as completed.
-Then ask for a proposed analysis plan. Test missing donor information before DE
-and missing/unsupported counts separately. Record the host version, prompts,
-tool trace, outputs and unresolved questions. An offline manifest check alone
-does not establish these behaviors.
+If it only describes a plan, ask it to execute the inspection. If it cannot run
+commands, check the host's file and terminal permissions. If it cannot find the
+Skill, check the installed entry and restart the session. A package validator
+checks files; this conversation checks whether your host can use them.
+
+For a reproducible host acceptance record, save the host version, request,
+execution trace, output paths and any errors. Completed host acceptance records
+are separate from the repository's Python tests.

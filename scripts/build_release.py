@@ -2,6 +2,9 @@
 import argparse
 import hashlib
 import os
+import json
+import subprocess
+import sys
 from pathlib import Path
 import zipfile
 
@@ -16,13 +19,16 @@ def main():
     args = ap.parse_args()
     if args.output.exists():
         raise ValueError('Release already exists; choose a new output path')
+    subprocess.run([sys.executable, str(ROOT/'scripts/validate_package.py')], check=True)
+    subprocess.run([sys.executable, str(ROOT/'scripts/verify_benchmark.py')], check=True)
     source = ROOT if args.format == 'repository' else ROOT/'plugins/scrna-seq-workbench'
     files = []
     for directory, subdirs, names in os.walk(source):
         subdirs[:] = sorted(d for d in subdirs if d not in SKIP and not (Path(directory)/d).is_symlink())
         for name in sorted(names):
             p = Path(directory)/name
-            if not p.is_symlink() and not name.startswith('.env') and (p.suffix in SUFFIXES or name in {'LICENSE', '.gitignore', '.gitattributes'}):
+            frozen_archive = p == ROOT/'benchmarks/frozen/plugin-v0.1.0.zip'
+            if not p.is_symlink() and not name.startswith('.env') and (p.suffix in SUFFIXES or name in {'LICENSE', '.gitignore', '.gitattributes'} or frozen_archive):
                 files.append(p)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     with zipfile.ZipFile(args.output, 'x', zipfile.ZIP_DEFLATED) as z:
@@ -34,10 +40,16 @@ def main():
             assert sum('/plugins/scrna-seq-workbench/skills/' in n and n.endswith('/SKILL.md') for n in z.namelist()) == 5
             assert sum('/.dsh/skills/' in n and n.endswith('/SKILL.md') for n in z.namelist()) == 5
             assert any('/.agents/plugins/marketplace.json' in n for n in z.namelist())
+            assert f'{source.name}/benchmarks/frozen/plugin-v0.1.0.zip' in z.namelist()
+            assert f'{source.name}/benchmarks/integrity_manifest.json' in z.namelist()
         else:
             assert sum(n.endswith('/SKILL.md') for n in z.namelist()) == 5
             assert f'{source.name}/plugin.json' in z.namelist()
             assert f'{source.name}/.claude-plugin/plugin.json' in z.namelist()
+        prefix=f'{source.name}/' + ('plugins/scrna-seq-workbench/' if args.format == 'repository' else '')
+        versions={json.loads(z.read(prefix+p))['version'] for p in
+                  ('plugin.json','.codex-plugin/plugin.json','.claude-plugin/plugin.json')}
+        assert len(versions)==1, 'Packaged plugin versions disagree'
     digest = hashlib.sha256(args.output.read_bytes()).hexdigest()
     args.output.with_suffix('.zip.sha256').write_text(f'{digest}  {args.output.name}\n', encoding='utf-8')
     print(f'{len(files)} files; {args.output.stat().st_size} bytes; SHA256 {digest}')

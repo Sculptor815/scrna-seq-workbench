@@ -1,28 +1,38 @@
 # Validation and known limitations
 
-Version 0.2.0 adds HPA-guided evidence and review validation plus five-study figures.
-It preserves historical scores; manual review is pending. Local validation is
-recorded in [validation.json](../validation.json). GitHub CI results are visible on
-the repository Actions page after publication. Do not assume a configured workflow passed.
+Version 0.2.1 adds benchmark verification, protected reproduction outputs and
+installation/usage tutorials. The previous v0.2.0 release added HPA-guided evidence
+and review forms. Historical scores are preserved and manual review is pending.
+Local checks are recorded in [validation.json](../validation.json); each pushed
+commit has its own [Actions results](https://github.com/Sculptor815/scrna-seq-workbench/actions).
 
 Live conversations in Codex, Claude Code and DeepSeek Harness have not all been
 accepted. Clean-machine GPU or remote-cluster execution is not claimed.
 
 ## Engineering checks
 
-Structural checks cover manifest identity/version consistency, English Markdown,
-relative links, generated Harness adapter synchronization and Python syntax.
-The core suite exercises counts validation, metadata alignment, filtering and
-marker/DE boundary cases. Synthetic execution checks use artificial truth and
-cannot establish scientific accuracy. GitHub CI must run after publication.
+Structural checks cover release versions, marketplace paths, English Markdown,
+relative Markdown/HTML links, Harness adapter synchronization and Python syntax.
+The benchmark verifier checks 37 frozen source files, 69 committed artifacts,
+five dimension records, 20 metric rows and 23,735 seed-0 cells. It independently
+recalculates broad-label agreement and coverage from the committed coordinate
+tables. Original counts and model training remain outside that offline check.
+
+The regression suite covers counts, metadata, QC, annotation, donor aggregation
+and tamper/dimension failures. A restricted local Windows environment still blocks
+six existing tests that use private temporary directories. The previous release's
+[Windows and Linux run](https://github.com/Sculptor815/scrna-seq-workbench/actions/runs/37012273297)
+passed; new commits need their own CI result. Synthetic execution checks use
+artificial data and measure whether the workflow executes.
 
 ## Earlier local biological evaluation
 
 A frozen v0.1.0 configuration was run on five independent public studies: Kang
 2018, Haber 2017, Paul 2015, Zeisel 2015 and Baron 2016. Each used a PCA baseline
 and three scVI seeds, at most 6000 QC-passing cells and a 100-epoch CPU training cap.
-Those historical data, model files and detailed results are not bundled in this
-minimal source release. This is a summary, not a reproducible benchmark submission.
+The repository includes historical metrics, derived comparison tables and the
+frozen source archive. Raw matrices and fitted models remain external; reproducing
+the complete training run requires those inputs and an appropriate environment.
 
 | Study | Broad-label agreement range, scVI |
 |---|---:|

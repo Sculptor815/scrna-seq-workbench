@@ -1,62 +1,97 @@
 # Your first analysis
 
-## Tell the assistant what you know
+This example creates 400 artificial cells and 100 genes. It checks the Python
+environment and shows the files produced at each stage. It uses a small PCA model
+and does not download experimental data.
 
-Provide your goal, species, tissue, cell/nucleus assay, count-matrix path, any vendor
-report, sample metadata and previous processing. Unknown facts can be stated as
-unknown. Explain donor/condition relationships if you want condition DE.
-Use the [intake template](../plugins/scrna-seq-workbench/assets/analysis-intake.template.md)
-or answer in plain language. A vendor report is useful but does not replace counts.
+Complete [Installation](INSTALLATION.md) first. Run from the repository root.
+In the commands below, Windows users should replace `python` with
+`.\.venv\Scripts\python.exe`; Linux/macOS users can use `.venv/bin/python`.
 
-The assistant should inspect first, then explain the proposed parameters and their
-consequences. You can accept/change the plan, or explicitly delegate parameter
-selection within a stated scope. Reviewed labels are a separate later decision.
-
-## A small local example without downloading data
-
-Run these commands from the repository root using the prepared environment.
-Every output directory must be new. These 400 cells are artificial and provide
-an execution example, not biological accuracy evidence.
+## 1. Create the example
 
 ```text
 python examples/make_synthetic.py --outdir work/demo
+```
+
+The `work/demo` folder contains a count matrix, cell metadata, a synthetic vendor
+report, a QC config and a two-type marker panel. The generator refuses to replace
+an existing folder. For another run, choose a different name throughout the example.
+
+## 2. Review the synthetic delivery
+
+```text
+python plugins/scrna-seq-workbench/scripts/scrna.py report --source work/demo/vendor.txt --metrics work/demo/metrics.json --outdir work/demo-report
+```
+
+Open `work/demo-report/review.md`. It records the 400-cell fixture and which vendor
+metrics are absent. In a real project, your assistant prepares the metric
+transcription from the supplied vendor report.
+
+## 3. Inspect QC before filtering
+
+```text
 python plugins/scrna-seq-workbench/scripts/scrna.py qc --input work/demo/raw.h5ad --config work/demo/qc.json --species human --inspect-only --outdir work/demo-inspection
 ```
 
-Inspect the generated report and QC tables. For this deliberately synthetic example,
-the supplied config is an explicit test choice. A real project needs its own review.
+Read `report.json`, `cell_qc.csv` and `threshold_suggestions.json` in the inspection
+folder, or ask your assistant to explain them. `mode` should be `inspect_only`,
+and no filtered matrix is created. The config allows at least 10 detected genes
+because the artificial matrix has only 100 genes. Real-data thresholds need their
+own assessment. Missing hemoglobin/ribosomal symbol warnings are expected here.
+
+## 4. Apply the example filters
 
 ```text
 python plugins/scrna-seq-workbench/scripts/scrna.py qc --input work/demo/raw.h5ad --config work/demo/qc.json --species human --outdir work/demo-qc
+```
+
+This writes `filtered.h5ad`, a cell exclusion ledger, a gene exclusion ledger and
+`qc_by_sample.png`. Check the retained counts in `report.json`.
+
+## 5. Calculate PCA, clusters and UMAP
+
+```text
 python plugins/scrna-seq-workbench/scripts/scrna.py integrate --input work/demo-qc/filtered.h5ad --backend pca --hvg 80 --latent 5 --outdir work/demo-pca
+```
+
+Open `work/demo-pca/umap_clusters.png`. The runner selected 80 highly variable
+genes, computed five principal components, then built the neighbor graph, Leiden
+clusters and UMAP. `integrated.h5ad` keeps the QC-retained genes and raw counts.
+
+## 6. Propose cell types
+
+```text
 python plugins/scrna-seq-workbench/scripts/scrna.py annotate --input work/demo-pca/integrated.h5ad --panel work/demo/panel.json --species human --tissue blood --outdir work/demo-annotation
 ```
 
-Read `annotation_proposals.csv`, `annotation_evidence.csv`, `marker_expression.csv`,
-`marker_heatmap.png` and `report.json`. The generated `hpa_review.template.csv`
-starts pending; follow the [HPA review contract](../plugins/scrna-seq-workbench/references/hpa-guided-annotation.md).
-Do not treat proposals as reviewed labels. For an optional full engineering smoke,
-including an explicitly legacy synthetic review and synthetic-truth DE, install `requirements-de.txt` and run:
+Read the proposal/evidence CSVs and `marker_heatmap.png`. The example panel contains
+T-cell and B-cell markers. `hpa_review.template.csv` starts with pending decisions.
+An artificial example cannot establish performance on experimental cell types.
+
+For your own study, the next step is marker review and, if needed, subclustering.
+Follow [Analyze your own data](USAGE.md) to complete a review and run condition DE.
+
+## Optional: check all stages automatically
+
+After installing `requirements-de.txt`, run:
 
 ```text
 python scripts/smoke_test.py --backend pca --outdir work/full-smoke
 ```
 
-`--backend scvi` exercises scVI with only two training epochs. Neither smoke
-configuration establishes model convergence, annotation accuracy or DE false-discovery control.
+This engineering check includes synthetic labels and paired donor DE. It uses the
+legacy review format explicitly for artificial labels; it does not supply a human
+review for experimental data. With scVI installed, `--backend scvi` runs a short
+two-epoch execution check. That short run is insufficient to assess convergence.
 
-## Keep large data on the chosen drive
+## Ask the assistant to run the example
 
-Clone/extract the repository on your data drive, for example `D:/scRNAseq-workbench`,
-and use `work/` for local experiments or absolute output paths on that drive.
-Do not store outputs inside an installed plugin cache. The repository ignores work,
-runs, data, model files and local environments; do not upload private input data.
-The assistant must disclose any subsampling instead of silently applying a benchmark cap.
+> Use the five scRNA-seq Workbench Skills and the Python environment I supplied.
+> Run the example in docs/QUICKSTART.md in fresh work/demo-* folders.
+> Explain what each stage reads and writes, and show the QC plot, UMAP and marker
+> evidence. Keep the annotation proposals provisional.
 
-On Windows, prefer a short repository path. If Numba reports a missing cache file
-with a very long path, set `NUMBA_CACHE_DIR` to a short, writable directory on the
-same working drive before launching Python. This affects compiled-code caching,
-not analysis parameters. Some restricted Windows execution environments also block
-Python's private temporary directories; run tests in an environment with working
-temporary-directory permissions and do not interpret those permission errors as
-biological failures.
+This tests how the assistant uses the Skills, in addition to whether Python works.
+If you already ran the commands manually, give it the existing output paths for
+review or choose new paths for an independent run.

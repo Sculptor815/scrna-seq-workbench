@@ -29,6 +29,10 @@ def main():
     parser.add_argument('--benchmark-work',type=Path,required=True)
     parser.add_argument('--outdir',type=Path,required=True)
     args=parser.parse_args()
+    target = args.outdir.resolve()
+    for protected in (ROOT/'benchmarks', ROOT/'docs', args.benchmark_work):
+        if target == protected.resolve() or target.is_relative_to(protected.resolve()):
+            parser.error('Choose a new output directory outside the source runs, benchmarks/ and docs/.')
     args.outdir.mkdir(parents=True,exist_ok=False)
     records=[]
     for name in ['kang','haber','paul','zeisel','baron']:

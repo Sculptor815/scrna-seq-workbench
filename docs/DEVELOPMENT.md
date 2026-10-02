@@ -1,71 +1,81 @@
-# Development and publication
+# Development and releases
+
+The published repository is
+[Sculptor815/scrna-seq-workbench](https://github.com/Sculptor815/scrna-seq-workbench).
+Work on a checkout of this repository and keep analysis data in ignored local
+folders or a separate study directory.
 
 ## Layout
 
 ```text
-plugins/scrna-seq-workbench/  canonical five Skills, references, assets and Python
+plugins/scrna-seq-workbench/  five canonical Skills and Python runner
 .agents/plugins/            Codex marketplace
 .claude-plugin/             Claude Code marketplace
-.dsh/skills/                generated DeepSeek Harness project entries
-examples/                   small synthetic-data generator
-scripts/                    checks, adapter generation and release packaging
-tests/                      numerical/data-contract tests
-docs/                       setup, validation and this guide
+.dsh/skills/                generated Harness project entries
+examples/                   synthetic-data generator
+scripts/                    validation, verification and packaging
+tests/                      regression tests
+benchmarks/                 historical results, evidence and frozen source
+docs/                       user tutorials and evaluation notes
 ```
 
-Edit canonical Skills, not generated Harness entries. Then run:
+Edit canonical Skills and regenerate the Harness entries. Run checks from the
+repository root with the environment described in [Installation](INSTALLATION.md):
 
 ```text
 python scripts/sync_adapters.py
 python scripts/validate_package.py
+python scripts/verify_benchmark.py
 python -m unittest discover -s tests -v
 ```
 
-Keep numerical behavior changes separate from packaging changes. Add a focused test
-when correcting a real numerical or data-contract bug. Review host behavior with the
-acceptance prompt in HOSTS. Do not update old benchmark results after tuning.
+Test numerical changes with a relevant regression case. The benchmark verifier
+needs only Python's standard library. Model fitting and the synthetic workflow
+need their scientific dependencies. For host behavior, run the acceptance session
+in [Host setup](HOSTS.md) and retain the execution record.
 
-## Upload to GitHub
+## Historical benchmark records
 
-Create a new empty repository on GitHub. From this repository directory:
+Treat `benchmarks/legacy`, `benchmarks/evidence` and the frozen ZIP as historical
+records. New experiments go to a new directory. Verification reads the committed
+hash manifest; it has no option to replace expected hashes. Intentional evidence
+changes need a reviewed explanation and a new benchmark identity, rather than
+silently changing the old scores. See [benchmark verification](../benchmarks/README.md).
 
-```text
-git init
-git add .
-git diff --cached --stat
-git commit -m "Initial research preview"
-git branch -M main
-```
+## Prepare a release
 
-Then add your real repository URL as `origin` and push `main`. The URL and account
-are intentionally not embedded. Review staged files before pushing; the source
-package contains no count matrices, trained models, credentials or private reports.
-GitHub publication has not been performed by this release-preparation task.
+Update the three plugin manifests, Claude marketplace entry, README, CITATION.cff
+and RELEASE_NOTES.md to the same version. Add a changelog entry, regenerate the
+adapters and run the checks above. Package validation also checks relative Markdown
+and HTML image links, including the comparison tables.
 
-Update the three plugin manifests, Claude marketplace version and README together
-when releasing. Regenerate adapters and run the checks. Build a new source ZIP:
+Build both archive formats in a local work directory:
 
 ```text
-python scripts/build_release.py --output ../scrna-seq-workbench-source.zip
-python scripts/build_release.py --format plugin --output ../scrna-seq-workbench-plugin.zip
+python scripts/build_release.py --format repository --output work/scrna-seq-workbench-v0.2.1-repository.zip
+python scripts/build_release.py --format plugin --output work/scrna-seq-workbench-v0.2.1-plugin.zip
 ```
 
-The builder refuses to overwrite an existing ZIP. It includes hidden host adapters
-and excludes local data, environments, caches and Git history. The accompanying
-SHA256 file identifies the archive. GitHub Actions runs structural and core checks;
-it is provided as configuration, not claimed as executed before publication.
+| Archive | Contents | Use |
+|---|---|---|
+| Repository | Tutorials, tests, benchmark records and source ZIP, both catalogs and Harness entries | Source distribution and development |
+| Plugin | One plugin root with five Skills, scripts, references and requirements | Host plugin installation |
 
-The repository archive includes documentation, benchmark figures, both marketplace
-catalogs and DeepSeek project entries. The standalone plugin archive has a single
-plugin directory with its manifest directly inside it, suitable for plugin-package
-consumers. Use the repository checkout for DeepSeek Harness project discovery.
+The builder runs package and benchmark verification first, checks archived
+versions and writes an adjacent `.zip.sha256`. Existing archives are refused.
+Local data, caches, environments and Git history are excluded. The only included
+ZIP is the explicitly pinned historical source archive.
 
-## Small next milestones
+## Publish an update
 
-1. Record one successful real host conversation per supported host.
-2. Improve per-sample QC evidence and low-RNA population review.
-3. Improve marker coverage and conflicting-label handling.
-4. Compare changes on development studies, then evaluate on unseen studies.
+Review `git status` and the diff, commit the intended source changes, then push to
+the existing `origin`. Check the commit's
+[Actions run](https://github.com/Sculptor815/scrna-seq-workbench/actions) for both
+Windows and Linux. The workflow runs tests and verification; it does not publish
+releases automatically.
 
-Avoid expanding into a universal atlas or adding automatic reference downloads
-before a first user can complete a well-explained analysis.
+A GitHub Release is a separate action. When publishing one, use a tag matching the
+validated version and attach the two newly built archives and their checksum
+files. Describe the plugin archive and full repository archive separately.
+An old ZIP with a different version is not a substitute for either artifact.
+Public plugin-directory submission is also separate from a GitHub push.

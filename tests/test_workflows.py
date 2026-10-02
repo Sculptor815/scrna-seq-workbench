@@ -36,6 +36,15 @@ def fixture():
 
 
 class Invariants(unittest.TestCase):
+    def test_mitochondrial_suggestion_has_only_an_upper_bound(self):
+        obs=pd.DataFrame({'sample_id':['s1']*5,'total_counts':[10,20,30,40,50],
+                          'n_genes_by_counts':[3,4,5,6,7],'pct_counts_mt':[10,20,30,40,50],
+                          'pct_counts_hb':[0]*5})
+        _,_,suggestions=filter_cells(obs,'sample_id',{'defaults':{'min_genes':0}})
+        self.assertIsNone(suggestions['s1']['pct_counts_mt']['suggested_lower'])
+        self.assertGreater(suggestions['s1']['pct_counts_mt']['suggested_upper'],30)
+        self.assertIsNotNone(suggestions['s1']['total_counts']['suggested_lower'])
+
     def test_10x_duplicate_symbols_are_not_silently_renamed(self):
         from scipy.io import mmwrite
         with tempfile.TemporaryDirectory() as t:

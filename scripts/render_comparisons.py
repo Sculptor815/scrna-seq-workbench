@@ -12,8 +12,14 @@ ROOT=Path(__file__).resolve().parents[1]
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--evidence',type=Path,default=ROOT/'benchmarks/evidence')
-    parser.add_argument('--outdir',type=Path,default=ROOT/'docs/figures')
-    args=parser.parse_args(); args.outdir.mkdir(parents=True,exist_ok=True)
+    parser.add_argument('--outdir',type=Path,default=ROOT/'work/comparisons')
+    args=parser.parse_args()
+    # Rendering is a new experiment; checked-in evidence is an input, not a destination.
+    target = args.outdir.resolve()
+    for protected in (ROOT/'benchmarks', ROOT/'docs'):
+        if target == protected.resolve() or target.is_relative_to(protected.resolve()):
+            parser.error('Use a new output directory outside benchmarks/ and docs/.')
+    args.outdir.mkdir(parents=True,exist_ok=False)
     titles={'kang':'Kang 2018 | Human PBMC','haber':'Haber 2017 | Mouse intestine',
             'paul':'Paul 2015 | Mouse myeloid progenitors','zeisel':'Zeisel 2015 | Mouse brain',
             'baron':'Baron 2016 | Human pancreas'}
@@ -24,7 +30,7 @@ def main():
         colors['Unknown']='#a0a4aa'
         fig,axes=plt.subplots(1,3,figsize=(18,5.8))
         for ax,column,heading in zip(axes,['reference_broad','cluster','proposal'],
-            ['Author/reference labels\non plugin UMAP','Plugin Leiden clusters','Plugin marker proposals\nHuman HPA-guided review pending']):
+            ['Reference labels','Leiden clusters','Proposed cell types\nReview pending']):
             for i,label in enumerate(sorted(frame[column].unique())):
                 mask=frame[column]==label
                 color=plt.get_cmap('tab20')(i%20) if column=='cluster' else colors[label]
@@ -33,7 +39,7 @@ def main():
             ax.set_xlabel('UMAP 1'); ax.set_ylabel('UMAP 2')
             ax.legend(loc='upper left',bbox_to_anchor=(1,1),fontsize=6,frameon=False,markerscale=3)
         fig.suptitle(f'{title} | scVI seed 0 | n={len(frame):,}',fontsize=16)
-        fig.text(.5,.025,'All panels share our coordinates. Left is a label replot, NOT the original paper embedding. Seed 0 was fixed; no best-seed selection.',ha='center',fontsize=10)
+        fig.text(.5,.025,'All panels use the same scVI seed-0 UMAP, colored by reference labels, clusters or marker-based proposals.',ha='center',fontsize=10)
         fig.tight_layout(rect=(0,.055,1,.94));fig.savefig(args.outdir/f'{name}-comparison.png',dpi=150,bbox_inches='tight');plt.close(fig)
         print(name,'comparison rendered')
 

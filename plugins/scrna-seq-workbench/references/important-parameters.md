@@ -39,9 +39,9 @@ different routes. The current scVI branch does not train on PCA coordinates.
 | seed / device | 0 / cpu | Repeatability, sensitivity checks and an actually available GPU environment |
 
 Inspect condition/batch/donor relationships before correction. Missing types across
-batches can be biological. UMAP min_dist/spread are not exposed by this CLI; do not
-claim to have adjusted them. PCA variance-spectrum inspection is a separate analysis,
-not an automatically generated feature. Do not select settings for attractive islands.
+batches can be biological. The CLI uses the library defaults for UMAP min_dist
+and spread. PCA variance-spectrum inspection requires a separate analysis.
+Compare settings using marker support, preserved populations and stability.
 
 ## Annotation and condition DE
 
@@ -54,8 +54,8 @@ DE needs case/control direction, true donors and paired/unpaired design. Default
 20 cells per donor/condition/type, 3 complete pairs or 3 independent donors per arm,
 and gene pseudobulk total count >=10. These minima do not guarantee power.
 Current formulas are `~ donor + condition` and `~ condition`; arbitrary additional
-batch/age/sex covariates are unsupported. The summary reports per-type padj<0.05;
-there is no configurable FDR CLI argument. Never claim an unimplemented adjustment.
+batch/age/sex covariates are unsupported. The summary uses a fixed per-type
+reporting threshold of padj < 0.05.
 
 Implementation: [CLI](../scripts/scrna.py), [integration](../scripts/scrna_core/integrate.py),
 [QC config](../assets/qc.example.json). Algorithm background:

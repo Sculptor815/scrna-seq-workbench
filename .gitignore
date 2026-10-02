@@ -13,6 +13,7 @@ hpa_cache/
 *.fastq*
 *.fq*
 *.zip
+!benchmarks/frozen/plugin-v0.1.0.zip
 *.skill
 .env
 .env.*

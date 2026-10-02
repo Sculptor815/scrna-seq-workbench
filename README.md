@@ -1,101 +1,84 @@
 # scRNA-seq Workbench
 
-Five agent skills and a shared Python runner for guided single-cell RNA-seq analysis.
-Supports **Codex and Claude Code plugin packaging**, plus **DeepSeek Harness project skills**.
-Version **0.2.0 - research preview**. This is a small starting point for incremental improvement.
+An agent plugin for single-cell RNA-seq analysis, with five Skills and a shared
+Python runner. Use it with **Codex**, **Claude Code** or **DeepSeek Harness**.
+Version **0.2.1 - research preview**.
 
-Give your assistant a counts matrix, sample information and an analysis goal.
-It should inspect the inputs, explain important parameters, run the requested stages,
-and show evidence and uncertainty before treating annotations as final.
+Give your assistant a count matrix, sample information and an analysis goal.
+The Skills guide it through inspecting your files, explaining parameter choices,
+running the analysis and reviewing the results with you.
 
-| Skill | Purpose | Main output |
+## Get started
+
+1. Follow the [installation tutorial](docs/INSTALLATION.md): Windows/D: and Linux/macOS instructions, Python dependencies and common errors.
+2. Enable the plugin in [your assistant](docs/HOSTS.md).
+3. Run the [400-cell example](docs/QUICKSTART.md) to check your setup.
+4. Follow [Analyze your own data](docs/USAGE.md) for file preparation, parameter choices and the five analysis stages.
+
+Installing the plugin adds instructions and scripts. Its calculations use a
+Python environment on your computer or server. scVI and differential expression
+have additional dependencies described in the installation tutorial.
+
+## What it does
+
+| Skill | What you provide | What you receive |
 |---|---|---|
-| `sequencing-report-review` | Review a vendor report and identify missing files | Verified metrics and delivery inventory |
-| `scrna-qc` | Inspect per-sample quality and apply explicit filters | Filtered counts and exclusion ledgers |
-| `scrna-scvi-umap` | Fit scVI or a PCA baseline, cluster and visualize | Representation, Leiden clusters and UMAP |
-| `scrna-cell-annotation` | Propose marker-supported labels and record review | Proposals, evidence and reviewed labels |
-| `scrna-condition-de` | Compare conditions using donor-level pseudobulk | Counts, exclusions and PyDESeq2 results |
+| `sequencing-report-review` | Vendor report and sample details | A summary of sequencing metrics, source evidence and missing files |
+| `scrna-qc` | UMI counts, species and sample metadata | QC measurements, filtering records and a filtered H5AD |
+| `scrna-scvi-umap` | Filtered counts and a batch definition if needed | scVI or PCA representation, Leiden clusters and UMAP plots |
+| `scrna-cell-annotation` | Clusters and a tissue-matched marker panel or HPA table | Candidate cell types, marker evidence and a review form |
+| `scrna-condition-de` | Reviewed cell types, conditions and biological donor IDs | Donor-level pseudobulk counts and PyDESeq2 results |
 
-## Five-study visual benchmark
+You can use one Skill or work through the stages. A sequencing report alone is
+enough for delivery review; downstream analysis also needs the count matrix.
 
-[Original figures and plugin comparisons](docs/COMPARISONS.md) show Kang, Haber,
-Paul, Zeisel and Baron. All five author-label versus plugin-label replots are
-available. Three original figures are externally displayed; two originals have
-explicit source-access limitations. Original t-SNE/heatmaps are never called UMAP.
+## A first request
 
-![Kang reference labels and plugin proposals](docs/figures/kang-comparison.png)
+> Use scRNA-seq Workbench to inspect my human PBMC data.
+> Counts: D:/my-study/data/raw.h5ad.
+> Cell metadata: D:/my-study/data/cells.csv.
+> Python: D:/scrna-seq-workbench/.venv/Scripts/python.exe.
+> My goal is broad cell-type annotation. Save results under D:/my-study/runs.
+> Start with input checks and QC inspection. Explain the proposed filters,
+> dimensionality and batch settings before running the full analysis.
 
-Annotation now defaults to an [HPA-guided evidence and manual-review contract](plugins/scrna-seq-workbench/references/hpa-guided-annotation.md).
-The old automatic scores remain a historical baseline. The five new review packets
-are pending, so we do not claim completed HPA annotation or improved accuracy.
-See [benchmark scope](benchmarks/README.md) and [HPA lessons](docs/HPA_METHODS.md).
+Change the paths and biological details to match your project. The assistant can
+answer in your language. If you want it to choose parameters, state that in your
+request and it should record the choices and their reasons.
 
-## Start here
+## Inputs and scope
 
-1. Clone or extract this repository to your working drive. Large data and outputs can stay on D: or a server.
-2. Set up the Python environment below.
-3. Follow [your host's setup instructions](docs/HOSTS.md).
-4. Send the [first-analysis prompt](docs/QUICKSTART.md), or try the small synthetic example.
+Supported inputs are human or mouse UMI counts in H5AD, 10x H5 or 10x-compatible
+matrix directories. Each run records parameters, package versions and file hashes.
+Original counts are preserved in `layers['counts']` after the declared QC exclusions.
 
-```text
-python -m venv .venv
-```
+This version starts from count matrices or sequencing reports. FASTQ alignment,
+multi-matrix assembly, ambient-RNA correction and arbitrary DE covariates require
+additional tools. HPA reference tables are optional and supplied by the user.
+See the [input requirements](docs/USAGE.md) before using an existing H5AD.
 
-Activate `.venv` using your shell, or use its Python executable directly:
-`.venv\Scripts\python.exe` on Windows; `.venv/bin/python` on Linux/macOS.
+## Examples and evaluation
 
-```text
-python -m pip install -r plugins/scrna-seq-workbench/requirements-scvi.txt -r plugins/scrna-seq-workbench/requirements-de.txt
-python scripts/validate_package.py
-```
+[Five-study comparisons](docs/COMPARISONS.md) show published figures alongside our
+UMAPs and annotation proposals for Kang, Haber, Paul, Zeisel and Baron. The three
+panels in each of our plots share coordinates, showing reference labels, Leiden
+clusters and proposed labels. Three published figures are available inline;
+Paul and Zeisel have source links because the image downloads were unavailable.
 
-Use Python 3.12. For QC, PCA and marker annotation only, install `requirements.txt`
-instead. Installing the plugin does **not** install Python dependencies. The host
-needs permission to read your project and execute the chosen Python environment.
-GPU use needs a compatible PyTorch/CUDA installation; CPU is supported.
+![Kang reference labels, clusters and proposed cell types](docs/figures/kang-comparison.png)
 
-## What the first version supports
+The benchmark exposed loss of low-RNA populations, ambiguous labels and missed
+rare types. Its scores describe the historical fixed-parameter workflow.
+The current annotation step adds [HPA-guided review](docs/HPA_METHODS.md);
+the five benchmark review forms are still pending.
 
-- Human/mouse UMI count matrices: H5AD, 10x H5, or 10x-compatible matrix directories.
-- A shared intake workflow: goals, tissue, assay, raw-count provenance and sample design.
-- Per-sample QC configuration, explicit batch selection, optional doublet assessment.
-- Separate annotation proposals and reviewed labels, including `Unknown`.
-- Paired/unpaired donor-level condition DE, with minimum replicate checks.
-- Fresh output directories and reports recording parameters, versions and file hashes.
+Read [validation](docs/VALIDATION.md) for the measured results and remaining work,
+or [benchmark verification](benchmarks/README.md) to check the frozen source and
+published tables. [The review response](docs/REVIEW_FIXES.md) records the v0.2.1 corrections.
 
-The report command validates a transcription made by the assistant; it is not an OCR
-engine. Multi-file matrix assembly, FASTQ alignment, ambient-RNA correction, arbitrary
-DE covariates and universal automatic annotation are outside this release.
-HPA input is optional and human-only. No datasets or reference downloads are bundled.
+## Contributing
 
-## Example request
-
-> Use scRNA-seq Workbench to inspect my human PBMC counts in data/raw.h5ad.
-> My sample information is in data/cells.csv. I want broad cell-type annotation.
-> First check the inputs and QC distributions. Explain your proposed filters,
-> PCA/scVI settings and batch definition before filtering or training.
-> Save new results under runs/analysis-01 and preserve the original counts.
-
-Documentation is in English; the assistant should answer in the user's language.
-Users may explicitly delegate parameter choices rather than approve every setting.
-
-## Reliability and development
-
-This is an **assisted research workflow**, not a validated autonomous analyst.
-Previous fixed-configuration experiments exposed low-RNA QC loss, rare-type failures
-and unstable developmental-state annotation. See [validation and limitations](docs/VALIDATION.md).
-Do not treat an attractive UMAP, a completed command, or a high overall agreement rate as biological validation.
-
-```text
-python scripts/sync_adapters.py --check
-python -m unittest discover -s tests -v
-```
-
-- [Quickstart and intake](docs/QUICKSTART.md)
-- [Host setup: Codex, Claude Code, DeepSeek Harness](docs/HOSTS.md)
-- [Important parameters](plugins/scrna-seq-workbench/references/important-parameters.md)
-- [Development and publishing](docs/DEVELOPMENT.md)
-- [Changelog](CHANGELOG.md) / [License](LICENSE)
-
-This repository does not configure model credentials, send messages, download public
-datasets or run an analysis merely because it is installed.
+See [development and release instructions](docs/DEVELOPMENT.md),
+[the changelog](CHANGELOG.md) and [GitHub Actions](https://github.com/Sculptor815/scrna-seq-workbench/actions).
+Code is MIT licensed. Dataset and publication attribution is documented in
+[Third-party sources](docs/THIRD_PARTY_SOURCES.md).

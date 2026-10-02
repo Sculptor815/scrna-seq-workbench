@@ -8,7 +8,7 @@
       "name": "scrna-seq-workbench",
       "source": "./plugins/scrna-seq-workbench",
       "description": "Five scRNA-seq workflows: sequencing report review, cell QC, scVI/UMAP, reviewed annotation and donor-level condition DE.",
-      "version": "0.2.0"
+      "version": "0.2.1"
     }
   ]
 }

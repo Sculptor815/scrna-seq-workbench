@@ -1,0 +1,186 @@
+{
+  "checked_on": "2026-10-02",
+  "method": "Read X shapes from original local H5AD files and gene_mapping.csv; file hashes identify the external run files.",
+  "definitions": {
+    "input": "Prepared count matrix before plugin QC",
+    "qc": "After cell filtering and min_cells_per_gene=3 gene filtering",
+    "analysis": "QC output with a label-blind 6000-cell cap; retains the QC gene axis"
+  },
+  "datasets": [
+    {
+      "dataset": "kang",
+      "observed_files": {
+        "input.h5ad": {
+          "sha256": "bab1c76cc96519431ee1faf46439e023ee8eada65cf424288563edac5a1164ca",
+          "shape": [
+            24673,
+            15706
+          ]
+        },
+        "qc/filtered.h5ad": {
+          "sha256": "a7f767c0303edd2b16560e30730cd36ecc92f1fa38dc247a7e3e3e71909ae8a6",
+          "shape": [
+            24562,
+            15701
+          ]
+        },
+        "analysis_input.h5ad": {
+          "sha256": "1021c32a1a309c88d82a00d93dcfe7cf9e078368ea44a51b19dcbdb2a6a5a9e0",
+          "shape": [
+            6000,
+            15701
+          ]
+        }
+      },
+      "input_cells": 24673,
+      "input_genes": 15706,
+      "qc_cells": 24562,
+      "qc_genes": 15701,
+      "analysis_cells": 6000,
+      "analysis_genes": 15701,
+      "mapped_gene_rows": 15706,
+      "unique_analysis_symbols": 15706,
+      "duplicate_symbols_collapsed": 0
+    },
+    {
+      "dataset": "haber",
+      "observed_files": {
+        "input.h5ad": {
+          "sha256": "1ec6cce95f75c67fcc2e7c4f2cd08862b0db4f1d08c8f4bf783d082dc776d710",
+          "shape": [
+            9842,
+            15215
+          ]
+        },
+        "qc/filtered.h5ad": {
+          "sha256": "5252e1615ae4e82aeb16b481efc8e5daa3898816ad003eb23e4efeff45d20967",
+          "shape": [
+            9842,
+            14600
+          ]
+        },
+        "analysis_input.h5ad": {
+          "sha256": "21efe8fcf077748028444c06a05ffee61ff727f1ee3d9b633bdcbe4833523590",
+          "shape": [
+            6000,
+            14600
+          ]
+        }
+      },
+      "input_cells": 9842,
+      "input_genes": 15215,
+      "qc_cells": 9842,
+      "qc_genes": 14600,
+      "analysis_cells": 6000,
+      "analysis_genes": 14600,
+      "mapped_gene_rows": 15215,
+      "unique_analysis_symbols": 15215,
+      "duplicate_symbols_collapsed": 0
+    },
+    {
+      "dataset": "paul",
+      "observed_files": {
+        "input.h5ad": {
+          "sha256": "c9241f48aa5b71dbae7facd131e02a81d5e3358e57c0878fff901cd6083b1775",
+          "shape": [
+            2730,
+            8716
+          ]
+        },
+        "qc/filtered.h5ad": {
+          "sha256": "babfce186e23a368ea6d743b6c48148492f211651f842603a16d1642a46776e5",
+          "shape": [
+            2730,
+            8716
+          ]
+        },
+        "analysis_input.h5ad": {
+          "sha256": "20e9c34a41d4dd40e1ec9ddaaeb05af5b0c8985789f7bf7e189314e777ebf65c",
+          "shape": [
+            2730,
+            8716
+          ]
+        }
+      },
+      "input_cells": 2730,
+      "input_genes": 8716,
+      "qc_cells": 2730,
+      "qc_genes": 8716,
+      "analysis_cells": 2730,
+      "analysis_genes": 8716,
+      "mapped_gene_rows": 8716,
+      "unique_analysis_symbols": 8716,
+      "duplicate_symbols_collapsed": 0
+    },
+    {
+      "dataset": "zeisel",
+      "observed_files": {
+        "input.h5ad": {
+          "sha256": "834fc4e43937648aa38e1a79435c53d55a383340fab926c03093217296907594",
+          "shape": [
+            3005,
+            19972
+          ]
+        },
+        "qc/filtered.h5ad": {
+          "sha256": "b93e96267dc5deed60380bf1be73768f6eccd0c9ae7cee4a6c3991b2c2d3cf94",
+          "shape": [
+            3005,
+            18879
+          ]
+        },
+        "analysis_input.h5ad": {
+          "sha256": "f70389a6627abf77f706edf9b9947b8bb37877fc892bad3c468f49754b8876d4",
+          "shape": [
+            3005,
+            18879
+          ]
+        }
+      },
+      "input_cells": 3005,
+      "input_genes": 19972,
+      "qc_cells": 3005,
+      "qc_genes": 18879,
+      "analysis_cells": 3005,
+      "analysis_genes": 18879,
+      "mapped_gene_rows": 19972,
+      "unique_analysis_symbols": 19972,
+      "duplicate_symbols_collapsed": 0
+    },
+    {
+      "dataset": "baron",
+      "observed_files": {
+        "input.h5ad": {
+          "sha256": "6035da184003047e05f155b74adff4c4b92a53a0cb2277c2192721af0a6e7888",
+          "shape": [
+            8569,
+            20125
+          ]
+        },
+        "qc/filtered.h5ad": {
+          "sha256": "cb13944dff2db51a446059239d946577dea21d14d3da94608f23a6c9026c0fb7",
+          "shape": [
+            8569,
+            16359
+          ]
+        },
+        "analysis_input.h5ad": {
+          "sha256": "8ab8d58076727ad42b70932afd9a7b1fe4e7be19def2668860f60eb77b55dd55",
+          "shape": [
+            6000,
+            16359
+          ]
+        }
+      },
+      "input_cells": 8569,
+      "input_genes": 20125,
+      "qc_cells": 8569,
+      "qc_genes": 16359,
+      "analysis_cells": 6000,
+      "analysis_genes": 16359,
+      "mapped_gene_rows": 20125,
+      "unique_analysis_symbols": 20125,
+      "duplicate_symbols_collapsed": 0
+    }
+  ]
+}

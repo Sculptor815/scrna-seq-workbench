@@ -69,10 +69,11 @@ def run(args, report):
     if not args.matrix:
         report["warnings"].append("A report alone cannot run downstream analysis; obtain the UMI count matrix and cell metadata.")
     write_json(args.outdir / "normalized_metrics.json", doc)
-    lines = ["# 测序交付报告检查", f"样本：{doc['sample_id']}；平台：{doc['platform']}",
-             "", "| 指标 | 值 | 单位 | 证据 |", "|---|---:|---|---|"]
+    lines = ["# Sequencing delivery review", f"Sample: {doc['sample_id']}; platform: {doc['platform']}",
+             "", "| Metric | Value | Unit | Evidence |", "|---|---:|---|---|"]
     for name, e in found.items():
         lines.append(f"| {name} | {e.get('value')} | {e['unit']} | {str(e.get('evidence','')).replace('|','/')} |")
-    lines += ["", "缺失指标：" + ", ".join(missing), "", "当前判断：需要结合建库方案、预期回收量、原始矩阵和样本间对比复核；不自动判定合格。",
-              "", "下一步：核对样本表与原始 UMI 矩阵，再运行 scrna-qc。"]
+    lines += ["", "Missing metrics: " + ", ".join(missing), "",
+              "Review these measurements alongside the library protocol, expected cell recovery, count matrix and other samples.",
+              "", "Next: check the sample metadata and raw UMI matrix, then run scrna-qc."]
     (args.outdir / "review.md").write_text("\n".join(lines), encoding="utf-8")
