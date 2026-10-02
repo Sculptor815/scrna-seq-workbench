@@ -1,0 +1,4 @@
+interface:
+  display_name: "Cell annotation and review"
+  short_description: "Evidence-linked scRNA-seq workflow for annotate"
+  default_prompt: "Use $scrna-cell-annotation to guide this analysis and explain the results."

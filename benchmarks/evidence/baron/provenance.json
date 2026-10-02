@@ -1,0 +1,15 @@
+{
+  "dataset": "baron",
+  "cells": 6000,
+  "backend": "scvi",
+  "seed": 0,
+  "embedding_origin": "frozen baseline-1; unchanged coordinates",
+  "annotation_origin": "marker proposals; HPA-guided evidence added, human review pending",
+  "hpa_exact_replication": false,
+  "human_review_complete": false,
+  "input_sha256": "62c1e138ace5bee3afd063480aa9de3e092649dc2e304d25c082c1270d22c880",
+  "panel_sha256": "94cdbf12bcabb0bd3dfe196740aafbad1994c6a584fdba694e484499a95d4619",
+  "reference_labels_sha256": "f62812f1f35dd183816b208a851e2847e77c4fc3bce758aecaed894a3df579d1",
+  "reference_labels_used_for_proposals": false,
+  "species_scope": "human HPA-inspired procedure"
+}

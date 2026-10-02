@@ -1,0 +1,37 @@
+{
+  "species": "human",
+  "tissue": "blood",
+  "source": "Demonstration panel adapted from the Scanpy PBMC tutorial; user review required. https://scanpy.readthedocs.io/en/stable/tutorials/basics/clustering.html",
+  "markers": {
+    "T cells": [
+      "CD3D",
+      "CD3E",
+      "TRAC"
+    ],
+    "B cells": [
+      "MS4A1",
+      "CD79A",
+      "CD79B"
+    ],
+    "NK cells": [
+      "GNLY",
+      "NKG7",
+      "KLRD1"
+    ],
+    "monocytes": [
+      "LYZ",
+      "LST1",
+      "CTSS"
+    ],
+    "dendritic cells": [
+      "FCER1A",
+      "CD1C",
+      "CLEC10A"
+    ],
+    "platelets": [
+      "PPBP",
+      "PF4",
+      "GP9"
+    ]
+  }
+}

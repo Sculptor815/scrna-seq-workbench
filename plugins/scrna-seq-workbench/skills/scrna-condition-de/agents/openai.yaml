@@ -1,0 +1,4 @@
+interface:
+  display_name: "Donor-level condition differential expression"
+  short_description: "Evidence-linked scRNA-seq workflow for de"
+  default_prompt: "Use $scrna-condition-de to guide this analysis and explain the results."

@@ -1,0 +1,18 @@
+cluster,cell_type_proposal,best_candidate,score,runner_up,margin,reason,review_status,n_cells
+0,monocytes,monocytes,1.1267086267471313,dendritic cells,1.102247754111886,marker_supported_proposal,pending,745
+1,Unknown,T cells,0.09394003450870514,platelets,0.3138286769390106,weak_score_or_small_margin,pending,222
+10,dendritic cells,dendritic cells,3.8210856914520264,monocytes,2.6317338943481445,marker_supported_proposal,pending,64
+11,monocytes,monocytes,1.1680113077163696,dendritic cells,1.281673289835453,marker_supported_proposal,pending,189
+12,NK cells,NK cells,1.4432247877120972,T cells,0.44847559928894043,marker_supported_proposal,pending,225
+13,monocytes,monocytes,1.3541579246520996,dendritic cells,1.3560104966163635,marker_supported_proposal,pending,522
+14,platelets,platelets,3.878357172012329,T cells,2.9007081985473633,marker_supported_proposal,pending,39
+15,Unknown,NK cells,0.010041415691375732,monocytes,0.08196607977151871,weak_score_or_small_margin,pending,34
+16,B cells,B cells,1.931282877922058,platelets,2.1743928641080856,marker_supported_proposal,pending,295
+2,T cells,T cells,1.7412126064300537,platelets,2.0004864931106567,marker_supported_proposal,pending,724
+3,T cells,T cells,1.204944372177124,platelets,1.4844037294387817,marker_supported_proposal,pending,434
+4,NK cells,NK cells,1.8104408979415894,T cells,1.0656766891479492,marker_supported_proposal,pending,482
+5,B cells,B cells,3.121100425720215,dendritic cells,3.2916050404310226,marker_supported_proposal,pending,390
+6,NK cells,NK cells,2.679997205734253,platelets,2.879606008529663,marker_supported_proposal,pending,220
+7,T cells,T cells,1.1540590524673462,platelets,1.4027893543243408,marker_supported_proposal,pending,741
+8,monocytes,monocytes,1.824794888496399,platelets,2.0550386160612106,marker_supported_proposal,pending,226
+9,T cells,T cells,0.8175385594367981,platelets,1.0296446233987808,marker_supported_proposal,pending,448

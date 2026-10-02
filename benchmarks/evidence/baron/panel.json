@@ -1,0 +1,70 @@
+{
+  "species": "human",
+  "tissue": "pancreas",
+  "source": "Benchmark analyst-curated broad canonical markers, frozen before scoring; study context https://doi.org/10.1016/j.cels.2016.08.011. Not claimed an author-supplied reference; rare/state-specific markers need expert validation.",
+  "markers": {
+    "alpha": [
+      "GCG",
+      "TTR",
+      "ARX"
+    ],
+    "beta": [
+      "INS",
+      "IAPP",
+      "PCSK1"
+    ],
+    "delta": [
+      "SST",
+      "HHEX"
+    ],
+    "gamma": [
+      "PPY",
+      "PAX6"
+    ],
+    "epsilon": [
+      "GHRL",
+      "PCSK1N"
+    ],
+    "acinar": [
+      "PRSS1",
+      "REG1A",
+      "CPA1",
+      "CTRB2"
+    ],
+    "ductal": [
+      "KRT19",
+      "KRT8",
+      "CFTR"
+    ],
+    "stellate": [
+      "COL1A1",
+      "COL3A1",
+      "DCN"
+    ],
+    "endothelial": [
+      "PECAM1",
+      "VWF",
+      "KDR"
+    ],
+    "macrophage": [
+      "LST1",
+      "TYROBP",
+      "C1QA"
+    ],
+    "mast": [
+      "TPSAB1",
+      "TPSB2",
+      "KIT"
+    ],
+    "schwann": [
+      "S100B",
+      "PLP1",
+      "SOX10"
+    ],
+    "t_cell": [
+      "CD3D",
+      "CD3E",
+      "TRAC"
+    ]
+  }
+}

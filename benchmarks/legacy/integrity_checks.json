@@ -1,0 +1,247 @@
+{
+  "status": "passed",
+  "reference_labels_excluded": true,
+  "frozen_plugin_unchanged": true,
+  "checks": [
+    {
+      "dataset": "kang",
+      "run": "pca_0",
+      "complete": true,
+      "counts_preserved": true
+    },
+    {
+      "dataset": "kang",
+      "run": "pca_0_annotation",
+      "complete": true,
+      "counts_preserved": true
+    },
+    {
+      "dataset": "kang",
+      "run": "scvi_0",
+      "complete": true,
+      "counts_preserved": true
+    },
+    {
+      "dataset": "kang",
+      "run": "scvi_0_annotation",
+      "complete": true,
+      "counts_preserved": true
+    },
+    {
+      "dataset": "kang",
+      "run": "scvi_1",
+      "complete": true,
+      "counts_preserved": true
+    },
+    {
+      "dataset": "kang",
+      "run": "scvi_1_annotation",
+      "complete": true,
+      "counts_preserved": true
+    },
+    {
+      "dataset": "kang",
+      "run": "scvi_2",
+      "complete": true,
+      "counts_preserved": true
+    },
+    {
+      "dataset": "kang",
+      "run": "scvi_2_annotation",
+      "complete": true,
+      "counts_preserved": true
+    },
+    {
+      "dataset": "haber",
+      "run": "pca_0",
+      "complete": true,
+      "counts_preserved": true
+    },
+    {
+      "dataset": "haber",
+      "run": "pca_0_annotation",
+      "complete": true,
+      "counts_preserved": true
+    },
+    {
+      "dataset": "haber",
+      "run": "scvi_0",
+      "complete": true,
+      "counts_preserved": true
+    },
+    {
+      "dataset": "haber",
+      "run": "scvi_0_annotation",
+      "complete": true,
+      "counts_preserved": true
+    },
+    {
+      "dataset": "haber",
+      "run": "scvi_1",
+      "complete": true,
+      "counts_preserved": true
+    },
+    {
+      "dataset": "haber",
+      "run": "scvi_1_annotation",
+      "complete": true,
+      "counts_preserved": true
+    },
+    {
+      "dataset": "haber",
+      "run": "scvi_2",
+      "complete": true,
+      "counts_preserved": true
+    },
+    {
+      "dataset": "haber",
+      "run": "scvi_2_annotation",
+      "complete": true,
+      "counts_preserved": true
+    },
+    {
+      "dataset": "paul",
+      "run": "pca_0",
+      "complete": true,
+      "counts_preserved": true
+    },
+    {
+      "dataset": "paul",
+      "run": "pca_0_annotation",
+      "complete": true,
+      "counts_preserved": true
+    },
+    {
+      "dataset": "paul",
+      "run": "scvi_0",
+      "complete": true,
+      "counts_preserved": true
+    },
+    {
+      "dataset": "paul",
+      "run": "scvi_0_annotation",
+      "complete": true,
+      "counts_preserved": true
+    },
+    {
+      "dataset": "paul",
+      "run": "scvi_1",
+      "complete": true,
+      "counts_preserved": true
+    },
+    {
+      "dataset": "paul",
+      "run": "scvi_1_annotation",
+      "complete": true,
+      "counts_preserved": true
+    },
+    {
+      "dataset": "paul",
+      "run": "scvi_2",
+      "complete": true,
+      "counts_preserved": true
+    },
+    {
+      "dataset": "paul",
+      "run": "scvi_2_annotation",
+      "complete": true,
+      "counts_preserved": true
+    },
+    {
+      "dataset": "zeisel",
+      "run": "pca_0",
+      "complete": true,
+      "counts_preserved": true
+    },
+    {
+      "dataset": "zeisel",
+      "run": "pca_0_annotation",
+      "complete": true,
+      "counts_preserved": true
+    },
+    {
+      "dataset": "zeisel",
+      "run": "scvi_0",
+      "complete": true,
+      "counts_preserved": true
+    },
+    {
+      "dataset": "zeisel",
+      "run": "scvi_0_annotation",
+      "complete": true,
+      "counts_preserved": true
+    },
+    {
+      "dataset": "zeisel",
+      "run": "scvi_1",
+      "complete": true,
+      "counts_preserved": true
+    },
+    {
+      "dataset": "zeisel",
+      "run": "scvi_1_annotation",
+      "complete": true,
+      "counts_preserved": true
+    },
+    {
+      "dataset": "zeisel",
+      "run": "scvi_2",
+      "complete": true,
+      "counts_preserved": true
+    },
+    {
+      "dataset": "zeisel",
+      "run": "scvi_2_annotation",
+      "complete": true,
+      "counts_preserved": true
+    },
+    {
+      "dataset": "baron",
+      "run": "pca_0",
+      "complete": true,
+      "counts_preserved": true
+    },
+    {
+      "dataset": "baron",
+      "run": "pca_0_annotation",
+      "complete": true,
+      "counts_preserved": true
+    },
+    {
+      "dataset": "baron",
+      "run": "scvi_0",
+      "complete": true,
+      "counts_preserved": true
+    },
+    {
+      "dataset": "baron",
+      "run": "scvi_0_annotation",
+      "complete": true,
+      "counts_preserved": true
+    },
+    {
+      "dataset": "baron",
+      "run": "scvi_1",
+      "complete": true,
+      "counts_preserved": true
+    },
+    {
+      "dataset": "baron",
+      "run": "scvi_1_annotation",
+      "complete": true,
+      "counts_preserved": true
+    },
+    {
+      "dataset": "baron",
+      "run": "scvi_2",
+      "complete": true,
+      "counts_preserved": true
+    },
+    {
+      "dataset": "baron",
+      "run": "scvi_2_annotation",
+      "complete": true,
+      "counts_preserved": true
+    }
+  ]
+}

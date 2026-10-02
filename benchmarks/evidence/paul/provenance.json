@@ -1,0 +1,15 @@
+{
+  "dataset": "paul",
+  "cells": 2730,
+  "backend": "scvi",
+  "seed": 0,
+  "embedding_origin": "frozen baseline-1; unchanged coordinates",
+  "annotation_origin": "marker proposals; HPA-guided evidence added, human review pending",
+  "hpa_exact_replication": false,
+  "human_review_complete": false,
+  "input_sha256": "ec4a980e0794e5a86d71c38327a836ca360daaeff11302b3872335c6a7d778ed",
+  "panel_sha256": "a2c63689d6464612a7d33b58b11164c770a29bdf96c1edc68184421a90b55bd7",
+  "reference_labels_sha256": "4ae03b38de8467599c8d5f5e6ff8f234758f298cb56d459ce5595af2978945d2",
+  "reference_labels_used_for_proposals": false,
+  "species_scope": "mouse adaptation; not HPA reference annotation"
+}

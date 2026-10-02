@@ -1,0 +1,34 @@
+{
+  "baron_GSE84133_RAW.tar": {
+    "bytes": 29122560,
+    "sha256": "aed2d208d47a36658aa0e63629afe5d4144ef465a8e3d9a0f377422b1f1073dc"
+  },
+  "cortex.txt": {
+    "bytes": 121129258,
+    "sha256": "57531a8c98d0fadccf3b694ec010f9ff4ccf1214292a6bf7ca619d023be99782"
+  },
+  "downloads.json": {
+    "bytes": 1548,
+    "sha256": "ad07a6fde83b2f698f723c3613303227b58b2aff219354325fd4af56ef39fc29"
+  },
+  "haber_2017_regions.h5ad": {
+    "bytes": 35784747,
+    "sha256": "efcb49770529ec14e1ba6b45b3d0086b3829e4a63a85c02793f0d7ad90b6db21"
+  },
+  "kang_2018.h5ad": {
+    "bytes": 38356412,
+    "sha256": "e6a5adac64dcdeb36eaba27db49b63e0c64bb0ed4a64c6705971506b41c39830"
+  },
+  "paul15.h5": {
+    "bytes": 10297693,
+    "sha256": "6161984f758dd464992edc23f1a8ab89b2081600130c6aa93a1ab12b3ada5bfb"
+  },
+  "pbmc3k_raw.h5ad": {
+    "bytes": 5855727,
+    "sha256": "89a96f1beaa2dd83a687666d3f19a4513ac27a2a2d12581fcd77afed7ea653a1"
+  },
+  "pbmc3k_reference.h5ad": {
+    "bytes": 24653425,
+    "sha256": "0db367b991dd95809732b218539ede489bea99113807f62ebd7ccc970025fe38"
+  }
+}

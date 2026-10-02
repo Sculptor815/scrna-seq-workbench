@@ -1,0 +1,58 @@
+{
+  "species": "mouse",
+  "tissue": "bone_marrow",
+  "source": "Benchmark analyst-curated broad canonical markers, frozen before scoring; study context https://doi.org/10.1016/j.cell.2015.11.013. Not claimed an author-supplied reference; rare/state-specific markers need expert validation.",
+  "markers": {
+    "Ery": [
+      "Hba-a1",
+      "Hba-a2",
+      "Hbb-bs",
+      "Hbb-bt",
+      "Gypa",
+      "Alas2",
+      "Klf1"
+    ],
+    "Mk": [
+      "Pf4",
+      "Ppbp",
+      "Itga2b"
+    ],
+    "Mo": [
+      "Lyz2",
+      "Csf1r",
+      "Ctss"
+    ],
+    "Neu": [
+      "S100a8",
+      "S100a9",
+      "Elane",
+      "Mpo"
+    ],
+    "Eos": [
+      "Epx",
+      "Prg2",
+      "Ccr3"
+    ],
+    "Baso": [
+      "Mcpt8",
+      "Ms4a2",
+      "Hdc"
+    ],
+    "DC": [
+      "Flt3",
+      "Cd74",
+      "H2-Ab1"
+    ],
+    "Lymph": [
+      "Cd79a",
+      "Cd79b",
+      "Cd3d",
+      "Cd3e"
+    ],
+    "Progenitor": [
+      "Gata2",
+      "Kit",
+      "Cd34"
+    ]
+  }
+}

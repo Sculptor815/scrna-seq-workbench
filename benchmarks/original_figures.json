@@ -1,0 +1,56 @@
+{
+  "checked_on": "2026-10-02",
+  "reuse": "Original images are externally linked; copyright remains with authors/publishers, not covered by the code MIT license.",
+  "studies": [
+    {
+      "dataset": "kang",
+      "citation": "Kang et al. 2018",
+      "doi": "10.1038/nbt.4042",
+      "page": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5784859/figure/F3/",
+      "image": "https://cdn.ncbi.nlm.nih.gov/pmc/blobs/85ef/5784859/45d5c071fa72/nihms921103f3.jpg",
+      "representation": "Figure 3a: t-SNE; PBMC conditions and estimated types",
+      "status": "verified external image",
+      "caveat": "The public processed copy has 24,673 cells; the paper singlet counts total 24,305. Cell-version equivalence is unresolved."
+    },
+    {
+      "dataset": "haber",
+      "citation": "Haber et al. 2017",
+      "doi": "10.1038/nature24489",
+      "page": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6022292/figure/F1/",
+      "image": "https://cdn.ncbi.nlm.nih.gov/pmc/blobs/0fcf/6022292/9681315d11de/nihms910777f1.jpg",
+      "representation": "Figure 1b: t-SNE of 7,216 epithelial cells",
+      "status": "verified external image",
+      "caveat": "The benchmark uses the 9,842-cell regions copy. The paper panel is contextual and is not the same selected cells."
+    },
+    {
+      "dataset": "paul",
+      "citation": "Paul et al. 2015",
+      "doi": "10.1016/j.cell.2015.11.013",
+      "page": "https://doi.org/10.1016/j.cell.2015.11.013",
+      "image": null,
+      "representation": "Original figure unavailable for verification in this release",
+      "status": "publisher figure access blocked; link only",
+      "caveat": "Publisher and image service returned HTTP 403. No original UMAP or figure is fabricated. Author-derived labels are compared below."
+    },
+    {
+      "dataset": "zeisel",
+      "citation": "Zeisel et al. 2015",
+      "doi": "10.1126/science.aaa1934",
+      "page": "https://linnarssonlab.org/cortex/",
+      "image": null,
+      "representation": "Author site provides a BackSPIN expression heatmap, not an original UMAP",
+      "status": "author heatmap link verified; asset fetch blocked",
+      "caveat": "The author heatmap asset returned HTTP 403. Seven major classes and finer author cluster labels are different annotation levels."
+    },
+    {
+      "dataset": "baron",
+      "citation": "Baron et al. 2016",
+      "doi": "10.1016/j.cels.2016.08.011",
+      "page": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5228327/figure/F1/",
+      "image": "https://cdn.ncbi.nlm.nih.gov/pmc/blobs/0c94/5228327/71bab733eb4a/nihms832023f1.jpg",
+      "representation": "Figure 1d: human donor 1 t-SNE; other panels show heatmaps and mouse data",
+      "status": "verified external image",
+      "caveat": "The benchmark combines four human donor files (8,569 cells before added QC); this is not the donor-1 paper panel. Paper count differences remain unresolved."
+    }
+  ]
+}

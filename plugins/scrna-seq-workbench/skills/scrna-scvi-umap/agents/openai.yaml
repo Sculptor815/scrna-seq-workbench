@@ -1,0 +1,4 @@
+interface:
+  display_name: "scVI, PCA and UMAP"
+  short_description: "Evidence-linked scRNA-seq workflow for integrate"
+  default_prompt: "Use $scrna-scvi-umap to guide this analysis and explain the results."

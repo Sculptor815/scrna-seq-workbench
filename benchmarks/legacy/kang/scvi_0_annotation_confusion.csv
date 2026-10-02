@@ -1,0 +1,7 @@
+reference,B cells,NK cells,T cells,Unknown,dendritic cells,monocytes,platelets
+B cells,679,0,3,4,0,3,0
+NK cells,1,413,0,0,0,1,0
+T cells,5,514,2344,222,0,4,38
+dendritic cells,0,0,0,30,63,44,0
+monocytes,0,0,0,0,1,1621,1
+platelets,0,0,0,0,0,9,0

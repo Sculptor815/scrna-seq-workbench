@@ -1,0 +1,9 @@
+{
+  "tissue": "blood",
+  "source": "Example only: verify names and tissue suitability against your pinned HPA release",
+  "cell_types": [
+    "t-cells",
+    "b-cells",
+    "nk-cells"
+  ]
+}

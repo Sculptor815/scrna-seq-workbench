@@ -1,0 +1,41 @@
+{
+  "species": "mouse",
+  "tissue": "intestine",
+  "source": "Benchmark analyst-curated broad canonical markers, frozen before scoring; study context https://doi.org/10.1038/nature24489. Not claimed an author-supplied reference; rare/state-specific markers need expert validation.",
+  "markers": {
+    "Stem": [
+      "Lgr5",
+      "Olfm4",
+      "Ascl2",
+      "Smoc2"
+    ],
+    "Progenitor": [
+      "Mki67",
+      "Top2a",
+      "Pcna",
+      "Mcm5"
+    ],
+    "Enterocyte": [
+      "Alpi",
+      "Fabp1",
+      "Fabp2",
+      "Apoa4"
+    ],
+    "Goblet": [
+      "Muc2",
+      "Clca1",
+      "Spdef",
+      "Agr2"
+    ],
+    "Tuft": [
+      "Dclk1",
+      "Pou2f3",
+      "Trpm5"
+    ],
+    "Endocrine": [
+      "Chga",
+      "Chgb",
+      "Neurod1"
+    ]
+  }
+}

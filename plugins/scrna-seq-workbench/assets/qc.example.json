@@ -1,0 +1,13 @@
+{
+  "defaults": {
+    "min_genes": 200,
+    "max_genes": null,
+    "min_counts": 1,
+    "max_counts": null,
+    "max_counts_quantile": null,
+    "max_pct_mt": null,
+    "max_pct_hb": null
+  },
+  "per_sample": {},
+  "min_cells_per_gene": 3
+}

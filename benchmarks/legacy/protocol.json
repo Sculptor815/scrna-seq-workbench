@@ -1,0 +1,28 @@
+{
+  "version": "baseline-1",
+  "qc": "shipped qc.example.json, not claimed paper reproduction",
+  "cell_cap": 6000,
+  "sampling_seed": 42,
+  "hvg": 2000,
+  "latent": 10,
+  "neighbors": 15,
+  "resolution": 1,
+  "scvi_seeds": [
+    0,
+    1,
+    2
+  ],
+  "max_epochs": 100,
+  "pca_seeds": [
+    0
+  ],
+  "batch_key": null,
+  "batch_reason": "No forced correction of donor/condition/tissue-confounded fields; batch removal is not evaluated.",
+  "annotation": "Frozen marker panels, unchanged default heuristic thresholds; no reviewed labels",
+  "scoring": "Original fine labels for clustering; explicit broad mappings for annotation. Unknown counts as incorrect. Reference labels are silver standard, not ground truth.",
+  "limits": [
+    "Released matrices are already filtered; upstream QC sensitivity/specificity cannot be measured.",
+    "6000-cell label-blind cap limits rare-cell conclusions.",
+    "Tests bundled computational workflow, not independent agent/host orchestration."
+  ]
+}

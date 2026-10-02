@@ -1,0 +1,32 @@
+[
+  {
+    "file": "kang_2018.h5ad",
+    "url": "https://exampledata.scverse.org/pertpy/kang_2018.h5ad",
+    "sha256": "e6a5adac64dcdeb36eaba27db49b63e0c64bb0ed4a64c6705971506b41c39830",
+    "bytes": 38356412
+  },
+  {
+    "file": "haber_2017_regions.h5ad",
+    "url": "https://exampledata.scverse.org/pertpy/haber_2017_regions.h5ad",
+    "sha256": "efcb49770529ec14e1ba6b45b3d0086b3829e4a63a85c02793f0d7ad90b6db21",
+    "bytes": 35784747
+  },
+  {
+    "file": "paul15.h5",
+    "url": "https://exampledata.scverse.org/scanpy/paul15.h5",
+    "sha256": "6161984f758dd464992edc23f1a8ab89b2081600130c6aa93a1ab12b3ada5bfb",
+    "bytes": 10297693
+  },
+  {
+    "file": "cortex.txt",
+    "url": "https://exampledata.scverse.org/scvi-tools/expression_mRNA_17-Aug-2014.txt",
+    "sha256": "57531a8c98d0fadccf3b694ec010f9ff4ccf1214292a6bf7ca619d023be99782",
+    "bytes": 121129258
+  },
+  {
+    "file": "baron_GSE84133_RAW.tar",
+    "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE84nnn/GSE84133/suppl/GSE84133_RAW.tar",
+    "sha256": "aed2d208d47a36658aa0e63629afe5d4144ef465a8e3d9a0f377422b1f1073dc",
+    "bytes": 29122560
+  }
+]

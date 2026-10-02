@@ -1,0 +1,25 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "scrna-seq-workbench",
+  "version": "0.2.0",
+  "description": "Five scRNA-seq workflows: sequencing report review, cell QC, scVI/UMAP, reviewed annotation and donor-level condition DE.",
+  "author": {
+    "name": "scRNA-seq Workbench contributors"
+  },
+  "license": "MIT",
+  "keywords": [
+    "scrna-seq",
+    "bioinformatics",
+    "agent-skills"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "scRNA-seq Workbench",
+        "shortDescription": "Five guided single-cell RNA analysis workflows"
+      }
+    }
+  },
+  "repository": "https://github.com/Sculptor815/scrna-seq-workbench",
+  "homepage": "https://github.com/Sculptor815/scrna-seq-workbench"
+}

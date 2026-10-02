@@ -1,0 +1,4 @@
+interface:
+  display_name: "Sequencing delivery report review"
+  short_description: "Evidence-linked scRNA-seq workflow for report"
+  default_prompt: "Use $sequencing-report-review to guide this analysis and explain the results."

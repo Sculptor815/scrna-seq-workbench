@@ -1,0 +1,6 @@
+dataset,cells_in,cells_out,genes_in,genes_out,mt_genes_matched,removed_cells
+kang,24673,24562,15706,15701,0,111
+haber,9842,9842,15215,14600,0,0
+paul,2730,2730,8716,8716,0,0
+zeisel,3005,3005,19972,18879,0,0
+baron,8569,8569,20125,16359,0,0

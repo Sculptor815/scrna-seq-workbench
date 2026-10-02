@@ -1,0 +1,16 @@
+cluster,cell_type_proposal,best_candidate,score,runner_up,margin,reason,review_status,n_cells
+0,Progenitor,Progenitor,0.5629011988639832,Mk,0.7461833655834198,marker_supported_proposal,pending,227
+1,Mo,Mo,1.5761289596557617,Neu,1.1519698798656464,marker_supported_proposal,pending,347
+10,Unknown,Ery,0.3121303915977478,Progenitor,0.05728474259376526,weak_score_or_small_margin,pending,215
+11,Mk,Mk,3.3260297775268555,Progenitor,2.94331693649292,marker_supported_proposal,pending,101
+12,Unknown,Mo,0.09746429324150085,DC,0.22270672023296356,weak_score_or_small_margin,pending,33
+13,Neu,Neu,1.545295000076294,Baso,0.73928302526474,marker_supported_proposal,pending,127
+14,DC,DC,3.0307178497314453,Mo,1.6191290616989136,marker_supported_proposal,pending,29
+2,Neu,Neu,2.361705780029297,Baso,1.3515615463256836,marker_supported_proposal,pending,203
+3,Mo,Mo,1.2079973220825195,Neu,0.6558807492256165,marker_supported_proposal,pending,203
+4,Ery,Ery,1.006093978881836,Progenitor,0.7383106052875519,marker_supported_proposal,pending,243
+5,Unknown,Progenitor,0.3484680652618408,Ery,0.12093943357467651,weak_score_or_small_margin,pending,216
+6,Ery,Ery,1.8679780960083008,Eos,1.9936217367649078,marker_supported_proposal,pending,195
+7,Eos,Eos,3.5849575996398926,Baso,0.7684512138366699,marker_supported_proposal,pending,103
+8,DC,DC,0.7620539665222168,Progenitor,0.27734172344207764,marker_supported_proposal,pending,318
+9,Ery,Ery,2.1439788341522217,Eos,2.45003205537796,marker_supported_proposal,pending,170

@@ -1,0 +1,15 @@
+{
+  "dataset": "kang",
+  "cells": 6000,
+  "backend": "scvi",
+  "seed": 0,
+  "embedding_origin": "frozen baseline-1; unchanged coordinates",
+  "annotation_origin": "marker proposals; HPA-guided evidence added, human review pending",
+  "hpa_exact_replication": false,
+  "human_review_complete": false,
+  "input_sha256": "47a2bf3d192cd9e17362c0b9a650352328ee7c7892935313c30768b5d81b7731",
+  "panel_sha256": "9254685f285eda0a7f7d881aba37dbdf77d5c04227c2b1647dc381abc0032ec5",
+  "reference_labels_sha256": "d063b80751edd2f27685bbeaf6fc6f64498835c0178d3c56ff403245582ddee1",
+  "reference_labels_used_for_proposals": false,
+  "species_scope": "human HPA-inspired procedure"
+}

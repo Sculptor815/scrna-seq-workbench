@@ -1,0 +1,37 @@
+{
+  "species": "mouse",
+  "tissue": "brain",
+  "source": "Benchmark analyst-curated broad canonical markers, frozen before scoring; study context https://doi.org/10.1126/science.aaa1934. Not claimed an author-supplied reference; rare/state-specific markers need expert validation.",
+  "markers": {
+    "interneurons": [
+      "Gad1",
+      "Gad2",
+      "Slc6a1"
+    ],
+    "pyramidal": [
+      "Slc17a7",
+      "Camk2a",
+      "Neurod6"
+    ],
+    "oligodendrocytes": [
+      "Mbp",
+      "Plp1",
+      "Mog"
+    ],
+    "astrocytes_ependymal": [
+      "Aldh1l1",
+      "Aqp4",
+      "Slc1a3"
+    ],
+    "microglia": [
+      "C1qa",
+      "C1qb",
+      "Tyrobp"
+    ],
+    "endothelial-mural": [
+      "Kdr",
+      "Pecam1",
+      "Cldn5"
+    ]
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "dataset": "zeisel",
+  "cells": 3005,
+  "backend": "scvi",
+  "seed": 0,
+  "embedding_origin": "frozen baseline-1; unchanged coordinates",
+  "annotation_origin": "marker proposals; HPA-guided evidence added, human review pending",
+  "hpa_exact_replication": false,
+  "human_review_complete": false,
+  "input_sha256": "8bfbbddeb7c1a88905b46d3f935c9bb9bfa2fb87448fa423269fb93bb121ef35",
+  "panel_sha256": "9eccb5693ec5bba1053011bff9b83b8e08ff3ed2eb01716e5914fccb0c49958b",
+  "reference_labels_sha256": "032f1ad0ae686128c6addc53bbc2a0a60d9c606495a3722a865db07c9b2f606f",
+  "reference_labels_used_for_proposals": false,
+  "species_scope": "mouse adaptation; not HPA reference annotation"
+}

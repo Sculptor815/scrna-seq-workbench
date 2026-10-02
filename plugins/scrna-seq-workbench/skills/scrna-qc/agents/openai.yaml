@@ -1,0 +1,4 @@
+interface:
+  display_name: "Cell-level quality control"
+  short_description: "Evidence-linked scRNA-seq workflow for qc"
+  default_prompt: "Use $scrna-qc to guide this analysis and explain the results."

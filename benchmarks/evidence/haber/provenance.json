@@ -1,0 +1,15 @@
+{
+  "dataset": "haber",
+  "cells": 6000,
+  "backend": "scvi",
+  "seed": 0,
+  "embedding_origin": "frozen baseline-1; unchanged coordinates",
+  "annotation_origin": "marker proposals; HPA-guided evidence added, human review pending",
+  "hpa_exact_replication": false,
+  "human_review_complete": false,
+  "input_sha256": "4ee462a136f67e6aabc3313b5ea037c8a34e85b9c58e8941e040a7689b827131",
+  "panel_sha256": "377b3a6e7a5adc512a10d5a6485c31167c5f1d65bd18da9c17c1f352742f9a1a",
+  "reference_labels_sha256": "0a173287cb4004c626072d7290e0c8975c5b65c18c8dd847e512a9bac7d3498e",
+  "reference_labels_used_for_proposals": false,
+  "species_scope": "mouse adaptation; not HPA reference annotation"
+}

@@ -1,0 +1,182 @@
+[
+  {
+    "dataset": "kang",
+    "cells": 24673,
+    "genes": 15706,
+    "fine_labels": {
+      "CD4 T cells": 11238,
+      "CD14+ Monocytes": 5697,
+      "B cells": 2651,
+      "NK cells": 1716,
+      "CD8 T cells": 1621,
+      "FCGR3A+ Monocytes": 1089,
+      "Dendritic cells": 529,
+      "Megakaryocytes": 132
+    },
+    "broad_labels": {
+      "T cells": 12859,
+      "monocytes": 6786,
+      "B cells": 2651,
+      "NK cells": 1716,
+      "dendritic cells": 529,
+      "platelets": 132
+    },
+    "metadata_counts": {
+      "sample_id": 16,
+      "donor_id": 8,
+      "condition": 2
+    },
+    "notes": [
+      "Pertpy distributed processed count matrix; author/reference cell types kept separate.",
+      "Fine CD4/CD8 and monocyte subtypes merged only for broad annotation scoring."
+    ]
+  },
+  {
+    "dataset": "haber",
+    "cells": 9842,
+    "genes": 15215,
+    "fine_labels": {
+      "TA.Early": 1970,
+      "Stem": 1857,
+      "Enterocyte.Progenitor": 1822,
+      "Enterocyte": 1458,
+      "TA": 1188,
+      "Goblet": 758,
+      "Tuft": 409,
+      "Endocrine": 380
+    },
+    "broad_labels": {
+      "Progenitor": 4980,
+      "Stem": 1857,
+      "Enterocyte": 1458,
+      "Goblet": 758,
+      "Tuft": 409,
+      "Endocrine": 380
+    },
+    "metadata_counts": {
+      "sample_id": 10,
+      "condition": 4
+    },
+    "notes": [
+      "Three progenitor states combined only for broad annotation scoring; eight fine labels retained for ARI.",
+      "Original IDs contain cell labels; replaced with neutral IDs before analysis."
+    ]
+  },
+  {
+    "dataset": "paul",
+    "cells": 2730,
+    "genes": 8716,
+    "fine_labels": {
+      "14Mo": 373,
+      "2Ery": 329,
+      "13Baso": 300,
+      "3Ery": 246,
+      "15Mo": 186,
+      "5Ery": 180,
+      "6Ery": 173,
+      "7MEP": 167,
+      "16Neu": 164,
+      "10GMP": 153,
+      "4Ery": 124,
+      "12Baso": 69,
+      "8Mk": 68,
+      "9GMP": 63,
+      "1Ery": 43,
+      "19Lymph": 31,
+      "11DC": 30,
+      "17Neu": 22,
+      "18Eos": 9
+    },
+    "broad_labels": {
+      "Ery": 1095,
+      "Mo": 559,
+      "Progenitor": 383,
+      "Baso": 369,
+      "Neu": 186,
+      "Mk": 68,
+      "Lymph": 31,
+      "DC": 30,
+      "Eos": 9
+    },
+    "metadata_counts": {
+      "sample_id": 16
+    },
+    "notes": [
+      "Uses data raw counts, NOT data.debatched or informative-gene subset.",
+      "Author numbered clusters mapped following Scanpy paul15 label metadata. Semicolon alias mapping recorded."
+    ]
+  },
+  {
+    "dataset": "zeisel",
+    "cells": 3005,
+    "genes": 19972,
+    "fine_labels": {
+      "pyramidal CA1": 939,
+      "oligodendrocytes": 820,
+      "pyramidal SS": 399,
+      "interneurons": 290,
+      "endothelial-mural": 235,
+      "astrocytes_ependymal": 224,
+      "microglia": 98
+    },
+    "broad_labels": {
+      "pyramidal": 1338,
+      "oligodendrocytes": 820,
+      "interneurons": 290,
+      "endothelial-mural": 235,
+      "astrocytes_ependymal": 224,
+      "microglia": 98
+    },
+    "metadata_counts": {
+      "sample_id": 2
+    },
+    "notes": [
+      "Sample field is tissue region, not biological donor. No donor inference from barcode.",
+      "CA1 and somatosensory pyramidal groups merged only for annotation scoring; original seven major classes retained."
+    ]
+  },
+  {
+    "dataset": "baron",
+    "cells": 8569,
+    "genes": 20125,
+    "fine_labels": {
+      "beta": 2525,
+      "alpha": 2326,
+      "ductal": 1077,
+      "acinar": 958,
+      "delta": 601,
+      "activated_stellate": 284,
+      "gamma": 255,
+      "endothelial": 252,
+      "quiescent_stellate": 173,
+      "macrophage": 55,
+      "mast": 25,
+      "epsilon": 18,
+      "schwann": 13,
+      "t_cell": 7
+    },
+    "broad_labels": {
+      "beta": 2525,
+      "alpha": 2326,
+      "ductal": 1077,
+      "acinar": 958,
+      "delta": 601,
+      "stellate": 457,
+      "gamma": 255,
+      "endothelial": 252,
+      "macrophage": 55,
+      "mast": 25,
+      "epsilon": 18,
+      "schwann": 13,
+      "t_cell": 7
+    },
+    "metadata_counts": {
+      "sample_id": 4,
+      "donor_id": 4
+    },
+    "notes": [
+      "Four human donor count files directly from GEO; mouse files excluded.",
+      "Activated/quiescent stellate labels merged only for annotation scoring."
+    ]
+  }
+]

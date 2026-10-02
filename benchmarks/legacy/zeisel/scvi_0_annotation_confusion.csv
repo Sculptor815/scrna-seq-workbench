@@ -1,0 +1,7 @@
+reference,Unknown,astrocytes_ependymal,endothelial-mural,interneurons,microglia,oligodendrocytes,pyramidal
+astrocytes_ependymal,25,174,18,4,3,0,0
+endothelial-mural,45,1,184,3,2,0,0
+interneurons,0,3,0,282,1,2,2
+microglia,1,0,0,0,97,0,0
+oligodendrocytes,196,1,8,2,51,560,2
+pyramidal,24,89,66,12,28,77,1042

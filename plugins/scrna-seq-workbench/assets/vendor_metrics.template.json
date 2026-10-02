@@ -1,0 +1,32 @@
+{
+  "sample_id": "sample_A",
+  "platform": "MGI DNBelab (confirm assay)",
+  "report_version": "confirm_from_report",
+  "species": "human",
+  "metrics": {
+    "estimated_cells": {
+      "value": null,
+      "unit": "cells",
+      "evidence": "",
+      "verified": false
+    },
+    "median_umi_per_cell": {
+      "value": null,
+      "unit": "UMI/cell",
+      "evidence": "",
+      "verified": false
+    },
+    "median_genes_per_cell": {
+      "value": null,
+      "unit": "genes/cell",
+      "evidence": "",
+      "verified": false
+    },
+    "mean_reads_per_cell": {
+      "value": null,
+      "unit": "reads/cell",
+      "evidence": "",
+      "verified": false
+    }
+  }
+}
