@@ -1,5 +1,12 @@
 # scRNA-seq Workbench
 
+> **Developer benchmark branch.** For installing the analysis plugin, use
+> [main](https://github.com/Sculptor815/scrna-seq-workbench/tree/main).
+> This branch adds the [research evaluation protocol and calculator](benchmarks/research/README.md).
+> Run analyses first; score their saved outputs separately. No official research
+> scores are available yet.
+
+
 Investigate biological questions with public or user-provided single-cell RNA-seq
 data. This analysis plugin works with **Codex**, **Claude Code** and **DeepSeek Harness**.
 Version **0.3.0 - research preview**.

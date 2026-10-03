@@ -1,0 +1,10 @@
+{
+  "checked_on": "2026-10-03",
+  "analysis_commit": "2e18aff123dac1d83b732b5b6d089c44ab199557",
+  "developer_unit_tests": 5,
+  "status": "passed",
+  "cli_synthetic_smoke": "passed",
+  "expert_scored_sessions": 0,
+  "locked_study_cases": 0,
+  "scope": "Software and scoring arithmetic only; not scientific validity."
+}

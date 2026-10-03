@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0",
+  "case_id": "",
+  "run_id": "",
+  "review_status": "pending",
+  "completion": "incomplete",
+  "review_record_paths": [],
+  "critical_errors": [],
+  "dimensions": {
+    "data_suitability": {"score": null, "rationale": "", "evidence": []},
+    "analysis_relevance": {"score": null, "rationale": "", "evidence": []},
+    "evidence_reasoning": {"score": null, "rationale": "", "evidence": []},
+    "user_usefulness": {"score": null, "rationale": "", "evidence": []},
+    "interaction_efficiency": {"score": null, "rationale": "", "evidence": []}
+  },
+  "experience": {
+    "time_to_first_useful_result_seconds": null,
+    "wall_seconds": null,
+    "cost_usd": null,
+    "user_interventions": null
+  }
+}
