@@ -10,7 +10,7 @@ running the analysis and reviewing the results with you.
 
 ## Get started
 
-1. Follow the [installation tutorial](docs/INSTALLATION.md): Windows/D: and Linux/macOS instructions, Python dependencies and common errors.
+1. Follow the [installation tutorial](docs/INSTALLATION.md): Windows and Linux/macOS instructions, Python dependencies and common errors.
 2. Enable the plugin in [your assistant](docs/HOSTS.md).
 3. Run the [400-cell example](docs/QUICKSTART.md) to check your setup.
 4. Follow [Analyze your own data](docs/USAGE.md) for file preparation, parameter choices and the five analysis stages.
