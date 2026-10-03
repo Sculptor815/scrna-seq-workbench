@@ -2,14 +2,15 @@
 
 Read for a new project or entry into an intermediate stage. Reuse existing answers;
 collect only information needed for the requested scope. This is a conversational
-workflow, not a sixth Skill or a new CLI parser.
+workflow shared by the research entry point and individual analysis Skills.
 
 ## Ask about facts before technical numbers
 
 Read the supplied files first. Distinguish user statements, verified file evidence
 and unknown facts. Group missing information into a short first exchange:
 
-- Goal: delivery review, QC, broad/fine annotation, a condition contrast, or paper reproduction.
+- Goal: the biological question, hypothesis and decision the result should inform. Technical-only tasks can start directly at the relevant stage.
+- Data availability: user files or public-study discovery. Missing matrices do not block study selection.
 - Sample: species, tissue, cells/nuclei, platform/chemistry and enrichment/sorting.
 - Files: raw UMI matrix/format/layer, report if available, metadata and prior filtering,
   normalization or doublet removal. Integer-looking values do not prove provenance.

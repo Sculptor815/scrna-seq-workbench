@@ -8,7 +8,7 @@ folders or a separate study directory.
 ## Layout
 
 ```text
-plugins/scrna-seq-workbench/  five canonical Skills and Python runner
+plugins/scrna-seq-workbench/  six canonical Skills and Python runner
 .agents/plugins/            Codex marketplace
 .claude-plugin/             Claude Code marketplace
 .dsh/skills/                generated Harness project entries
@@ -52,14 +52,14 @@ and HTML image links, including the comparison tables.
 Build both archive formats in a local work directory:
 
 ```text
-python scripts/build_release.py --format repository --output work/scrna-seq-workbench-v0.2.1-repository.zip
-python scripts/build_release.py --format plugin --output work/scrna-seq-workbench-v0.2.1-plugin.zip
+python scripts/build_release.py --format repository --output work/scrna-seq-workbench-v0.3.0-repository.zip
+python scripts/build_release.py --format plugin --output work/scrna-seq-workbench-v0.3.0-plugin.zip
 ```
 
 | Archive | Contents | Use |
 |---|---|---|
 | Repository | Tutorials, tests, benchmark records and source ZIP, both catalogs and Harness entries | Source distribution and development |
-| Plugin | One plugin root with five Skills, scripts, references and requirements | Host plugin installation |
+| Plugin | One plugin root with six Skills, scripts, references and requirements | Host plugin installation |
 
 The builder runs package and benchmark verification first, checks archived
 versions and writes an adjacent `.zip.sha256`. Existing archives are refused.
@@ -79,3 +79,12 @@ validated version and attach the two newly built archives and their checksum
 files. Describe the plugin archive and full repository archive separately.
 An old ZIP with a different version is not a substitute for either artifact.
 Public plugin-directory submission is also separate from a GitHub push.
+
+## Branch roles
+
+`main` publishes the analysis plugin. `benchmark` adds developer research evaluation
+and review records/templates. Merge analysis updates from main into benchmark;
+keep evaluation-specific commits off main. The scoring runner is not registered
+as a Skill or an analysis command. Historical frozen benchmark records remain on
+main for release provenance and regression verification; they are not an active
+user-facing scoring module.

@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "scrna-seq-workbench",
-  "version": "0.2.1",
-  "description": "Five scRNA-seq workflows: sequencing report review, cell QC, scVI/UMAP, reviewed annotation and donor-level condition DE.",
+  "version": "0.3.0",
+  "description": "Investigate biological questions with relevant scRNA-seq studies, focused analysis and traceable evidence.",
   "author": {
     "name": "scRNA-seq Workbench contributors"
   },
@@ -16,7 +16,7 @@
     "com.openai": {
       "interface": {
         "displayName": "scRNA-seq Workbench",
-        "shortDescription": "Five guided single-cell RNA analysis workflows"
+        "shortDescription": "Biological questions to single-cell evidence"
       }
     }
   },

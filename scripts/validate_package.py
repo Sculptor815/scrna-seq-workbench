@@ -28,8 +28,8 @@ for path in (root/'.agents/plugins/marketplace.json',root/'.claude-plugin/market
         if 'version' in item:
             assert item['version']==data[0]['version']
 skills=list((plugin/'skills').glob('*/SKILL.md'))
-assert len(skills)==5
-assert synchronize(check=True)==5
+assert len(skills)==6
+assert synchronize(check=True)==6
 for skill in skills + list((root/'.dsh/skills').glob('*/SKILL.md')):
     text=skill.read_text(encoding='utf-8')
     assert text.startswith('---\n')
@@ -61,4 +61,4 @@ for p in root.rglob('*.md'):
             continue
         dest=(p.parent/target.split('#',1)[0]).resolve()
         assert dest.is_relative_to(root.resolve()) and dest.exists(),(p,target)
-print(f'PASS: matching manifests, two marketplaces, five canonical skills, five Harness adapters, {checked} English Markdown files, links and Python syntax')
+print(f'PASS: matching manifests, two marketplaces, six canonical skills, six Harness adapters, {checked} English Markdown files, links and Python syntax')

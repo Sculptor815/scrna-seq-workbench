@@ -1,8 +1,11 @@
 # Validation and known limitations
 
-Version 0.2.1 adds benchmark verification, protected reproduction outputs and
-installation/usage tutorials. The previous v0.2.0 release added HPA-guided evidence
-and review forms. Historical scores are preserved and manual review is pending.
+Version 0.3.0 adds a biological-question entry point and a focused donor-expression
+command. The main branch contains the analysis plugin; the benchmark branch adds
+developer scoring. New synthetic tests check equal donor weighting, count preservation,
+missing groups, paired observations, output provenance and the absence of a scoring
+command from the analysis runner. Historical scores are preserved and human HPA
+review is pending. No real-data research improvement is claimed from these checks.
 Local checks are recorded in [validation.json](../validation.json); each pushed
 commit has its own [Actions results](https://github.com/Sculptor815/scrna-seq-workbench/actions).
 

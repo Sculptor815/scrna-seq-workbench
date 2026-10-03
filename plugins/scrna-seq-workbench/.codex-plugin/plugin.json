@@ -1,7 +1,7 @@
 {
   "name": "scrna-seq-workbench",
-  "version": "0.2.1",
-  "description": "Five scRNA-seq workflows: sequencing report review, cell QC, scVI/UMAP, reviewed annotation and donor-level condition DE.",
+  "version": "0.3.0",
+  "description": "Investigate biological questions with relevant scRNA-seq studies, focused analysis and traceable evidence.",
   "author": {
     "name": "scRNA-seq Workbench contributors"
   },
@@ -14,7 +14,7 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "scRNA-seq Workbench",
-    "shortDescription": "Five linked workflows for single-cell RNA analysis"
+    "shortDescription": "Biological questions to single-cell evidence"
   },
   "repository": "https://github.com/Sculptor815/scrna-seq-workbench",
   "homepage": "https://github.com/Sculptor815/scrna-seq-workbench"

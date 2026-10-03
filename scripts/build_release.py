@@ -37,13 +37,15 @@ def main():
     with zipfile.ZipFile(args.output) as z:
         assert z.testzip() is None
         if args.format == 'repository':
-            assert sum('/plugins/scrna-seq-workbench/skills/' in n and n.endswith('/SKILL.md') for n in z.namelist()) == 5
-            assert sum('/.dsh/skills/' in n and n.endswith('/SKILL.md') for n in z.namelist()) == 5
+            assert sum('/plugins/scrna-seq-workbench/skills/' in n and n.endswith('/SKILL.md') for n in z.namelist()) == 6
+            assert sum('/.dsh/skills/' in n and n.endswith('/SKILL.md') for n in z.namelist()) == 6
             assert any('/.agents/plugins/marketplace.json' in n for n in z.namelist())
             assert f'{source.name}/benchmarks/frozen/plugin-v0.1.0.zip' in z.namelist()
             assert f'{source.name}/benchmarks/integrity_manifest.json' in z.namelist()
         else:
-            assert sum(n.endswith('/SKILL.md') for n in z.namelist()) == 5
+            assert sum(n.endswith('/SKILL.md') for n in z.namelist()) == 6
+            assert not any('/benchmarks/' in n for n in z.namelist()), 'Evaluation must stay outside the plugin'
+            assert not any(n.endswith('/score.py') for n in z.namelist()), 'Scoring must stay outside the plugin'
             assert f'{source.name}/plugin.json' in z.namelist()
             assert f'{source.name}/.claude-plugin/plugin.json' in z.namelist()
         prefix=f'{source.name}/' + ('plugins/scrna-seq-workbench/' if args.format == 'repository' else '')

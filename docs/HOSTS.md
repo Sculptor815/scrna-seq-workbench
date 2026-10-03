@@ -2,7 +2,7 @@
 
 First complete [Installation](INSTALLATION.md). The examples here assume you have
 cloned this repository and opened a terminal in its root directory. Each host
-uses the same five Skills and Python runner in `plugins/scrna-seq-workbench`.
+uses the same six Skills and Python runner in `plugins/scrna-seq-workbench`.
 
 ## Codex
 
@@ -59,7 +59,7 @@ See [Claude's publishing and installation instructions](https://code.claude.com/
    `.git`, `.dsh`, `plugins` and `README.md`.
 2. Enable the filesystem skill provider, skill registry/tool and file/terminal
    access in your Harness installation.
-3. Start a new session and check that the five `.dsh/skills` entries are listed.
+3. Start a new session and check that the six `.dsh/skills` entries are listed.
 4. Give Harness your Python environment path and the request below.
 
 Harness uses the generated project Skills under `.dsh/skills`; its provider
@@ -74,6 +74,12 @@ These are filesystem Skills. See the
 for the settings supported by your installed release.
 
 ## Check the connection
+
+For a biological question, start with `scrna-research` (Codex can explicitly invoke
+`$scrna-research`; Claude Code uses `/scrna-seq-workbench:scrna-research`). In Harness,
+ask it to use the `scrna-research` project Skill. Follow the prompts in
+[the research workflow](RESEARCH_WORKFLOW.md). All three use the analysis plugin
+from the main branch; the benchmark branch is for developer evaluation.
 
 Send this request after following the synthetic-data step in [Quickstart](QUICKSTART.md):
 

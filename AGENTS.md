@@ -1,6 +1,6 @@
 # Working on scRNA-seq Workbench
 
-Read README.md and docs/DEVELOPMENT.md. Keep the five canonical Skills under
+Read README.md and docs/DEVELOPMENT.md. Keep the six canonical Skills under
 plugins/scrna-seq-workbench/skills; regenerate .dsh entries with scripts/sync_adapters.py.
 Do not edit generated adapters by hand. Keep Markdown and UI metadata in English,
 but explain analyses in the user's language. Preserve original counts, provenance

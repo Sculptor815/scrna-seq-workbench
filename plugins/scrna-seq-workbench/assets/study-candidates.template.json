@@ -1,0 +1,25 @@
+{
+  "question": "",
+  "species": "",
+  "tissue_or_disease": "",
+  "comparison": "",
+  "candidates": [
+    {
+      "accession": "",
+      "paper_doi": "",
+      "source_urls": [],
+      "checked_on": null,
+      "biological_fit": "unknown",
+      "donor_design": null,
+      "counts_and_metadata_files": [],
+      "license": "unverified",
+      "estimated_download_bytes": null,
+      "notice_check": {"status": "not_checked", "sources": [], "date": null},
+      "orthogonal_evidence": [],
+      "independent_evidence": [],
+      "unresolved_questions": [],
+      "decision": "pending",
+      "reason": ""
+    }
+  ]
+}

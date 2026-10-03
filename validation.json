@@ -1,20 +1,13 @@
 {
-  "version": "0.2.1",
-  "checked_on": "2026-10-02",
+  "version": "0.3.0",
+  "checked_on": "2026-10-03",
   "platform": "Windows, restricted local execution",
   "python": "3.12.14",
   "structural_checks": {
     "status": "passed",
-    "english_markdown_files": 38,
-    "canonical_skills": 5,
-    "deepseek_project_adapters": 5,
-    "checks": [
-      "manifest and marketplace versions",
-      "README/citation/release version",
-      "Markdown and HTML local links",
-      "adapter synchronization",
-      "Python syntax"
-    ]
+    "canonical_skills": 6,
+    "deepseek_project_adapters": 6,
+    "english_markdown_files": 43
   },
   "benchmark_verification": {
     "status": "passed",
@@ -27,11 +20,12 @@
     "scope": "Original source bytes, committed artifact inventory/hashes, stage dimensions, seed-0 agreement and coverage. No training rerun."
   },
   "core_suite": {
-    "attempted": 28,
-    "passed": 22,
+    "attempted": 35,
+    "passed": 29,
     "errors": 6,
     "failures": 0,
     "skipped": 0,
+    "status": "incomplete_due_to_environment",
     "affected_tests": [
       "test_report_and_qc_cli (test_workflows.CLI.test_report_and_qc_cli)",
       "test_10x_duplicate_symbols_are_not_silently_renamed (test_workflows.Invariants.test_10x_duplicate_symbols_are_not_silently_renamed)",
@@ -40,46 +34,21 @@
       "test_metadata_alignment_rejects_missing_cells (test_workflows.Invariants.test_metadata_alignment_rejects_missing_cells)",
       "test_output_cannot_contaminate_input_directory (test_workflows.Invariants.test_output_cannot_contaminate_input_directory)"
     ],
-    "command": "python -m unittest discover -s tests -v",
-    "status": "incomplete_due_to_environment",
-    "reason": "Six existing tempfile-dependent tests encounter Windows sandbox PermissionError. All other 22 tests pass."
+    "reason": "Six unchanged tempfile-dependent tests encounter Windows sandbox PermissionError. See this commit GitHub CI for a clean runner."
   },
-  "synthetic_smoke": {
-    "kind": "synthetic execution smoke, not biological validation",
-    "backend": "pca",
-    "de_labels": "synthetic truth; not model predictions",
-    "stages": {
-      "01-report": "complete",
-      "02-qc": "complete",
-      "03-integrate": "complete",
-      "04-proposals": "complete",
-      "04-reviewed": "complete",
-      "05-de": "complete"
-    },
+  "research_tests": {
     "status": "passed",
-    "cells": 400,
-    "genes": 100,
-    "counts_preservation_assertion": "passed"
+    "tests": 7,
+    "scope": "Synthetic arithmetic, donor weighting, paired conditions, missing groups/genes, input hash preservation, HTML escaping, saved outputs, overwrite refusal and analysis CLI separation."
   },
-  "inspect_only": {
-    "status": "passed",
-    "filtered_matrix_written": false
-  },
-  "comparison_rendering": {
-    "status": "passed",
-    "figures": 5,
-    "outputs": "separate work directory"
-  },
-  "output_protection": {
-    "status": "passed",
-    "protected_targets": [
-      "docs/figures",
-      "benchmarks/reproduced"
-    ]
+  "developer_scoring": {
+    "location": "benchmark branch",
+    "included_in_analysis_plugin": false,
+    "expert_scored_sessions": 0
   },
   "previous_release_ci": {
-    "version": "0.2.0",
-    "url": "https://github.com/Sculptor815/scrna-seq-workbench/actions/runs/37012273297",
+    "version": "0.2.1",
+    "url": "https://github.com/Sculptor815/scrna-seq-workbench/actions/runs/37018164297",
     "conclusion": "success"
   },
   "github_ci": {
@@ -88,6 +57,8 @@
   },
   "not_executed_for_this_release": [
     "new scVI training",
+    "real-data research benchmark",
+    "expert scoring of research cases",
     "live acceptance in all three hosts",
     "clean-machine dependency installation",
     "GPU execution"

@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Command-line entry point; five independent stages share one output contract."""
+"""Analysis commands with count preservation and traceable output directories."""
 from pathlib import Path
 import argparse
 import importlib
@@ -11,7 +11,7 @@ from scrna_core.common import stage_run
 def parser():
     ap=argparse.ArgumentParser(description=__doc__)
     subs=ap.add_subparsers(dest="stage",required=True)
-    for name in ("report","qc","integrate","annotate","de"):
+    for name in ("report","qc","integrate","annotate","de","research"):
         p=subs.add_parser(name)
         p.add_argument("--outdir",type=Path,required=True,help="New/empty output directory; existing results are never overwritten")
         if name!="report":
@@ -19,6 +19,15 @@ def parser():
         if name=="report":
             p.add_argument("--metrics",type=Path,required=True); p.add_argument("--source",type=Path,required=True)
             p.add_argument("--matrix",type=Path)
+        if name=="research":
+            p.add_argument("--question",required=True)
+            p.add_argument("--genes",nargs="+",required=True,help="Exact var_names; no guessed gene-ID mapping")
+            p.add_argument("--celltype-key",required=True)
+            p.add_argument("--donor-key",required=True)
+            p.add_argument("--condition-key",required=True)
+            p.add_argument("--label-source",required=True,help="Publication, file or review identifying label provenance")
+            p.add_argument("--label-status",choices=["published","reviewed","exploratory"],required=True)
+            p.add_argument("--min-cells",type=int,default=20)
         if name=="qc":
             p.add_argument("--config",type=Path,required=True); p.add_argument("--metadata",type=Path)
             p.add_argument("--sample-key",default="sample_id"); p.add_argument("--single-sample")

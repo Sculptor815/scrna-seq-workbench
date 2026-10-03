@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.0 - 2026-10-03
+
+- Add the scrna-research entry point for biological questions, public-study selection and focused analysis.
+- Add donor-level descriptive expression tables and an HTML report, with explicit annotation provenance.
+- Maintain developer research evaluation on the benchmark branch, outside the analysis plugin and its installable archive.
+- Update README and host adapters for six Skills; retain the five stage-specific workflows.
+- Preserve historical benchmark evidence; no new expert-scored biological validation is claimed.
+
+
 ## 0.2.1
 
 - Add detailed installation, host setup and real-data usage tutorials; revise README and comparison captions.
