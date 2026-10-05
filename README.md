@@ -109,6 +109,10 @@ published tables. [The review response](docs/REVIEW_FIXES.md) records the v0.2.1
 
 ## Contributing
 
+For joint study selection, start in the [collaboration workspace](collaboration/README.md).
+The [GSE shortlist](collaboration/datasets/README.md) includes HPA sources, paper links,
+input checks and editable study cards.
+
 See [development and release instructions](docs/DEVELOPMENT.md),
 [the changelog](CHANGELOG.md) and [GitHub Actions](https://github.com/Sculptor815/scrna-seq-workbench/actions).
 Code is MIT licensed. Dataset and publication attribution is documented in

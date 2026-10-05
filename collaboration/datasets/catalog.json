@@ -1,0 +1,198 @@
+{
+  "schema_version": 1,
+  "checked_on": "2026-10-05",
+  "purpose": "Collaborative selection of public development studies; no scientific scores or hidden evaluation material.",
+  "hpa_source_table": "https://www.proteinatlas.org/humanproteome/single%2Bcell/single%2Bcell%2Btype/data",
+  "studies": [
+    {
+      "accession": "GSE115469",
+      "species": "Homo sapiens",
+      "tissue": "liver",
+      "status": "selected_for_initial_preparation",
+      "human_scientific_review": "pending",
+      "owner": null,
+      "geo_url": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE115469",
+      "geo_metadata_url": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE115469&targ=self&form=text&view=full",
+      "publication": {
+        "doi": "10.1038/s41467-018-06318-7",
+        "url": "https://doi.org/10.1038/s41467-018-06318-7",
+        "pmid": "30348985"
+      },
+      "hpa_copy": {
+        "portal_version_at_check": "25.1",
+        "cells_listed_by_hpa": 6404,
+        "archive_url": "https://www.proteinatlas.org/download/tsv/rna_single_cell_read_count.zip",
+        "member_directory": "liver/",
+        "locally_downloaded": true,
+        "donor_metadata_verified": false,
+        "count_values_validated": true
+      },
+      "geo_files": [
+        {
+          "name": "GSE115469_Data.csv.gz",
+          "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE115nnn/GSE115469/suppl/GSE115469_Data.csv.gz",
+          "downloaded": false,
+          "sha256": null
+        },
+        {
+          "name": "GSE115469_CellClusterType.txt.gz",
+          "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE115nnn/GSE115469/suppl/GSE115469_CellClusterType.txt.gz",
+          "downloaded": false,
+          "sha256": null
+        }
+      ],
+      "study_card": "studies/GSE115469.md",
+      "independent_hidden_test": false
+    },
+    {
+      "accession": "GSE116222",
+      "species": "Homo sapiens",
+      "tissue": "colon",
+      "status": "proposed",
+      "human_scientific_review": "pending",
+      "owner": null,
+      "geo_url": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE116222",
+      "geo_metadata_url": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE116222&targ=self&form=text&view=full",
+      "publication": {
+        "doi": "10.1038/s41586-019-0992-y",
+        "url": "https://doi.org/10.1038/s41586-019-0992-y",
+        "pmid": "30814735"
+      },
+      "hpa_copy": {
+        "portal_version_at_check": "25.1",
+        "cells_listed_by_hpa": 7339,
+        "archive_url": "https://www.proteinatlas.org/download/tsv/rna_single_cell_read_count.zip",
+        "member_directory": "colon/",
+        "locally_downloaded": false,
+        "donor_metadata_verified": false,
+        "count_values_validated": false
+      },
+      "geo_files": [
+        {
+          "name": "GSE116222_Expression_matrix.txt.gz",
+          "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE116nnn/GSE116222/suppl/GSE116222_Expression_matrix.txt.gz",
+          "downloaded": false,
+          "sha256": null
+        }
+      ],
+      "study_card": "studies/GSE116222.md",
+      "independent_hidden_test": false
+    },
+    {
+      "accession": "GSE137537",
+      "species": "Homo sapiens",
+      "tissue": "retina",
+      "status": "proposed",
+      "human_scientific_review": "pending",
+      "owner": null,
+      "geo_url": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE137537",
+      "geo_metadata_url": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE137537&targ=self&form=text&view=full",
+      "publication": {
+        "doi": "10.1038/s41467-019-12780-8",
+        "url": "https://doi.org/10.1038/s41467-019-12780-8",
+        "pmid": "31653841"
+      },
+      "hpa_copy": {
+        "portal_version_at_check": "25.1",
+        "cells_listed_by_hpa": 7222,
+        "archive_url": "https://www.proteinatlas.org/download/tsv/rna_single_cell_read_count.zip",
+        "member_directory": "retina/",
+        "locally_downloaded": false,
+        "donor_metadata_verified": false,
+        "count_values_validated": false
+      },
+      "geo_files": [
+        {
+          "name": "GSE137537_counts.mtx.gz",
+          "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE137nnn/GSE137537/suppl/GSE137537_counts.mtx.gz",
+          "downloaded": false,
+          "sha256": null
+        },
+        {
+          "name": "GSE137537_gene_names.txt.gz",
+          "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE137nnn/GSE137537/suppl/GSE137537_gene_names.txt.gz",
+          "downloaded": false,
+          "sha256": null
+        },
+        {
+          "name": "GSE137537_sample_annotations.tsv.gz",
+          "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE137nnn/GSE137537/suppl/GSE137537_sample_annotations.tsv.gz",
+          "downloaded": false,
+          "sha256": null
+        }
+      ],
+      "study_card": "studies/GSE137537.md",
+      "independent_hidden_test": false
+    },
+    {
+      "accession": "GSE130973",
+      "species": "Homo sapiens",
+      "tissue": "skin",
+      "status": "proposed",
+      "human_scientific_review": "pending",
+      "owner": null,
+      "geo_url": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE130973",
+      "geo_metadata_url": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE130973&targ=self&form=text&view=full",
+      "publication": {
+        "doi": "10.1038/s42003-020-0922-4",
+        "url": "https://doi.org/10.1038/s42003-020-0922-4",
+        "pmid": "32327715"
+      },
+      "hpa_copy": {
+        "portal_version_at_check": "25.1",
+        "cells_listed_by_hpa": 15579,
+        "archive_url": "https://www.proteinatlas.org/download/tsv/rna_single_cell_read_count.zip",
+        "member_directory": "skin/",
+        "locally_downloaded": false,
+        "donor_metadata_verified": false,
+        "count_values_validated": false
+      },
+      "geo_files": [
+        {
+          "name": "GSE130973_matrix_filtered.mtx.gz",
+          "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE130nnn/GSE130973/suppl/GSE130973_matrix_filtered.mtx.gz",
+          "downloaded": false,
+          "sha256": null
+        },
+        {
+          "name": "GSE130973_genes_filtered.tsv.gz",
+          "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE130nnn/GSE130973/suppl/GSE130973_genes_filtered.tsv.gz",
+          "downloaded": false,
+          "sha256": null
+        },
+        {
+          "name": "GSE130973_barcodes_filtered.tsv.gz",
+          "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE130nnn/GSE130973/suppl/GSE130973_barcodes_filtered.tsv.gz",
+          "downloaded": false,
+          "sha256": null
+        },
+        {
+          "name": "GSE130973_matrix_raw.mtx.gz",
+          "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE130nnn/GSE130973/suppl/GSE130973_matrix_raw.mtx.gz",
+          "downloaded": false,
+          "sha256": null
+        },
+        {
+          "name": "GSE130973_genes_raw.tsv.gz",
+          "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE130nnn/GSE130973/suppl/GSE130973_genes_raw.tsv.gz",
+          "downloaded": false,
+          "sha256": null
+        },
+        {
+          "name": "GSE130973_barcodes_raw.tsv.gz",
+          "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE130nnn/GSE130973/suppl/GSE130973_barcodes_raw.tsv.gz",
+          "downloaded": false,
+          "sha256": null
+        },
+        {
+          "name": "GSE130973_seurat_analysis_lyko.rds.gz",
+          "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE130nnn/GSE130973/suppl/GSE130973_seurat_analysis_lyko.rds.gz",
+          "downloaded": false,
+          "sha256": null
+        }
+      ],
+      "study_card": "studies/GSE130973.md",
+      "independent_hidden_test": false
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "accession": "GSE115469",
+  "source": "Human Protein Atlas tissue read-count export",
+  "portal_version_at_download": "25.1",
+  "source_version_pinned_in_url": false,
+  "checked_on": "2026-10-05",
+  "files": [
+    {
+      "source_url": "https://www.proteinatlas.org/download/tsv/rna_single_cell_read_count.zip",
+      "source_archive_member": "liver/cell_data.tsv",
+      "source_archive_total_bytes": 3242802912,
+      "compressed_byte_range": [
+        1746084624,
+        1746150871
+      ],
+      "bytes": 151745,
+      "sha256": "af0dc5b58fdbca205d476b4b213c20a7c47c5bf30f7cec3b5b8cfa31f28973a3",
+      "crc32_verified": true,
+      "downloaded_utc": "2026-10-05T15:26:09.019853+00:00"
+    },
+    {
+      "source_url": "https://www.proteinatlas.org/download/tsv/rna_single_cell_read_count.zip",
+      "source_archive_member": "liver/read_count.tsv",
+      "source_archive_total_bytes": 3242802912,
+      "compressed_byte_range": [
+        1746150950,
+        1758450867
+      ],
+      "bytes": 259064556,
+      "sha256": "269a658ac074883991682ba60e27c9b8ef6cb989c717c99a2091c937a9d6468c",
+      "crc32_verified": true,
+      "downloaded_utc": "2026-10-05T15:28:12.954210+00:00"
+    }
+  ],
+  "validation": {
+    "genes": 20162,
+    "cells": 6404,
+    "unique_gene_ids": true,
+    "unique_cell_ids": true,
+    "nonnegative_integer_values": true,
+    "nonzero_entries": 10244822,
+    "total_counts": 32749593,
+    "cell_order_matches_metadata": true,
+    "metadata_columns": [
+      "cell_id",
+      "cluster",
+      "umap_x",
+      "umap_y"
+    ],
+    "donor_or_condition_metadata_present": false
+  },
+  "tenx_conversion_status": "pending",
+  "scientific_review_status": "pending",
+  "raw_cellranger_output_claimed": false,
+  "files_redistributed_in_git": false
+}
