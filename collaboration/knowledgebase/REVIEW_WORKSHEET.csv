@@ -1,0 +1,13 @@
+card_id,version,scientific_review,reviewer,reviewed_on,correction_or_question,supporting_evidence,decision
+scrna-kb-01-question,0.1.0,pending,,,,,
+scrna-kb-02-data,0.1.0,pending,,,,,
+scrna-kb-03-delivery,0.1.0,pending,,,,,
+scrna-kb-04-qc,0.1.0,pending,,,,,
+scrna-kb-05-normalization,0.1.0,pending,,,,,
+scrna-kb-06-representation,0.1.0,pending,,,,,
+scrna-kb-07-annotation,0.1.0,pending,,,,,
+scrna-kb-08-de,0.1.0,pending,,,,,
+scrna-kb-09-expression,0.1.0,pending,,,,,
+scrna-kb-10-report,0.1.0,pending,,,,,
+scrna-kb-11-knowledge,0.1.0,pending,,,,,
+scrna-kb-12-enrichment,0.1.0,pending,,,,,

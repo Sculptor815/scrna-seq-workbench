@@ -1,0 +1,126 @@
+{
+  "version": "0.1.0",
+  "kind": "learning catalog, not a runtime retrieval index",
+  "cards": [
+    {
+      "card_id": "scrna-kb-01-question",
+      "version": "0.1.0",
+      "title": "Turn a biological question into an observable comparison",
+      "path": "cards/01-question.md",
+      "status": "draft",
+      "scientific_reviewer": null,
+      "production_rag_eligible": false,
+      "scope": "learning"
+    },
+    {
+      "card_id": "scrna-kb-02-data",
+      "version": "0.1.0",
+      "title": "Understand counts, identifiers and metadata before analysis",
+      "path": "cards/02-data.md",
+      "status": "draft",
+      "scientific_reviewer": null,
+      "production_rag_eligible": false,
+      "scope": "learning"
+    },
+    {
+      "card_id": "scrna-kb-03-delivery",
+      "version": "0.1.0",
+      "title": "Review sequencing delivery without confusing it with cell QC",
+      "path": "cards/03-delivery.md",
+      "status": "draft",
+      "scientific_reviewer": null,
+      "production_rag_eligible": false,
+      "scope": "learning"
+    },
+    {
+      "card_id": "scrna-kb-04-qc",
+      "version": "0.1.0",
+      "title": "Choose sample-aware quality filters and retain an exclusion ledger",
+      "path": "cards/04-qc.md",
+      "status": "draft",
+      "scientific_reviewer": null,
+      "production_rag_eligible": false,
+      "scope": "learning"
+    },
+    {
+      "card_id": "scrna-kb-05-normalization",
+      "version": "0.1.0",
+      "title": "Separate raw counts, normalization and feature selection",
+      "path": "cards/05-normalization.md",
+      "status": "draft",
+      "scientific_reviewer": null,
+      "production_rag_eligible": false,
+      "scope": "learning"
+    },
+    {
+      "card_id": "scrna-kb-06-representation",
+      "version": "0.1.0",
+      "title": "Understand PCA, scVI, clustering and UMAP as different operations",
+      "path": "cards/06-representation.md",
+      "status": "draft",
+      "scientific_reviewer": null,
+      "production_rag_eligible": false,
+      "scope": "learning"
+    },
+    {
+      "card_id": "scrna-kb-07-annotation",
+      "version": "0.1.0",
+      "title": "Treat cell annotation as evidence review",
+      "path": "cards/07-annotation.md",
+      "status": "draft",
+      "scientific_reviewer": null,
+      "production_rag_eligible": false,
+      "scope": "learning"
+    },
+    {
+      "card_id": "scrna-kb-08-de",
+      "version": "0.1.0",
+      "title": "Estimate condition differences at the donor level",
+      "path": "cards/08-de.md",
+      "status": "draft",
+      "scientific_reviewer": null,
+      "production_rag_eligible": false,
+      "scope": "learning"
+    },
+    {
+      "card_id": "scrna-kb-09-expression",
+      "version": "0.1.0",
+      "title": "Answer focused expression questions without overstating them",
+      "path": "cards/09-expression.md",
+      "status": "draft",
+      "scientific_reviewer": null,
+      "production_rag_eligible": false,
+      "scope": "learning"
+    },
+    {
+      "card_id": "scrna-kb-10-report",
+      "version": "0.1.0",
+      "title": "Build a conclusion from traceable observations",
+      "path": "cards/10-report.md",
+      "status": "draft",
+      "scientific_reviewer": null,
+      "production_rag_eligible": false,
+      "scope": "learning"
+    },
+    {
+      "card_id": "scrna-kb-11-knowledge",
+      "version": "0.1.0",
+      "title": "Turn experience into retrievable decision knowledge",
+      "path": "cards/11-knowledge.md",
+      "status": "draft",
+      "scientific_reviewer": null,
+      "production_rag_eligible": false,
+      "scope": "learning"
+    },
+    {
+      "card_id": "scrna-kb-12-enrichment",
+      "version": "0.1.0",
+      "title": "Plan enrichment as a future analytical extension",
+      "path": "cards/12-enrichment.md",
+      "status": "draft",
+      "scientific_reviewer": null,
+      "production_rag_eligible": false,
+      "scope": "future_extension"
+    }
+  ]
+}

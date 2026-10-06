@@ -1,13 +1,20 @@
 # Analysis knowledge base: authoring workspace
 
 This is the place to write analysis experience for the future scRNA-seq agent.
-It contains authoring templates and a draft example, not a running RAG service.
+It now includes twelve learning cards, authoring templates and a draft example, not a running RAG service.
 No document here is automatically added to an agent's production knowledge.
 
 Start with the [experience template](templates/EXPERIENCE.md), the
 [source manifest template](templates/SOURCES.csv), and the
 [draft donor-design example](examples/donor-design.md).
 See the [agent development plan](../AGENT_DEVELOPMENT.md) for integration.
+
+## Learn with the existing plugin
+
+Start with the [v0.1.0 learning path](LEARNING_PATH.md) and
+[guided 400-cell exercise](FIRST_RUN.md). Each card explains principles, decision
+steps, actual tool behavior and a self-check. Record your scientific corrections
+in the [review worksheet](REVIEW_WORKSHEET.csv). All cards remain drafts.
 
 ## What to write first
 
