@@ -1,0 +1,236 @@
+{
+  "collection_version": "0.1.0",
+  "sources": [
+    {
+      "source_id": "S01",
+      "title": "Scanpy preprocessing and clustering",
+      "evidence_type": "official_tutorial",
+      "url": "https://scanpy.scverse.org/en/stable/tutorials/basics/clustering.html",
+      "locator": "Quality Control; Doublet detection; Normalization",
+      "access_status": "page_read",
+      "notes": "Live stable documentation; examples are dataset-specific.",
+      "accessed_on": "2026-10-06",
+      "pinned_revision": null
+    },
+    {
+      "source_id": "S02",
+      "title": "Single-cell best practices: QC",
+      "evidence_type": "author_maintained_tutorial",
+      "url": "https://www.sc-best-practices.org/preprocessing-visualization/quality-control/",
+      "locator": "QC metrics and MAD example; ambient RNA; min_cells=20; doublet section",
+      "access_status": "page_read",
+      "notes": "Living chapter. Broad summaries and individual code examples need separate interpretation.",
+      "accessed_on": "2026-10-06",
+      "pinned_revision": null
+    },
+    {
+      "source_id": "S03",
+      "title": "SoupX",
+      "evidence_type": "method_author_repository",
+      "url": "https://github.com/constantAmateur/SoupX",
+      "locator": "README Quickstart; SoupChannel and setClusters; version notes",
+      "access_status": "readme_read",
+      "notes": "README reviewed; code not executed and no release pinned.",
+      "accessed_on": "2026-10-06",
+      "pinned_revision": null
+    },
+    {
+      "source_id": "S04",
+      "title": "Normalized data found instead of raw counts",
+      "evidence_type": "community_firsthand_case",
+      "url": "https://discourse.scverse.org/t/normalized-data-found-instead-of-raw-counts/2163",
+      "locator": "Posts 1-3, 15-18 March 2024",
+      "access_status": "thread_read",
+      "notes": "Reporter confirmed a normalized dataset hidden at the end of a concatenated object.",
+      "accessed_on": "2026-10-06",
+      "pinned_revision": null
+    },
+    {
+      "source_id": "S05",
+      "title": "AnnData.raw",
+      "evidence_type": "official_api",
+      "url": "https://anndata.readthedocs.io/en/latest/generated/anndata.AnnData.raw.html",
+      "locator": "Initialization with a copy; slicing behavior",
+      "access_status": "search_excerpt_only",
+      "notes": "Direct page retrieval failed. Latest/dev documentation excerpt only; verify installed version before adoption.",
+      "accessed_on": "2026-10-06",
+      "pinned_revision": null
+    },
+    {
+      "source_id": "S06",
+      "title": "AnnData raw mutation report",
+      "evidence_type": "issue_firsthand_case",
+      "url": "https://github.com/scverse/scanpy/issues/3073",
+      "locator": "Issue body, May 2024; closed issue linked to anndata #1686",
+      "access_status": "issue_body_read",
+      "notes": "Historical issue; not evidence that current versions still have this behavior.",
+      "accessed_on": "2026-10-06",
+      "pinned_revision": null
+    },
+    {
+      "source_id": "S07",
+      "title": "Scanpy highly_variable_genes",
+      "evidence_type": "official_api",
+      "url": "https://scanpy.scverse.org/en/stable/generated/scanpy.pp.highly_variable_genes.html",
+      "locator": "Input expectations; flavor and layer",
+      "access_status": "search_excerpt_only",
+      "notes": "Direct retrieval was rate-limited; exact input requirement available in indexed official excerpt.",
+      "accessed_on": "2026-10-06",
+      "pinned_revision": null
+    },
+    {
+      "source_id": "S08",
+      "title": "HVG flavor and normalization order",
+      "evidence_type": "community_technical_reply",
+      "url": "https://discourse.scverse.org/t/how-to-handle-data-lognormalization-when-using-highly-variable-genes-with-flavor-seurat-v3/1076",
+      "locator": "Posts 1-3, January-February 2023",
+      "access_status": "thread_read",
+      "notes": "Layer selection clarified; historical cross-tool comparison is not a current equivalence guarantee.",
+      "accessed_on": "2026-10-06",
+      "pinned_revision": null
+    },
+    {
+      "source_id": "S09",
+      "title": "Scanpy normalize_total",
+      "evidence_type": "official_api",
+      "url": "https://scanpy.scverse.org/en/stable/generated/scanpy.pp.normalize_total.html",
+      "locator": "target_sum and layer parameters",
+      "access_status": "page_read",
+      "notes": "Default target_sum=None uses median pre-normalization cell total.",
+      "accessed_on": "2026-10-06",
+      "pinned_revision": null
+    },
+    {
+      "source_id": "S10",
+      "title": "CellTypist",
+      "evidence_type": "method_author_repository",
+      "url": "https://github.com/Teichlab/celltypist",
+      "locator": "README section 1.6: Celltyping based on AnnData",
+      "access_status": "readme_read",
+      "notes": "AnnData input contract reviewed; not installed or tested in our plugin.",
+      "accessed_on": "2026-10-06",
+      "pinned_revision": null
+    },
+    {
+      "source_id": "S11",
+      "title": "scvi-tools data loading and preparation",
+      "evidence_type": "official_tutorial",
+      "url": "https://docs.scvi-tools.org/en/stable/tutorials/notebooks/quick_start/data_loading.html",
+      "locator": "Preprocessing; preserve counts; register layer and batch",
+      "access_status": "page_read",
+      "notes": "Tutorial demonstrates multiple representations; model-specific contracts still apply.",
+      "accessed_on": "2026-10-06",
+      "pinned_revision": null
+    },
+    {
+      "source_id": "S12",
+      "title": "scvi-tutorials",
+      "evidence_type": "official_repository",
+      "url": "https://github.com/scverse/scvi-tutorials",
+      "locator": "README; quick_start and scrna directory listing",
+      "access_status": "readme_and_listing_read",
+      "notes": "Notebook source repository located; complete notebooks not executed or exhaustively reviewed.",
+      "accessed_on": "2026-10-06",
+      "pinned_revision": null
+    },
+    {
+      "source_id": "S13",
+      "title": "Single-cell best practices: differential gene expression",
+      "evidence_type": "author_maintained_tutorial",
+      "url": "https://www.sc-best-practices.org/conditions/differential-gene-expression/",
+      "locator": "Pseudobulking; Variability Exploration; PyDESeq2 formula",
+      "access_status": "page_read",
+      "notes": "Current example uses ~label despite describing paired patient-condition samples; review concern recorded, not silently adopted.",
+      "accessed_on": "2026-10-06",
+      "pinned_revision": null
+    },
+    {
+      "source_id": "S14",
+      "title": "DE with one replicate per condition",
+      "evidence_type": "community_question",
+      "url": "https://discourse.scverse.org/t/questions-about-how-to-do-de-with-one-replicate-for-one-sample/2421",
+      "locator": "Original question, 31 July 2024",
+      "access_status": "thread_read",
+      "notes": "Fetched page contains the question but no answer; not a validated workaround.",
+      "accessed_on": "2026-10-06",
+      "pinned_revision": null
+    },
+    {
+      "source_id": "S15",
+      "title": "Scanpy rank_genes_groups",
+      "evidence_type": "official_api",
+      "url": "https://scanpy.readthedocs.io/en/stable/generated/scanpy.tl.rank_genes_groups.html",
+      "locator": "Input requirement and independence warning",
+      "access_status": "page_read",
+      "notes": "Group-marker ranking is not a substitute for a donor-aware condition model.",
+      "accessed_on": "2026-10-06",
+      "pinned_revision": null
+    },
+    {
+      "source_id": "S16",
+      "title": "Confronting false discoveries in single-cell differential expression",
+      "evidence_type": "primary_research",
+      "url": "https://www.nature.com/articles/s41467-021-25960-2",
+      "locator": "Indexed original article: biological-replicate aggregation and pseudo-replicate comparison",
+      "access_status": "search_excerpt_only",
+      "notes": "Original full page failed retrieval this pass. Read full Methods before scientific sign-off.",
+      "accessed_on": "2026-10-06",
+      "pinned_revision": null
+    },
+    {
+      "source_id": "S17",
+      "title": "Differential expression and rarely expressed genes",
+      "evidence_type": "community_experience",
+      "url": "https://discourse.scverse.org/t/differential-expression-and-rarely-expressed-genes/1998",
+      "locator": "Posts 1-2, January 2024",
+      "access_status": "thread_read",
+      "notes": "Reply gives scVI-specific personal filtering choices, not a universal detection threshold.",
+      "accessed_on": "2026-10-06",
+      "pinned_revision": null
+    },
+    {
+      "source_id": "S18",
+      "title": "log1p on backed H5AD copy error",
+      "evidence_type": "issue_firsthand_case",
+      "url": "https://github.com/scverse/scanpy/issues/1153",
+      "locator": "Issue body and reported package versions, April 2020",
+      "access_status": "issue_body_read",
+      "notes": "Old version-specific reproduction; current status was not reproduced locally.",
+      "accessed_on": "2026-10-06",
+      "pinned_revision": null
+    },
+    {
+      "source_id": "S19",
+      "title": "GO enrichment analysis",
+      "evidence_type": "official_method_guidance",
+      "url": "https://geneontology.org/docs/go-enrichment-analysis/",
+      "locator": "Gene lists and reference/background list",
+      "access_status": "page_read",
+      "notes": "Guidance for enrichment; not evidence of pathway activation.",
+      "accessed_on": "2026-10-06",
+      "pinned_revision": null
+    },
+    {
+      "source_id": "S20",
+      "title": "Archived Scanpy tutorials repository",
+      "evidence_type": "official_repository",
+      "url": "https://github.com/scverse/scanpy-tutorials",
+      "locator": "Archive banner and README relocation links",
+      "access_status": "readme_and_listing_read",
+      "notes": "Page reports archival on 2026-08-18 and points to main Scanpy docs.",
+      "accessed_on": "2026-10-06",
+      "pinned_revision": null
+    },
+    {
+      "source_id": "S21",
+      "title": "Current Scanpy tutorial source directory",
+      "evidence_type": "official_repository",
+      "url": "https://github.com/scverse/scanpy/tree/main/docs/tutorials",
+      "locator": "Directory listing",
+      "access_status": "listing_read",
+      "notes": "Current source location located; not a claim that every notebook was read.",
+      "accessed_on": "2026-10-06",
+      "pinned_revision": null
+    }
+  ]
+}

@@ -76,3 +76,10 @@ A separate reviewer mode may inspect draft cards. Default user analysis will use
 reviewed versions. The current repository has no automatic index builder or
 runtime enforcement of this policy yet; implementation and tests are tracked
 in the development plan.
+
+## Review external analysis experience
+
+The [first external evidence collection](evidence-review/2026-10-06/README.md)
+contains 18 candidate decisions from 21 official, method-author and community
+sources. Read the source observations, limitations and review questions before
+promoting any advice. All entries await owner review; analysis code is unchanged.
