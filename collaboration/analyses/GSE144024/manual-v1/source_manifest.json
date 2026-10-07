@@ -1,0 +1,81 @@
+{
+  "submission_id": "GSE144024_manual_v1",
+  "assembled_on": "2026-10-07",
+  "authority": "User designated the supplied manual-analysis results as final for this submission; reproduce faithfully without re-annotation",
+  "knowledge_base_commit": "ca5412a55ea257d1d1038fc82e6990172d3195bb",
+  "knowledge_base_blob": "520364059147116318dc4363394aa9bc25a113c3",
+  "inputs": [
+    {
+      "filename": "FL_annotated_UMAP.png",
+      "relative_path": "figures/FL_annotated_UMAP.png",
+      "bytes": 1479641,
+      "sha256": "ab60b556be9a3d474b0f0c240a446cad4b7c94e81daf18d7db269accc183f27c",
+      "source": "User-supplied final manual-analysis submission",
+      "preservation": "Byte-identical copy; no annotation edits"
+    },
+    {
+      "filename": "FL_marker_annotation.pdf",
+      "relative_path": "evidence/FL_marker_annotation.pdf",
+      "bytes": 14887231,
+      "sha256": "538f8c7dd2da35c741e02d499d9aed8e20037d4d3d60078681a2923a0f4c34d3",
+      "source": "User-supplied final manual-analysis submission",
+      "preservation": "Byte-identical copy; no annotation edits",
+      "pages": 19
+    },
+    {
+      "filename": "YS_annotated_UMAP.png",
+      "relative_path": "figures/YS_annotated_UMAP.png",
+      "bytes": 1356568,
+      "sha256": "ca00c56dd5b1fa3d9e55f3da242c529c926a8cd5b2453e04318a2b0cc8f4545b",
+      "source": "User-supplied final manual-analysis submission",
+      "preservation": "Byte-identical copy; no annotation edits"
+    },
+    {
+      "filename": "YS_marker_annotation.pdf",
+      "relative_path": "evidence/YS_marker_annotation.pdf",
+      "bytes": 14355863,
+      "sha256": "d1f4ff7d5d7e3a0e7fdbf6780b8037936aae22a428ab12c9f76074e39b256c39",
+      "source": "User-supplied final manual-analysis submission",
+      "preservation": "Byte-identical copy; no annotation edits",
+      "pages": 19
+    },
+    {
+      "filename": "hESC_annotated_UMAP.png",
+      "relative_path": "figures/hESC_annotated_UMAP.png",
+      "bytes": 1869675,
+      "sha256": "6afdda7e839203cf978d46e9d9ff85aecf61064a3b45ba9b6f525b6bb85cc292",
+      "source": "User-supplied final manual-analysis submission",
+      "preservation": "Byte-identical copy; no annotation edits"
+    },
+    {
+      "filename": "hESC_marker_annotation.pdf",
+      "relative_path": "evidence/hESC_marker_annotation.pdf",
+      "bytes": 20968004,
+      "sha256": "3b50681a5c140c5a97cb2357b21a6257a36785ce4bb7ca1a37d46b3192c4b61b",
+      "source": "User-supplied final manual-analysis submission",
+      "preservation": "Byte-identical copy; no annotation edits",
+      "pages": 23
+    },
+    {
+      "filename": "GSE144024_QC_report.html",
+      "relative_path": "evidence/GSE144024_QC_report.html",
+      "bytes": 1143763,
+      "sha256": "fd4b5f7ceecb7ec0be386089feef4459deeb3151f3f7f7924d16efb36f106b42",
+      "source": "User-supplied QC report",
+      "preservation": "Byte-identical copy"
+    }
+  ],
+  "derived_outputs": {
+    "figures/QC_panel.png": "PNG decoded from the original HTML image data URI",
+    "tables/qc_summary.csv": "Verbatim table values extracted from the original HTML",
+    "tables/analysis_summary.csv": "QC report plus earlier user-provided object summaries and displayed cluster counts",
+    "tables/displayed_cell_types.csv": "Legend labels transcribed from final submitted PNGs"
+  },
+  "not_supplied": [
+    "raw or annotated h5ad",
+    "cell-level annotations",
+    "DE result tables",
+    "executed parameter-sweep outputs",
+    "training and correction logs"
+  ]
+}

@@ -1,0 +1,28 @@
+dataset,cell_type,source,scope
+FL,Cytotoxic lymphoid,FL_annotated_UMAP.png,Final submitted figure legend; not a per-cell annotation export
+FL,Endothelial,FL_annotated_UMAP.png,Final submitted figure legend; not a per-cell annotation export
+FL,Erythroid,FL_annotated_UMAP.png,Final submitted figure legend; not a per-cell annotation export
+FL,HSPC-like,FL_annotated_UMAP.png,Final submitted figure legend; not a per-cell annotation export
+FL,Hematopoietic progenitors,FL_annotated_UMAP.png,Final submitted figure legend; not a per-cell annotation export
+FL,Macrophages,FL_annotated_UMAP.png,Final submitted figure legend; not a per-cell annotation export
+FL,Megakaryocytic,FL_annotated_UMAP.png,Final submitted figure legend; not a per-cell annotation export
+FL,Myeloid,FL_annotated_UMAP.png,Final submitted figure legend; not a per-cell annotation export
+FL,Stromal,FL_annotated_UMAP.png,Final submitted figure legend; not a per-cell annotation export
+YS,Endothelial,YS_annotated_UMAP.png,Final submitted figure legend; not a per-cell annotation export
+YS,Erythroid,YS_annotated_UMAP.png,Final submitted figure legend; not a per-cell annotation export
+YS,HSPC-like,YS_annotated_UMAP.png,Final submitted figure legend; not a per-cell annotation export
+YS,MEP,YS_annotated_UMAP.png,Final submitted figure legend; not a per-cell annotation export
+YS,Macrophages,YS_annotated_UMAP.png,Final submitted figure legend; not a per-cell annotation export
+YS,Megakaryocytic,YS_annotated_UMAP.png,Final submitted figure legend; not a per-cell annotation export
+YS,Stromal,YS_annotated_UMAP.png,Final submitted figure legend; not a per-cell annotation export
+YS,YS endoderm-like,YS_annotated_UMAP.png,Final submitted figure legend; not a per-cell annotation export
+hESC,CMP,hESC_annotated_UMAP.png,Final submitted figure legend; not a per-cell annotation export
+hESC,Erythroid,hESC_annotated_UMAP.png,Final submitted figure legend; not a per-cell annotation export
+hESC,Granulocytes,hESC_annotated_UMAP.png,Final submitted figure legend; not a per-cell annotation export
+hESC,Hematopoietic progenitors,hESC_annotated_UMAP.png,Final submitted figure legend; not a per-cell annotation export
+hESC,Macrophages,hESC_annotated_UMAP.png,Final submitted figure legend; not a per-cell annotation export
+hESC,Mast cells,hESC_annotated_UMAP.png,Final submitted figure legend; not a per-cell annotation export
+hESC,Mast/basophil-like,hESC_annotated_UMAP.png,Final submitted figure legend; not a per-cell annotation export
+hESC,Megakaryocytic,hESC_annotated_UMAP.png,Final submitted figure legend; not a per-cell annotation export
+hESC,Myeloid,hESC_annotated_UMAP.png,Final submitted figure legend; not a per-cell annotation export
+hESC,Unresolved,hESC_annotated_UMAP.png,Final submitted figure legend; not a per-cell annotation export

@@ -1,0 +1,4 @@
+dataset,qc_report_cells,reported_post_scvi_cells,reported_genes,reported_latent_dimensions,displayed_leiden_clusters,reported_resolution,resolution_evidence,cell_count_difference,descriptive_retention_pct,post_scvi_count_evidence,n_neighbors
+FL,17677,17104,20431,20,15,0.5,User-selected; also printed on marker PDF page 1,573,96.758,Earlier user-provided object summary; h5ad not supplied,not supplied
+YS,11021,10516,20719,20,15,1.0,Prior workflow context; saved parameter record not supplied,505,95.418,Earlier user-provided object summary; h5ad not supplied,not supplied
+hESC,19157,18529,20924,15,19,0.8,Prior workflow context; saved parameter record not supplied,628,96.722,Earlier user-provided object summary; h5ad not supplied,not supplied
