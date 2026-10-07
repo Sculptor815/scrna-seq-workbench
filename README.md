@@ -63,22 +63,59 @@ Example request:
 
 ## Analysis reports and validation
 
-### GSE144024: manual and AI analyses
+### GSE144024: analysis results
 
-The [study collection](collaboration/analyses/GSE144024/README.md) covers human
-fetal liver (FL), yolk sac (YS) and hESC-derived Day0/Day6 cells.
+#### Manual analysis
 
-| Record | Method and grouping | Results |
-|---|---|---|
-| [Manual analysis](collaboration/analyses/GSE144024/manual-v1/README.md) | scVI; separate FL and YS, joint hESC Day0/Day6 | Final submitted annotations, annotated UMAPs, QC report and marker-expression PDFs |
-| [AI analysis 1](collaboration/analyses/GSE144024/ai-01/README.md) | PCA; all four sources analyzed jointly | Exploratory annotations, marker evidence, composition and sensitivity results |
-| [AI analysis 2](collaboration/analyses/GSE144024/ai-02/README.md) | PCA; independent FL, YS and hESC analyses | Three cohort reports, UMAPs and expanded marker assessment |
+##### FL
 
-The manual record preserves the user's final submitted results. AI annotations
-remain exploratory and await human review. Both AI runs predate the mandatory-scVI
-update and have not been rerun with v0.4.0.
+![Manual FL UMAP and annotation](collaboration/analyses/GSE144024/manual-v1/figures/FL_annotated_UMAP.png)
 
-![Submitted manual FL annotation, Leiden clusters and confidence](collaboration/analyses/GSE144024/manual-v1/figures/FL_annotated_UMAP.png)
+##### YS
+
+![Manual YS UMAP and annotation](collaboration/analyses/GSE144024/manual-v1/figures/YS_annotated_UMAP.png)
+
+##### hESC
+
+![Manual hESC UMAP and annotation](collaboration/analyses/GSE144024/manual-v1/figures/hESC_annotated_UMAP.png)
+
+#### Workbench v0.4.0 — scVI
+
+##### FL
+
+![Workbench v0.4.0 FL UMAP and annotation](collaboration/analyses/GSE144024/ai-03/figures/FL_annotated_UMAP.png)
+
+##### YS
+
+![Workbench v0.4.0 YS UMAP and annotation](collaboration/analyses/GSE144024/ai-03/figures/YS_annotated_UMAP.png)
+
+##### hESC
+
+![Workbench v0.4.0 hESC UMAP and annotation](collaboration/analyses/GSE144024/ai-03/figures/hESC_annotated_UMAP.png)
+
+#### Workbench v0.3.0 — Analysis 1: joint
+
+![Workbench v0.3.0 joint UMAP clusters](collaboration/analyses/GSE144024/ai-01/original/figures/umap_clusters.png)
+
+![Workbench v0.3.0 joint UMAP and annotation](collaboration/analyses/GSE144024/ai-01/original/figures/04_umap_overview.png)
+
+#### Workbench v0.3.0 — Analysis 2: independent
+
+##### FL
+
+![Workbench v0.3.0 independent FL UMAP and annotation](collaboration/analyses/GSE144024/ai-02/original/FL/figures/01_independent_umap.png)
+
+##### YS
+
+![Workbench v0.3.0 independent YS UMAP and annotation](collaboration/analyses/GSE144024/ai-02/original/YS/figures/01_independent_umap.png)
+
+##### hESC
+
+![Workbench v0.3.0 independent hESC UMAP and annotation](collaboration/analyses/GSE144024/ai-02/original/hESC/figures/01_independent_umap.png)
+
+#### Quality control
+
+![Quality control overview for FL, YS and hESC Day0/Day6](collaboration/analyses/GSE144024/ai-03/figures/QC_overview.png)
 
 ### Current software checks
 
