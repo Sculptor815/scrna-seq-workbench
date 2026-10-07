@@ -1,120 +1,100 @@
 # scRNA-seq Workbench
 
-Investigate biological questions with public or user-provided single-cell RNA-seq
-data. This analysis plugin works with **Codex**, **Claude Code** and **DeepSeek Harness**.
-Version **0.4.0 - research preview**.
+Version **0.4.0 — with knowledge base · research preview**.
 
-Start with a hypothesis, tissue or disease, and what you want to learn. The
-`scrna-research` entry point guides your assistant to find relevant studies, check
-their design, run focused analyses and explain what the results support. You can
-delegate routine settings without learning a pipeline first. Existing data are
-welcome; a count matrix is not required to begin finding suitable studies.
+A single-cell RNA-seq analysis plugin for **Codex**, **Claude Code** and
+**DeepSeek Harness**. Workbench combines executable analysis tools with a bundled
+knowledge base covering study design, quality control, scVI, cell annotation and
+differential expression.
+
+## Analysis workflow
+
+Start with your data or a biological question. The agent checks sample relationships,
+defines which datasets to analyze together, and runs the relevant stages.
+
+| Stage | Skill | Main outputs |
+|---|---|---|
+| Study selection and exploration | `scrna-research` | Relevant studies, experimental context and expression summaries |
+| Sequencing report review | `sequencing-report-review` | Sequencing metrics and delivery checks |
+| Quality control | `scrna-qc` | QC plots, filtering records, doublet assessment when applicable and filtered counts |
+| Representation and clustering | `scrna-scvi-umap` | scVI model, cell-cycle diagnostics, candidate clusters and UMAPs |
+| Cell annotation | `scrna-cell-annotation` | Marker expression, candidate cell types and human review records |
+| Condition comparison | `scrna-condition-de` | Donor-level pseudobulk counts and differential-expression results |
+
+New representation workflows use **scVI with cell-cycle covariates**, with or
+without technical batches. Raw counts and the full retained gene set are preserved.
+
+Several neighbor counts and Leiden resolutions are presented for selection.
+Annotation follows tissue-specific marker evidence and HPA-guided review, with
+additional investigation of unresolved populations. Final labels require human
+review; condition DE requires biological donor replicates and reviewed annotations.
+
+Use `scrna-research` to plan an analysis, or enter a specific stage when suitable
+intermediate results already exist.
+
+## Bundled knowledge base
+
+The [knowledge base](collaboration/knowledgebase/README.md) defines how the agent
+groups datasets, chooses parameters, investigates uncertain annotations and reports
+results. All six Skills point to the relevant sections.
+
+It ships inside the plugin. Synchronization checks prevent outdated copies, and
+each run records the policy hash with its parameters and software versions.
+See [how agents use the knowledge base](docs/AGENT_KNOWLEDGE.md).
 
 ## Get started
 
-1. Follow the [installation tutorial](docs/INSTALLATION.md): Windows and Linux/macOS instructions, Python dependencies and common errors.
-2. Enable the plugin in [your assistant](docs/HOSTS.md).
-3. Run the [400-cell example](docs/QUICKSTART.md) to check your setup.
-4. Follow [Start with a biological question](docs/RESEARCH_WORKFLOW.md) for research prompts, data selection and results.
-5. Use [Analyze your own data](docs/USAGE.md) when you need the individual analysis stages.
+1. [Install the plugin and dependencies](docs/INSTALLATION.md), then
+   [connect it to your agent](docs/HOSTS.md).
+2. Run the [400-cell example](docs/QUICKSTART.md) to check your environment.
+3. Follow the [research workflow](docs/RESEARCH_WORKFLOW.md) or
+   [analyze your own data](docs/USAGE.md).
 
-Installing the plugin adds instructions and scripts. Its calculations use a
-Python environment on your computer or server. New representation workflows require
-scVI and its dependencies; condition DE has additional dependencies. See the
-installation tutorial and [how agents receive the knowledge base](docs/AGENT_KNOWLEDGE.md).
+Calculations run in your local or server Python environment. Install
+`requirements-scvi.txt` for representation analysis; condition DE has additional
+dependencies.
 
-## What it does
+Example request:
 
-| Skill | What you provide | What you receive |
+> Analyze these datasets with scRNA-seq Workbench. Read the knowledge base,
+> establish the analysis groups, and run QC and scVI. Show clustering options
+> for my selection and marker-expression figures for annotation review.
+> Save the analysis records and figures in my project directory.
+
+## Analysis reports and validation
+
+### GSE144024: manual and AI analyses
+
+The [study collection](collaboration/analyses/GSE144024/README.md) covers human
+fetal liver (FL), yolk sac (YS) and hESC-derived Day0/Day6 cells.
+
+| Record | Method and grouping | Results |
 |---|---|---|
-| `scrna-research` | Biological question, context and any data/resource limits | Study shortlist, focused analysis and an evidence-based explanation |
-| `sequencing-report-review` | Vendor report and sample details | A summary of sequencing metrics, source evidence and missing files |
-| `scrna-qc` | UMI counts, species and sample metadata | QC measurements, filtering records and a filtered H5AD |
-| `scrna-scvi-umap` | Filtered counts and a batch definition if needed | Required scVI with cell-cycle covariates, candidate Leiden clusters and UMAP plots |
-| `scrna-cell-annotation` | Clusters and a tissue-matched marker panel or HPA table | Candidate cell types, marker evidence and a review form |
-| `scrna-condition-de` | Reviewed cell types, conditions and biological donor IDs | Donor-level pseudobulk counts and PyDESeq2 results |
+| [Manual analysis](collaboration/analyses/GSE144024/manual-v1/README.md) | scVI; separate FL and YS, joint hESC Day0/Day6 | Final submitted annotations, annotated UMAPs, QC report and marker-expression PDFs |
+| [AI analysis 1](collaboration/analyses/GSE144024/ai-01/README.md) | PCA; all four sources analyzed jointly | Exploratory annotations, marker evidence, composition and sensitivity results |
+| [AI analysis 2](collaboration/analyses/GSE144024/ai-02/README.md) | PCA; independent FL, YS and hESC analyses | Three cohort reports, UMAPs and expanded marker assessment |
 
-Use `scrna-research` as the main entry point, or invoke one of the five analysis
-Skills directly. The assistant chooses stages relevant to the question. It can reuse
-documented counts and labels for an initial expression summary without rebuilding
-every intermediate result. A sequencing report alone supports delivery review;
-numerical expression analysis also needs a matrix and metadata.
+The manual record preserves the user's final submitted results. AI annotations
+remain exploratory and await human review. Both AI runs predate the mandatory-scVI
+update and have not been rerun with v0.4.0.
 
-## A first request
+![Submitted manual FL annotation, Leiden clusters and confidence](collaboration/analyses/GSE144024/manual-v1/figures/FL_annotated_UMAP.png)
 
-> Use scrna-research to investigate whether KRT8-associated epithelial states
-> are relevant to lung injury and repair. Find public studies with suitable
-> comparisons and explain which data could help. Choose routine analysis settings.
-> Use my configured Python environment and save results under D:/lung-repair.
-> Limit the first pass to a 2 GB download and one hour of computation.
-> Show the evidence, limitations and a useful next experiment.
+### Current software checks
 
-Change the paths and biological details to match your project. The assistant can
-answer in your language. If you want it to choose parameters, state that in your
-request and it should record the choices and their reasons.
+Version 0.4.0 passed **42 local tests**, including CPU scVI training with and
+without batches, count preservation, cell-cycle covariate registration, model
+save/reload and candidate graph outputs. Package checks cover knowledge-base
+synchronization, Skill entry points and standalone installation files.
 
-## Inputs and scope
+These synthetic tests assess execution, not biological annotation accuracy.
+See the [validation record](validation.json), [validation details](docs/VALIDATION.md)
+and [CI results](https://github.com/Sculptor815/scrna-seq-workbench/actions).
+Earlier [five-study analyses](docs/COMPARISONS.md) remain available as historical results.
 
-Supported inputs are human or mouse UMI counts in H5AD, 10x H5 or 10x-compatible
-matrix directories. Each run records parameters, package versions and file hashes.
-Original counts are preserved in `layers['counts']` after the declared QC exclusions.
+## Development
 
-Study discovery uses the assistant's available search/database tools. The bundled
-runner supports QC, representations, annotation, donor-level DE and focused
-gene-expression summaries. It does not include a standalone literature-search
-service. FASTQ alignment, multi-matrix assembly, ambient-RNA correction, enrichment,
-trajectory analysis, abundance testing and arbitrary DE covariates require additional
-tools. HPA reference tables are optional and supplied by the user. See the
-[input requirements](docs/USAGE.md) before using an existing H5AD.
+[Development guide](docs/DEVELOPMENT.md) · [Changelog](CHANGELOG.md) ·
+[Collaboration](collaboration/README.md) · [Data and publication sources](docs/THIRD_PARTY_SOURCES.md)
 
-Published labels can support exploratory summaries when their source is documented.
-Human HPA review and the DE label/design checks retain their existing requirements.
-The research entry point does not turn an automated label proposal into a reviewed label.
-
-## Analysis and evaluation are separate
-
-The installable plugin contains analysis Skills and scripts. Users invoke
-`scrna-research` to investigate their question; no benchmark setup or scoring is
-required. Results include scientific limitations and provenance.
-
-The separate [benchmark branch](https://github.com/Sculptor815/scrna-seq-workbench/tree/benchmark/benchmarks/research) evaluates
-data suitability, analytical relevance, evidence reasoning, usefulness and interaction
-burden after a session. Its scoring program is not shipped on `main` or in the
-plugin archive, and is never called by the analysis runner. Ratings require documented review; the calculator does not
-judge scientific correctness itself. The new research protocol has no published
-expert-scored results yet.
-
-## Existing validation
-
-[Five-study comparisons](docs/COMPARISONS.md) show published figures alongside our
-UMAPs and annotation proposals for Kang, Haber, Paul, Zeisel and Baron. The three
-panels in each of our plots share coordinates, showing reference labels, Leiden
-clusters and proposed labels. Three published figures are available inline;
-Paul and Zeisel have source links because the image downloads were unavailable.
-
-![Kang reference labels, clusters and proposed cell types](docs/figures/kang-comparison.png)
-
-These historical technical comparisons exposed loss of low-RNA populations, ambiguous labels and missed
-rare types. Its scores describe the historical fixed-parameter workflow.
-The current annotation step adds [HPA-guided review](docs/HPA_METHODS.md);
-the five benchmark review forms are still pending.
-
-They do not measure the new research workflow's ability to answer biological
-questions. See the [research quality plan](https://github.com/Sculptor815/scrna-seq-workbench/blob/benchmark/docs/QUALITY_EVALUATION_PLAN.md) for the
-separate pilot: question-driven studies, checked evidence and adjudicated conclusions,
-including well-supported disagreements with the original paper.
-
-Read [validation](docs/VALIDATION.md) for the measured results and remaining work,
-or [benchmark verification](benchmarks/README.md) to check the frozen source and
-published tables. [The review response](docs/REVIEW_FIXES.md) records the v0.2.1 corrections.
-
-## Contributing
-
-For joint study selection, start in the [collaboration workspace](collaboration/README.md).
-The [GSE shortlist](collaboration/datasets/README.md) includes HPA sources, paper links,
-input checks and editable study cards.
-
-See [development and release instructions](docs/DEVELOPMENT.md),
-[the changelog](CHANGELOG.md) and [GitHub Actions](https://github.com/Sculptor815/scrna-seq-workbench/actions).
-Code is MIT licensed. Dataset and publication attribution is documented in
-[Third-party sources](docs/THIRD_PARTY_SOURCES.md).
+Code is MIT licensed.
