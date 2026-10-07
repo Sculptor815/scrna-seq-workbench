@@ -39,7 +39,7 @@ def read_json(path):
 
 def versions():
     result = {"python": platform.python_version(), "platform": platform.platform()}
-    for p in ("numpy", "pandas", "scipy", "scanpy", "anndata", "scvi-tools", "torch", "pydeseq2", "igraph"):
+    for p in ("numpy", "pandas", "scipy", "scanpy", "anndata", "scvi-tools", "torch", "harmonypy", "pydeseq2", "igraph"):
         try:
             result[p] = version(p)
         except PackageNotFoundError:

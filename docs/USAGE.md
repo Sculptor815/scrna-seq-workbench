@@ -89,7 +89,7 @@ if you want a written project record.
 | Mitochondrial/hemoglobin thresholds | Choose from the assay, tissue and observed gene coverage. A missing gene set makes its percentage unavailable. |
 | Doublet scoring | Use actual capture IDs and a justified expected rate. Scoring and removal are separate options. |
 | HVGs | Defines which genes fit the representation; all QC-retained genes stay in the output. |
-| `--latent` | scVI latent dimensions; PCA cannot replace this stage. |
+| `--latent` | scVI latent dimensions; requested PCA dimensions for explicitly selected Harmony. |
 | `--batch-key` | Verified technical metadata for HVGs and scVI; omit it for no-batch scVI. |
 | `--species` / `--cell-cycle-genes` | Human symbols have a bundled preset; mouse/non-symbol IDs need a sourced exact-ID gene set. |
 | Neighbors and Leiden resolution | Change the graph and clustering granularity. Review markers and stability as well as the plot. |
@@ -150,11 +150,13 @@ correct capture key/rate. Add `--remove-doublets` only when you intend removal.
 
 ### 3. Compute a representation, clusters and UMAP
 
-Install requirements-scvi.txt and use scVI for every analysis group, including
-single samples or inputs without technical batch metadata:
+The full pipeline may take more than 1 hour. Default to scVI, including single
+samples or inputs without batch metadata. Install requirements-scvi.txt. With
+a compatible CUDA GPU, --device auto uses it; otherwise it runs CPU scVI, which
+can require a longer wait. The backend never changes automatically:
 
 ```text
-python plugins/scrna-seq-workbench/scripts/scrna.py integrate --input D:/my-study/runs/03-qc/filtered.h5ad --species human --hvg 3000 --latent 20 --neighbors 30 --resolution 1 --max-epochs 400 --device cpu --seed 0 --outdir D:/my-study/runs/04-scvi
+python plugins/scrna-seq-workbench/scripts/scrna.py integrate --input D:/my-study/runs/03-qc/filtered.h5ad --species human --hvg 3000 --latent 20 --neighbors 30 --resolution 1 --max-epochs 400 --device auto --seed 0 --outdir D:/my-study/runs/04-scvi
 ```
 
 Add `--batch-key batch` only when the column exists and represents the technical
@@ -163,7 +165,7 @@ before HVG subsetting and registered as nuisance covariates. Raw counts are pres
 For mouse or non-symbol IDs, supply --cell-cycle-genes JSON containing species,
 source, s_genes and g2m_genes with exact matrix identifiers and documented mapping.
 
-Each run writes integrated.h5ad, a reloadable model with its training data, model
+Each scVI run writes integrated.h5ad, a reloadable model with its training data, model
 gene order, training history, cycle coverage/scores, pre-scVI cycle PCA, post-scVI
 cycle UMAP and latent correlations. report.json records the bundled policy hash.
 Inspect diagnostics; covariate registration does not prove complete cycle removal.
@@ -174,6 +176,24 @@ Override the ranges with --neighbors-grid and --resolutions-grid. The specified
 review. Review parameter_candidates.csv and PNGs with markers and QC, display
 them for the user and follow the [selection recipe](../plugins/scrna-seq-workbench/references/parameter-selection.md)
 before final annotation. A delegated decision must still have a recorded rationale.
+
+If you prefer the CPU alternative, explicitly choose Harmony and install
+requirements-harmony.txt. This requires a verified technical batch column with
+at least two categories; keep no-batch scVI when that information is absent.
+Replace the example batch field and reason with your actual choice:
+
+```text
+python plugins/scrna-seq-workbench/scripts/scrna.py integrate --input D:/my-study/runs/03-qc/filtered.h5ad --species human --backend harmony --batch-key batch --device cpu --backend-reason "User chose the CPU Harmony alternative" --outdir D:/my-study/runs/04-harmony
+```
+
+Harmony uses the Python package harmonypy. It regresses cycle scores on an HVG
+log-expression copy before PCA, then corrects the PCA embedding. Full-gene counts
+and normalized expression remain intact. The output includes integrated.h5ad,
+X_pca_harmony, cycle diagnostics, PCA loadings, feature order, objective history
+and candidate graphs/UMAPs. It does not include a scVI model. --latent specifies
+requested PCs; scVI epoch, layer and minibatch settings do not control Harmony.
+It often takes less time, but neither runtime nor equivalent biological results
+are guaranteed. Review the same markers, QC and candidate parameters for either route.
 
 ### 4. Propose and review cell types
 

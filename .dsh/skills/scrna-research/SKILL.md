@@ -40,8 +40,10 @@ requirements; respect the user's storage location and budget.
 Use [analysis routes](../../../plugins/scrna-seq-workbench/references/research-analysis.md) to choose the shortest
 defensible route. Existing documented labels and counts can support an initial
 expression summary without retraining scVI. Inspect their provenance and limitations;
-this is not a new complete clustering workflow. For new clustering, scVI with
-cell-cycle covariates is required. Reuse a model only after checking its provenance.
+this is not a new complete clustering workflow. For new clustering, default to scVI with
+cell-cycle covariates. Explain that the full pipeline may exceed 1 hour and check
+GPU availability. Offer slower CPU scVI or explicitly chosen Harmony with
+verified technical batches; preserve the default unless the user selects otherwise. Reuse a model only after checking its provenance.
 For new matrices, use the bundled sequencing-report-review, scrna-qc,
 scrna-scvi-umap, scrna-cell-annotation and scrna-condition-de Skills as needed.
 Do not run every stage merely because it exists.

@@ -36,7 +36,8 @@ def parser():
             p.add_argument("--remove-doublets",action="store_true"); p.add_argument("--capture-key",default="capture_id")
             p.add_argument("--expected-doublet-rate",type=float,default=0.06); p.add_argument("--seed",type=int,default=0)
         if name=="integrate":
-            p.add_argument("--backend",choices=["scvi"],default="scvi",help="scVI is required; PCA is not an integration backend")
+            p.add_argument("--backend",choices=["scvi","harmony"],default="scvi",help="Default scVI; explicitly select harmony (harmonypy) for a CPU alternative with verified batches")
+            p.add_argument("--backend-reason",help="Record the user's backend choice or delegated rationale; never fabricate consent")
             p.add_argument("--batch-key",help="Verified technical batch column; omit for no-batch scVI")
             p.add_argument("--species",choices=["human","mouse"],required=True)
             p.add_argument("--cell-cycle-genes",type=Path,help="JSON with species, source, s_genes, g2m_genes in exact var_names; required for mouse/non-symbol IDs")
@@ -51,7 +52,7 @@ def parser():
             p.add_argument("--no-early-stopping",action="store_true"); p.add_argument("--train-size",type=float,default=0.9)
             p.add_argument("--neighbors-grid",nargs="+",type=int,default=[15,20,30,50])
             p.add_argument("--resolutions-grid",nargs="+",type=float,default=[0.3,0.5,0.8,1.0])
-            p.add_argument("--device",choices=["cpu","gpu","auto"],default="cpu"); p.add_argument("--seed",type=int,default=0)
+            p.add_argument("--device",choices=["cpu","gpu","auto"],default="auto",help="scVI: auto uses available CUDA, otherwise CPU; Harmony uses CPU"); p.add_argument("--seed",type=int,default=0)
         if name=="annotate":
             p.add_argument("--annotation-policy",choices=["hpa-guided","legacy"],default="hpa-guided",
                            help="HPA-guided evidence/manual review, or the historical marker-only review contract")

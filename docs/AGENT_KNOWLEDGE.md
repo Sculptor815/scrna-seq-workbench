@@ -8,7 +8,7 @@ embedding service or extra connector is needed.
 2. That entry point specifies the relevant sections of the bundled
    [knowledge base](../plugins/scrna-seq-workbench/references/knowledgebase.md)
    for the current stage, plus the shared mandatory rules.
-3. The runner enforces scVI and cell-cycle input contracts and records the policy
+3. The runner enforces the selected backend and cell-cycle input contracts and records the policy
    file hash in report.json. This records policy provenance; it cannot prove that
    an agent read the instructions or that biological decisions were human-reviewed.
 
@@ -38,12 +38,14 @@ Tell the agent which checkout and Python interpreter to use. A useful request is
 
 > Use this updated scRNA-seq Workbench. Read its bundled agent-policy.md and the
 > relevant knowledge-base sections first. Establish dataset relationships, use
-> scVI with cell-cycle covariates for every analysis group, show neighbor/resolution
+> default scVI with cell-cycle covariates, explain runtime/hardware choices and
+> the explicit Harmony alternative, show neighbor/resolution
 > candidates for my choice, and preserve annotation uncertainty for my review.
 
-Install requirements-scvi.txt in the execution interpreter. Missing a GPU is
-compatible with CPU scVI; missing scVI dependencies is an actionable error, not
-permission to replace it with PCA. The knowledge base travels with both source
+Install requirements-scvi.txt for scVI or requirements-harmony.txt for explicitly
+selected Harmony. Before a full run, disclose that it may exceed 1 hour. Missing
+a GPU is compatible with CPU scVI; it is not permission to switch automatically.
+Harmony requires verified technical batches and separate cycle regression. The knowledge base travels with both source
 checkouts and standalone plugin archives across the supported hosts. Actual host
 loading still requires a host acceptance check; repository checks alone cannot
 establish it.

@@ -1,10 +1,24 @@
-# v0.4.0 - required scVI, cell-cycle covariates and bundled agent knowledge
+# v0.4.0 - default scVI, explicit Harmony and runtime guidance
 
-New representations now require scVI in every analysis group, including inputs
+New representations default to scVI in every analysis group, including inputs
 without technical batch metadata. Integration scores cell cycle before HVG
 subsetting and registers S_score/G2M_score with the count model. It preserves the
 full-gene count object, saves a reloadable model and exports cycle diagnostics,
 training history and neighbor/resolution candidates for review.
+
+This update retains version 0.4.0 as requested. Before a full pipeline, the agent
+discloses that execution may exceed 1 hour. scVI remains the default; --device auto
+uses available compatible CUDA or otherwise CPU. Users without a GPU can wait for
+CPU scVI or explicitly choose Harmony (harmonypy) with verified technical batches.
+No failure, missing dependency or slow training triggers an automatic backend switch.
+
+The Harmony route uses cycle regression on an HVG log-expression copy, scaled PCA
+and Harmony coordinates; counts/full-gene expression are preserved. It adds
+requirements-harmony.txt and records backend/device/elapsed-time provenance.
+Historical analysis figures retain their original methods and versions.
+The knowledge base now explains scVI's NB count likelihood, variational inference
+and potential advantages over direct PCA, with brief user-facing guidance in
+the Skills and README and no claim of guaranteed biological superiority.
 
 The six Skills load a bundled policy entry point and the relevant knowledge-base
 sections. The collaboration knowledge base remains the single maintenance source;

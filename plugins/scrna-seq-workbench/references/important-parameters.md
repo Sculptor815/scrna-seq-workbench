@@ -24,17 +24,19 @@ gene universes may differ from a processed public matrix.
 
 ## Representation and clustering
 
-The required route is counts -> scVI -> neighbors -> Leiden/UMAP for every analysis
-group. PCA is auxiliary only. scVI does not train on PCA coordinates. Cell-cycle
+The default route is counts -> scVI -> neighbors -> Leiden/UMAP. An explicitly
+selected alternative is HVG log expression -> cycle regression -> scaled PCA ->
+Harmony -> neighbors -> Leiden/UMAP, using verified technical batches. scVI does not train on PCA coordinates. Cell-cycle
 scores from full-gene log expression are registered before training; inspect their
 coverage and post-training diagnostics. See the [policy entry point](agent-policy.md).
 
 | Setting | Current CLI default | Decision to explain |
 |---|---|---|
-| backend | scvi only | No PCA substitution, regardless of batch availability |
+| backend | scvi | Explicit harmony uses harmonypy on CPU with verified technical batches; no automatic switch |
+| backend-reason | Unset | Record the actual user choice or delegated rationale, not fabricated consent |
 | species / cycle genes | Explicit species; human symbol preset | Mouse/non-symbol IDs need a documented exact mapping JSON |
 | min-cycle-genes | 5 per phase | Execution minimum, not biological validation; inspect missing genes |
-| latent / n-layers / dropout | 20 / 2 / 0.1 | Adapt to complexity; preserve selected model parameters |
+| latent / n-layers / dropout | 20 / 2 / 0.1 | scVI model parameters; for Harmony latent means requested PCA dimensions, other two are unused |
 | hvg / hvg-flavor | 3000 / seurat_v3 | Raw counts by default; explicit seurat uses lognorm |
 | batch-key | Unset (None) | Verified technical metadata only; scVI still runs without it |
 | neighbors / resolution | 30 / 1 | Display baseline, pending review; not automatic final acceptance |
@@ -43,7 +45,7 @@ coverage and post-training diagnostics. See the [policy entry point](agent-polic
 | max-epochs / batch-size | 400 / 256 | Budget and minibatch size; inspect training history |
 | early stopping / patience | On / 20 | --no-early-stopping is explicit; stopping does not prove convergence |
 | train-size | 0.9 | Validation uses the remaining cells; record seed and split |
-| seed / device | 0 / cpu | GPU requires availability; auto resolves and records CPU/GPU |
+| seed / device | 0 / auto | scVI selects available CUDA else CPU; Harmony is CPU only; full pipeline may exceed 1 hour |
 | skip-cell-cycle | Off | Requires an actual user override and nonempty recorded reason |
 
 Inspect condition/batch/donor relationships before correction. Missing types across

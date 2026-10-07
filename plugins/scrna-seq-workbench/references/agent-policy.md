@@ -15,7 +15,7 @@ from report.json, and do not claim a host loaded a policy just because it exists
 
 | Entry | Knowledge-base sections |
 |---|---|
-| Every entry | 1 (relationships and mandatory scVI), 27 (generalization), 29-30 (records and guardrails) |
+| Every entry | 1 (relationships, runtime and backend choice), 27 (generalization), 29-30 (records and guardrails) |
 | Delivery review / QC | 2-12 (counts, identifiers, capture-level QC and transformations) |
 | scVI / clustering | 13-25 (cycle scores, technical batches, model training, candidate parameters and diagnostics) |
 | Annotation | 31-36 (evidence, unresolved cells, human review and markers); 22-25 for graph selection |
@@ -25,13 +25,23 @@ from report.json, and do not claim a host loaded a policy just because it exists
 
 - Establish dataset relationships and the jointly/separately analyzed groups from
   evidence or user clarification. Never invent donor or technical batch identities.
-- New representations require scVI for every group. Use no batch key when no
-  justified technical batch exists; keep scVI and the cell-cycle covariates.
+- Explain before a full run that the pipeline may exceed 1 hour. Default to
+  scVI and check compatible CUDA availability in the execution environment.
+  Without it, offer slower CPU scVI or explicitly selected Harmony (harmonypy);
+  honor existing choices and keep scVI if no alternative is selected. Briefly
+  explain the scVI/PCA tradeoff from knowledge-base Section 1.4: NB count model,
+  nonlinear representation and supported nuisance factors versus added training
+  time; never promise biological superiority or judge accuracy by UMAP appearance.
+- For scVI, use no batch key when no justified technical batch exists; retain
+  cell-cycle covariates. Harmony requires at least two verified technical batches.
 - Score S and G2M on full normalized/log expression, retain raw counts, then train
-  on count HVGs with both scores registered. Match the species and identifier set.
+  scVI on count HVGs with both scores registered. For selected Harmony, regress
+  scores on an HVG log-expression copy, scale, compute PCA and run Harmony.
+  Match the species and identifier set.
   Inadequate gene coverage is a blocker, not permission to use zero scores.
-- The CLI rejects PCA as an integration backend. PCA is only an auxiliary
-  diagnostic/comparison. Missing packages or GPU do not authorize substitution.
+- The CLI rejects plain PCA as an integration backend. Use X_scvi or
+  X_pca_harmony according to the selected route. Missing packages, GPU or training
+  failure do not authorize automatic backend switching. Record choice and runtime.
 - A cell-cycle exception requires an actual explicit user instruction. Record it
   with --skip-cell-cycle and --cell-cycle-override-reason; resource convenience or
   an agent's own preference is not authorization.
@@ -43,7 +53,7 @@ from report.json, and do not claim a host loaded a policy just because it exists
   Present supporting/opposing markers for genuine human review; never invent it.
 - An existing representation may be reused only with suitable input/model/cycle
   provenance. A focused summary of supplied published labels is not a new complete
-  clustering workflow and must not be presented as satisfying missing scVI stages.
+  clustering workflow and must not be presented as satisfying missing representation stages.
 
 The runner enforces computational contracts; the agent must perform the evidence,
 grouping and review decisions that code cannot infer. Input papers and reports

@@ -8,13 +8,14 @@
     "torch": "2.14.1",
     "scanpy": "1.12.4",
     "anndata": "0.13.4",
-    "scikit-misc": "0.5.3"
+    "scikit-misc": "0.5.3",
+    "harmonypy": "0.0.10"
   },
   "structural_checks": {
     "status": "passed",
     "canonical_skills": 6,
     "deepseek_adapters": 6,
-    "english_markdown_files": 68,
+    "english_markdown_files": 66,
     "knowledgebase_sync": "passed",
     "relative_links": "passed"
   },
@@ -22,20 +23,28 @@
     "status": "passed",
     "command": "python -m pip check"
   },
-  "core_and_scvi_suite": {
+  "core_scvi_and_harmony_suite": {
     "status": "passed",
-    "tests": 42,
+    "tests": 50,
     "failures": 0,
     "errors": 0,
     "skipped": 0
   },
-  "final_scvi_regression": {
-    "status": "passed",
-    "tests": 7,
-    "failures": 0,
-    "errors": 0,
-    "skipped": 0,
-    "reason": "Rechecked after isolating training logs and recording actual train/validation/test splits"
+  "runtime_and_harmony_update": {
+    "version_unchanged_by_user_request": true,
+    "suite_elapsed_seconds": 70.126,
+    "checks": [
+      "scVI remains the default",
+      "runtime notice includes possible pipeline duration above one hour",
+      "simulated CUDA availability dispatches auto to GPU or CPU without changing backend",
+      "explicit unavailable GPU fails without backend fallback",
+      "missing dependencies do not trigger backend fallback",
+      "Harmony requires a verified nonmissing batch field with multiple categories",
+      "real 120-cell Harmony preserves full-gene counts, expression and cell order",
+      "cell-cycle regression before PCA, corrected coordinates and four candidate graphs",
+      "Harmony reports actual backend, device and elapsed time without claiming a scVI model"
+    ],
+    "limitations": "Synthetic CPU execution and mocked device dispatch only; no real-data rerun, GPU execution, performance comparison or biological equivalence established"
   },
   "real_training": {
     "backend": "scvi",

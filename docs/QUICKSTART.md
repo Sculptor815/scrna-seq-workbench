@@ -52,7 +52,7 @@ This writes `filtered.h5ad`, a cell exclusion ledger, a gene exclusion ledger an
 ## 5. Train scVI, compare clusters and save UMAP
 
 ```text
-python plugins/scrna-seq-workbench/scripts/scrna.py integrate --input work/demo-qc/filtered.h5ad --species human --hvg 80 --latent 5 --max-epochs 2 --no-early-stopping --neighbors 15 --neighbors-grid 15 --resolutions-grid 1 --outdir work/demo-scvi
+python plugins/scrna-seq-workbench/scripts/scrna.py integrate --input work/demo-qc/filtered.h5ad --species human --device cpu --hvg 80 --latent 5 --max-epochs 2 --no-early-stopping --neighbors 15 --neighbors-grid 15 --resolutions-grid 1 --outdir work/demo-scvi
 ```
 
 Open `work/demo-scvi/umap_clusters.png`. The runner selected 80 highly variable

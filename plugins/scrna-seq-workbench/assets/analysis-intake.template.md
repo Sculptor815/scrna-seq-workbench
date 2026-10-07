@@ -34,7 +34,9 @@ Specified values or delegated scope:
 - Actual metadata fields and meanings:
 - QC inspection results and per-sample proposed filters:
 - Evidence, paper-method branch and deviations:
-- Required scVI latent dimensions and any auxiliary PCA diagnostics:
+- Runtime notice (full pipeline may exceed 1 hour), hardware check and backend choice:
+- Decision source; default scVI or explicit Harmony request:
+- scVI latent dimensions or Harmony PCA dimensions and cycle correction:
 - Batch correction choice and confounding:
 - HVGs, neighbors, resolution, seeds, device and training cap:
 - Subsampling method, count, seed and limitations, if any:

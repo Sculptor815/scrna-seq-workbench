@@ -2,6 +2,20 @@
 
 ## 0.4.0 - 2026-10-07
 
+### Runtime and backend-choice update (version unchanged)
+
+- Explain that a complete pipeline may exceed 1 hour before starting.
+- Keep scVI as the default; auto-select available CUDA, otherwise CPU.
+- Offer longer CPU scVI or explicitly selected Harmony (harmonypy) with verified
+  technical batches; never switch backends silently.
+- Add the executable Harmony route, cycle regression before PCA, separate
+  dependencies, method-specific artifacts and runtime provenance.
+- Synchronize the knowledge base, Skill instructions, intake and user guides.
+- Explain scVI's NB count model and variational inference versus direct PCA,
+  including runtime costs and the need for biological validation.
+
+### Initial 0.4.0 changes
+
 - Require scVI with or without technical batches; reject PCA as an integration backend.
 - Score full-gene S/G2M expression, validate species/identifier coverage and register cycle covariates before fitting.
 - Save cycle diagnostics, training history, reloadable model data and parameter-grid candidates for user review.

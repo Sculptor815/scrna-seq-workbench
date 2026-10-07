@@ -1,6 +1,7 @@
 # Select a reviewed parameter candidate
 
-The integration runner trains scVI once, then saves candidate graphs, UMAPs and
+The integration runner fits the selected scVI or Harmony backend once, then saves
+candidate graphs, UMAPs and
 Leiden partitions in the full-gene H5AD. Review parameter_candidates.csv and its
 PNGs together with markers, QC, batch and cell-cycle diagnostics. Show the user
 the figures. Record their selection or explicit delegation and your rationale.

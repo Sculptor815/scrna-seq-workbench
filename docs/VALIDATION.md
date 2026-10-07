@@ -1,6 +1,7 @@
 # Validation and known limitations
 
-Version 0.4.0 requires scVI with cell-cycle nuisance covariates and bundles the
+Version 0.4.0 defaults to scVI with cell-cycle nuisance covariates, supports
+explicitly selected Harmony with regression before PCA, and bundles the
 owner knowledge base through all six Skills. New tests exercise species/identifier
 coverage, missing or unexpressed cycle genes, explicit overrides, PCA rejection,
 count preservation and real CPU scVI with and without technical batches, including
@@ -27,7 +28,9 @@ cell cycle, model persistence and tamper/dimension failures. Use the current
 validation.json for results in the execution environment; earlier local results
 are preserved in [the v0.3.0 record](validation-v0.3.0.json). Each new commit needs
 its own CI result. CPU scVI tests run in a dedicated CI job; core environments
-without scVI explicitly skip the real-training test. Synthetic execution checks
+without scVI explicitly skip the real-training test. The Windows/Linux core jobs
+install Harmony and exercise its actual count/graph contracts. Hardware dispatch
+is tested with simulated availability; this does not establish real GPU execution. Synthetic execution checks
 measure execution, not biological accuracy or convergence.
 
 ## Earlier local biological evaluation

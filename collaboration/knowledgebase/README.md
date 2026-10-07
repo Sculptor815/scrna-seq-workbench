@@ -6,12 +6,13 @@ This document is the English edition of the revised analysis policy agreed with
 the owner. It applies across scRNA-seq datasets, including primary tissues, cell
 lines and differentiation experiments, with no dataset-specific cluster labels or preferred parameter choices.
 
-**Fixed project policies: scVI is required for every analysis group, with or
-without technical batches. Always score and correct cell cycle unless the user
-explicitly overrides the cell-cycle policy. Preserve raw counts and cell-cycle scores.**
+**Fixed project policies: scVI is the default for every analysis group, with or
+without technical batches. Harmony (harmonypy) is an explicitly selected CPU
+alternative for verified technical batches. Always score and correct cell cycle
+unless the user explicitly overrides that policy. Preserve counts and scores.**
 
 Numerical values below are starting points that require validation, not universal
-biological thresholds or necessarily software defaults. Mandatory scVI and the
+biological thresholds or necessarily software defaults. Default scVI and the
 cell-cycle rule are owner-selected analysis policies, not claims that scVI is
 universally optimal or that every question benefits from removing cell-cycle
 variation. This document replaces the previous learning
@@ -27,6 +28,7 @@ parameters. Record what was observed, the decision, its reason and its validatio
 ```text
 Establish dataset relationships from the paper, metadata and/or user clarification
   -> Define the number of analysis groups and which inputs belong in each group
+  -> Explain runtime, check hardware and record backend choice (default scVI)
   -> Verify counts and metadata
   -> Calculate QC on counts
   -> Apply justified low-quality filters; inspect high outliers
@@ -34,7 +36,7 @@ Establish dataset relationships from the paper, metadata and/or user clarificati
   -> Preserve counts; normalize/log-transform a working expression matrix
   -> Score cell cycle before restricting features to HVGs
   -> Select HVGs from counts, accounting for verified technical batches
-  -> Fit scVI in every analysis group, with cell-cycle nuisance covariates
+  -> Fit default scVI with cycle covariates, or explicitly selected Harmony after cycle regression and PCA
   -> Transfer latent coordinates to the full-gene object
   -> Neighbors -> UMAP -> Leiden
   -> Validate markers, QC, batches, biology, cell cycle and stability
@@ -84,37 +86,107 @@ Do not infer grouping solely from filenames, file count, a shared accession,
 tissue labels or timepoints. A previous script's grouping is a historical choice
 to verify, not sufficient justification to reuse it.
 
-### 1.2. Required scVI representation, regardless of batch structure
+### 1.2. Runtime notice, hardware and backend choice
 
-**Every analysis group must pass through scVI before the final neighbor graph,
-Leiden clustering and UMAP used for annotation are generated.** This applies to
-single samples, single batches, datasets with no reliable batch metadata, and
-multiple verified technical batches. scVI is not conditional on a need for batch
-correction; representation learning and the batch-key decision are separate.
+Before starting a full pipeline, explain in the user's language that **the whole
+pipeline may take more than 1 hour**. Cell/gene counts, hardware, training,
+candidate comparisons and annotation review affect runtime. Do not promise a
+fixed duration; distinguish measured elapsed time from estimates.
 
-- With a justified technical batch field, register that field as `batch_key`.
-- Without one, use `batch_key=None` and still train scVI. Never fabricate a batch
-  column or treat biological condition as a batch merely to satisfy this step.
-- In either case, preserve verified counts and register `S_score` and `G2M_score`
-  as continuous nuisance covariates under the fixed cell-cycle policy.
-- Use `X_scvi` for the final neighbor graph. PCA may support cell-cycle diagnostics
-  or an explicitly identified comparison, but it cannot replace the required scVI
-  representation or satisfy completion of this workflow.
-- Missing dependencies, lack of a GPU, limited resources or a training failure do
-  not authorize a PCA substitution. Resolve dependencies or use a feasible,
-  documented CPU scVI run. If training cannot proceed, report the specific blocker
-  and leave the required stage incomplete; do not label a PCA-only run complete.
+**scVI is the default**, including single samples and groups without batch metadata.
+Check CUDA availability in the actual execution interpreter, not just whether a
+GPU appears in the computer's specifications. With a compatible GPU, recommend
+GPU scVI. `--device auto` selects available CUDA, otherwise CPU; an explicitly
+requested unavailable GPU fails visibly.
 
-A previously trained scVI model/embedding may satisfy this stage only when its
-input cells, feature set, preprocessing, cell-cycle covariates and training
-provenance are verified as suitable for the current analysis group. An embedding
-name alone is insufficient. Changing only neighbor count or Leiden resolution
-does not require retraining an otherwise valid scVI representation.
+Without a compatible GPU, explain these choices before expensive computation:
 
-For historical reports, retain the backend actually used. Mark a PCA-only result
-as not fulfilling the current scVI requirement rather than relabeling it as scVI.
-If an installed plugin cannot implement this policy, report the implementation
-gap and address it before claiming a compliant completed analysis.
+1. Keep CPU scVI and accept a potentially much longer wait (the default).
+2. Explicitly select Harmony through `harmonypy` for a CPU alternative when
+   justified technical batches exist. It often runs faster, but changes the
+   representation method and does not guarantee equivalent biological results.
+
+Offer the choice once, honor preferences already given, and proceed with scVI
+when no alternative is selected and analysis is authorized. Do not add repeated
+approval gates. Resource limits, absent dependencies, failed training or elapsed
+time do not authorize an automatic backend switch. If the selected method cannot
+run, report the specific blocker and keep that stage incomplete until resolved
+or the user selects another supported route. Record backend, decision source,
+hardware availability, actual device, runtime notice and measured elapsed time.
+
+### 1.3. Representation contracts for the selected route
+
+- **scVI:** use verified counts, with `S_score` and `G2M_score` as continuous
+  nuisance covariates. Register a justified technical `batch_key`, or use
+  `batch_key=None`. Build neighbors from `X_scvi`. Never manufacture metadata or
+  substitute biological condition merely to meet a batch requirement.
+- **Harmony:** use `--backend harmony` only after an explicit user choice. The
+  runner requires a nonmissing verified batch field with at least two observed
+  categories. Preserve counts and full-gene normalized expression. Score cell
+  cycle on the full-gene object, regress the scores on an HVG log-expression copy,
+  scale, compute PCA, then correct the PCA coordinates with `harmonypy`. Build
+  neighbors from `X_pca_harmony`. Residuals are not count input. This route has no
+  scVI model, scVI latent space or scVI-derived expression estimates.
+- Without a justified technical batch, continue with no-batch scVI. Do not invent
+  categories, silently fall back to plain PCA or report an unperformed Harmony
+  correction as completed. The CLI intentionally rejects plain PCA as a backend.
+- Cell-cycle scoring/correction, count preservation, candidate review and
+  annotation evidence requirements apply to both routes. A cell-cycle exception
+  still requires an actual explicit user override with a recorded reason.
+
+Reuse a representation only when its input cells, features, preprocessing,
+cell-cycle handling and model/backend provenance suit the current analysis group.
+An embedding name alone is insufficient. Changing only neighbors or Leiden
+resolution does not require repeating a valid representation fit. Retain the
+actual backend and version in historical reports; do not relabel past results.
+
+### 1.4. Explain scVI versus a direct PCA-to-UMAP workflow
+
+Explain this comparison briefly when presenting backend choices. UMAP is the
+visualization in both routes; the important difference is the representation
+used to build the neighbor graph:
+
+| Aspect | Direct PCA route | Default Workbench scVI route |
+|---|---|---|
+| Input to representation | Typically normalized/log-transformed, selected/scaled expression | Verified raw counts on selected HVGs |
+| Representation | Linear principal components (`X_pca`) | Learned nonlinear latent coordinates (`X_scvi`) |
+| Count variability | No explicit count likelihood in ordinary PCA | Negative-binomial likelihood with gene dispersion |
+| Technical factors | PCA alone has no explicit batch/covariate model | Registered batches and S/G2M nuisance covariates enter the model |
+| Downstream steps | PCA -> neighbors -> UMAP/Leiden | scVI -> neighbors -> UMAP/Leiden |
+
+PCA summarizes major variance directions; preprocessing strongly affects which
+signals dominate. It remains a useful, fast baseline with interpretable gene
+loadings. See the [Scanpy PCA API](https://scanpy.readthedocs.io/en/stable/generated/scanpy.pp.pca.html).
+
+Workbench explicitly sets `gene_likelihood="nb"`, not ZINB. In mean/dispersion
+notation, an NB count has variance `mu + mu^2 / theta`, allowing variance above
+the mean. The model includes library-size scaling and can account for declared
+technical factors while learning cell representations. These are useful modeling
+capabilities for noisy count data, not evidence that every technical effect has
+been removed. See the [SCVI API](https://docs.scvi-tools.org/en/stable/api/reference/scvi.model.SCVI.html)
+and [model description](https://docs.scvi-tools.org/en/stable/user_guide/models/scvi.html).
+
+Training uses a variational autoencoder to optimize an evidence lower bound
+(ELBO): it balances expected count log-likelihood with a KL regularization term
+for the approximate posterior. Describe NB as the observation model, not as an
+optimization algorithm that improves UMAP. See
+[variational inference](https://docs.scvi-tools.org/en/stable/user_guide/background/variational_inference.html).
+
+Potential advantages are count-aware noise modeling, nonlinear structure and
+joint modeling of supported covariates. Costs include training time, additional
+hyperparameters and less interpretable latent axes. Poor convergence, mismatched
+inputs or batch/biology confounding can undermine results; inappropriate correction
+can suppress meaningful biology. No guaranteed advantage over PCA, perfect batch
+removal, recovery of missing expression or better annotation should be promised.
+Evaluate markers, rare populations, biological conservation, residual technical
+effects and stability. A prettier UMAP is not a validation criterion.
+
+The runner exports a latent representation and preserves expression/counts; it
+does not automatically replace expression with denoised estimates. Harmony is a
+separate PCA correction method and does not fit the NB count model. Keep this
+canonical explanation here and synchronize the plugin copy; Skills should direct
+the agent to summarize it in the user's language rather than maintain competing
+scientific policies.
 
 ## 2. Verify raw counts
 
@@ -251,7 +323,8 @@ do not silently substitute zero scores or skip correction.
 
 The required sequence is cell-cycle scoring on the full normalized/log working
 object, followed by copying the HVG subset (which retains the scores in `obs`),
-then registering the scores with scVI. Scoring alone is not correction. The
+then registering the scores with scVI for the default route. Scoring alone is
+not correction. For scVI, the
 scVI registration must include these covariates even when `batch_key=None`:
 
 ```python
@@ -271,7 +344,10 @@ cell-cycle signal disappears. Do not feed regression residuals into scVI as coun
 A PCA of cell-cycle genes colored by `phase` can inspect the scores before scVI;
 it does not itself correct cell cycle or replace model training. For an auxiliary
 regressed-PCA comparison, use a separate normalized working matrix and preserve
-counts. Neither this comparison nor its regression satisfies the required scVI step.
+counts. For an explicitly selected Harmony route, regress the scores on the
+HVG log-expression copy before scaling/PCA and Harmony. Keep this correction
+separate from scVI covariate registration in the provenance; PCA alone does not
+complete either selected backend.
 
 ## 14. Validate cell-cycle correction
 
@@ -374,7 +450,8 @@ training history, convergence and actual stopping epoch.
 
 For a GPU run, verify CUDA availability and device selection before requesting
 `accelerator="gpu", devices=1`. A CPU run is a separately recorded execution
-choice that still uses scVI, not a reason to substitute PCA. If no feasible
+choice that still uses scVI. Offer the explicit Harmony alternative described
+in Section 1.2 when suitable technical batches exist. If no feasible
 training environment is available, report the blocker. HVG selection, neighbors,
 UMAP and Leiden can remain CPU-bound; reduced
 GPU utilization during these steps is not evidence of failed training.
@@ -384,9 +461,9 @@ versions. An import error is not a model-parameter failure.
 
 ## 22. Choose n_neighbors
 
-Build the final graph using `use_rep="X_scvi"` after validating the required scVI
-representation. Keep any auxiliary PCA comparison under separate graph/output keys;
-it cannot supply the final graph in place of scVI under this policy.
+Build the final graph using `use_rep="X_scvi"` for scVI or
+`use_rep="X_pca_harmony"` for explicitly selected Harmony, after validating that
+representation. Keep auxiliary uncorrected PCA comparisons under separate keys.
 Do not build the biological clustering graph from two-dimensional UMAP coordinates.
 
 By default, run several candidate values and let the user choose after reviewing
@@ -543,7 +620,8 @@ a parameter sweep was executed when only code or a proposed grid was delivered.
 | Parameter | Starting value or policy |
 |---|---|
 | Analysis groups / joint vs. separate analysis | Determine from study relationships and the research question; clarify unresolved choices with the user |
-| Representation backend | scVI required for every analysis group, with or without technical batches; PCA is auxiliary only |
+| Representation backend | scVI by default; Harmony only by explicit choice with verified technical batches |
+| Runtime / hardware | Full pipeline may exceed 1 hour; auto uses available CUDA for scVI, otherwise CPU |
 | Gene minimum detected cells | 3 |
 | Cell minimum genes | 300; calibrate to distributions |
 | Cell minimum counts | 1,000; calibrate to assay/sample |
@@ -613,8 +691,10 @@ validation outcome**. Include:
 - Matrix representations and cell/gene numbers before and after each QC step.
 - QC thresholds, exclusions, doublet settings and cell-cycle gene coverage.
 - Batch definition, confounding assessment and biological variables preserved.
-- Actual backend (`scvi` for the required representation), verified batch key or
-  `None`, and registered cell-cycle covariates; identify auxiliary PCA separately.
+- Actual backend (`scvi` or explicitly chosen `harmony`), decision source, runtime
+  notice, hardware and elapsed time; verified batch key or `None` for scVI.
+- Actual cell-cycle handling: scVI covariates or regression before Harmony PCA;
+  identify auxiliary PCA separately.
 - HVG list/order, model/training parameters, seeds, software versions and hardware.
 - Training history, latent coordinates, graphs, embedding and cluster labels.
 - Marker, QC, batch, cell-cycle and robustness checks, with unresolved issues.
@@ -622,8 +702,10 @@ validation outcome**. Include:
   specificity-screen provenance, human review decisions and annotation version.
 - Both saved figures and directly displayed review figures, with the expression
   representation and cluster key stated.
-- Full-gene H5AD, saved model and matching feature/registration information for
-  reloading, figures and a readable report in an isolated output directory.
+- Full-gene H5AD and figures/report in an isolated output directory. For scVI,
+  save a reloadable model with matching feature/registration information. For
+  Harmony, save the corrected embedding, feature order, PCA loadings and objective
+  history; do not claim a scVI model exists.
 
 Do not infer completion from file existence. Distinguish execution success from
 biological validation and clearly label missing or unverified evidence.
@@ -649,9 +731,9 @@ biological validation and clearly label missing or unverified evidence.
 15. Treat external specificity screens as reference evidence, not automatic labels.
 16. Present an evidence-based recommendation and preserve genuine human review.
 17. Keep reusable knowledge separate from dataset-specific decisions.
-18. Require scVI for every analysis group regardless of batch structure. Use
-    `batch_key=None` when appropriate, preserve cell-cycle covariates, and never
-    substitute PCA because dependencies, hardware or training are inconvenient.
+18. Explain that the pipeline may exceed 1 hour. Default to scVI, with
+    `batch_key=None` when appropriate; offer CPU scVI or explicitly chosen Harmony
+    when GPU scVI is unavailable. Never switch backends silently or fabricate batches.
 
 ## 31. Start annotation with the plugin's documented workflow
 
@@ -838,12 +920,13 @@ implicitly or feed residuals to count models.
 
 ## 37. Implementation and reference sources
 
-Mandatory scVI, the fixed cell-cycle policy and numerical starting values are
+Default scVI, the explicit Harmony alternative, fixed cell-cycle policy and numerical starting values are
 project decisions.
 These references describe relevant API behavior; consult the version matching
 the installed environment before execution.
 
 - [scvi-tools SCVI API](https://docs.scvi-tools.org/en/stable/api/reference/scvi.model.SCVI.html): count-layer registration, continuous nuisance covariates, model and training interfaces.
+- [Scanpy Harmony wrapper](https://scanpy.readthedocs.io/en/stable/generated/scanpy.external.pp.harmony_integrate.html): Harmony adjusts PCA coordinates using the Python implementation harmonypy.
 - [Scanpy HVG API](https://scanpy.scverse.org/en/stable/generated/scanpy.pp.highly_variable_genes.html): seurat_v3 count input and batch-aware selection.
 - [Scanpy cell-cycle scoring](https://scanpy.scverse.org/en/stable/generated/scanpy.tl.score_genes_cell_cycle.html): scoring interface and phase labels.
 - [Scanpy Scrublet API](https://scanpy.scverse.org/en/stable/api/generated/scanpy.pp.scrublet.html): doublet-detection interface.

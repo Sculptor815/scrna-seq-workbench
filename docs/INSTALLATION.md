@@ -91,17 +91,28 @@ Use `.venv/bin/python` wherever the examples below say `python`. If the system
 does not provide `python3.12` or the venv module, install them through your system
 administrator or Python distribution first.
 
-### Required scVI and optional condition differential expression
+### Default scVI, optional Harmony and condition differential expression
 
-requirements-scvi.txt includes the core packages and is required for new
-representation workflows. Add condition DE dependencies when needed:
+requirements-scvi.txt includes the core packages for the default representation
+workflow. For explicitly selected Harmony, install requirements-harmony.txt instead;
+it includes harmonypy and needs no PyTorch/scVI installation. Harmony requires
+verified technical batches. Add condition DE dependencies when needed:
 
 ```text
 python -m pip install -r plugins/scrna-seq-workbench/requirements-scvi.txt
 python -m pip install -r plugins/scrna-seq-workbench/requirements-de.txt
 ```
 
-scVI runs on CPU by default. For GPU use, follow the
+For the selected Harmony route:
+
+```text
+python -m pip install -r plugins/scrna-seq-workbench/requirements-harmony.txt
+```
+
+The full pipeline may exceed 1 hour. scVI defaults to --device auto, using an
+available compatible CUDA GPU or otherwise CPU. CPU scVI remains available if
+you accept a longer wait; Harmony is an explicit CPU alternative, not an automatic
+fallback. For GPU use, follow the
 [PyTorch installation selector](https://pytorch.org/get-started/locally/) for your
 system, then check `python -c "import torch; print(torch.cuda.is_available())"`.
 Use `--device gpu` only when the environment can access a compatible GPU.

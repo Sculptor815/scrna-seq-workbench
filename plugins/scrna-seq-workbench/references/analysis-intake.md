@@ -6,8 +6,14 @@ workflow shared by the research entry point and individual analysis Skills.
 
 Read the [required agent policy](agent-policy.md) and the relevant knowledge-base
 sections before choosing stages. Record how datasets form analysis groups from
-papers/metadata or user clarification; every new representation requires scVI,
-even without batches.
+papers/metadata or user clarification. Default to scVI even without batches;
+Harmony is an explicit alternative with verified technical batches. Before a full
+run, tell the user it may exceed 1 hour. Check compatible GPU availability in the
+execution environment; offer GPU scVI, slower CPU scVI or explicitly selected
+Harmony. Honor earlier choices, keep scVI by default, and do not silently switch.
+Record the notice, choice, decision source and hardware in the intake record.
+Summarize the scVI-versus-PCA explanation in knowledge-base Section 1.4 alongside
+these choices, with the potential benefits and limits appropriate to the user.
 
 ## Ask about facts before technical numbers
 

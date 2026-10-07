@@ -7,7 +7,7 @@ directories in the user's project, not in this package/cache.
 |---|---|---|---|
 | report | Report + verified metrics JSON | normalized_metrics.json, review.md | sample, platform/assay, species, report version |
 | qc | Raw integer UMI X or counts layer | filtered.h5ad, cell_qc.csv, gene_qc.csv | sample_id or explicit single-sample label |
-| integrate | H5AD with counts and explicit species; mapped cycle gene set when needed | full-gene integrated.h5ad, required scVI model, cycle diagnostics, candidate graphs/Leiden/UMAP and training history | verified batch key or None; S/G2M covariates unless explicit user override; parameter selection pending review |
+| integrate | H5AD with counts and explicit species; mapped cycle gene set when needed | full-gene integrated.h5ad; scVI model/history or selected Harmony PCA/objective outputs; cycle diagnostics and candidate graphs/Leiden/UMAP | verified batch key (None allowed for scVI); S/G2M covariates for scVI or regression before Harmony PCA unless explicit user override; parameter selection pending review |
 | annotate | Full retained genes/counts + cluster IDs | annotated.h5ad, proposals, evidence, exploratory markers | species, tissue, reference provenance |
 | de | Reviewed labels + counts | pseudobulk matrices/design, exclusions, DE tables | actual donor_id and condition |
 

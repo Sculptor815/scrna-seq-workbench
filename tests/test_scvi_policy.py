@@ -128,7 +128,7 @@ class RealSCVI(unittest.TestCase):
                 folder = Path(temp)
                 a = fixture(); a.write_h5ad(folder/'input.h5ad')
                 extra = ['--batch-key', 'batch'] if with_batch else []
-                args = args_for(folder, '--max-epochs', '2', '--latent', '4', '--hvg', '80',
+                args = args_for(folder, '--device', 'cpu', '--max-epochs', '2', '--latent', '4', '--hvg', '80',
                                 '--batch-size', '32', '--neighbors', '10', '--neighbors-grid', '10', '15',
                                 '--resolutions-grid', '0.5', '1', *extra)
                 with stage_run('integrate', args.outdir, vars(args), [args.input]) as report:

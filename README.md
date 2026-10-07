@@ -17,12 +17,14 @@ defines which datasets to analyze together, and runs the relevant stages.
 | Study selection and exploration | `scrna-research` | Relevant studies, experimental context and expression summaries |
 | Sequencing report review | `sequencing-report-review` | Sequencing metrics and delivery checks |
 | Quality control | `scrna-qc` | QC plots, filtering records, doublet assessment when applicable and filtered counts |
-| Representation and clustering | `scrna-scvi-umap` | scVI model, cell-cycle diagnostics, candidate clusters and UMAPs |
+| Representation and clustering | `scrna-scvi-umap` | scVI model or selected Harmony embedding, cell-cycle diagnostics, candidate clusters and UMAPs |
 | Cell annotation | `scrna-cell-annotation` | Marker expression, candidate cell types and human review records |
 | Condition comparison | `scrna-condition-de` | Donor-level pseudobulk counts and differential-expression results |
 
-New representation workflows use **scVI with cell-cycle covariates**, with or
-without technical batches. Raw counts and the full retained gene set are preserved.
+New representation workflows default to **scVI with cell-cycle covariates**, with
+or without technical batches. Users may explicitly choose Harmony for verified
+technical batches; that route regresses cell-cycle scores before PCA. Raw counts
+and the full retained gene set are preserved.
 
 Several neighbor counts and Leiden resolutions are presented for selection.
 Annotation follows tissue-specific marker evidence and HPA-guided review, with
@@ -31,6 +33,40 @@ review; condition DE requires biological donor replicates and reviewed annotatio
 
 Use `scrna-research` to plan an analysis, or enter a specific stage when suitable
 intermediate results already exist.
+
+## Runtime and backend choice
+
+**The complete pipeline may take more than 1 hour. scVI remains the default.**
+Runtime depends on cell/gene counts, hardware, training, parameter comparisons
+and annotation review; this is not a completion-time estimate.
+
+| Your environment or preference | Route |
+|---|---|
+| Compatible CUDA GPU available to PyTorch | Use scVI; `--device auto` selects the available GPU. |
+| No compatible GPU; willing to wait longer | Keep scVI on CPU. It is supported, but training can take substantially longer. |
+| Prefer a CPU alternative | Explicitly choose Harmony via the Python package `harmonypy` (`--backend harmony`). Verified technical batches are required. |
+
+The backend never switches automatically because a GPU or package is missing,
+training is slow, or a run fails. Without another choice, use scVI. Harmony
+adjusts PCA coordinates and often takes less time, but does not guarantee an
+under-one-hour run or equivalent biological results. With no justified technical
+batch, keep no-batch scVI; do not invent a batch or relabel plain PCA as Harmony.
+
+Install `requirements-scvi.txt` for scVI or `requirements-harmony.txt` for Harmony.
+See [backend examples and outputs](docs/USAGE.md#3-compute-a-representation-clusters-and-umap).
+
+### Why default to scVI rather than direct PCA + UMAP?
+
+Workbench's scVI models raw counts with a **negative-binomial likelihood** and
+learns a nonlinear cell representation, accounting for library size and registered
+batch/cell-cycle factors. These capabilities can help distinguish biological
+structure from count variability. Ordinary PCA summarizes linear variation in
+preprocessed expression without that count model. Both routes still use a
+neighbor graph followed by UMAP for visualization.
+
+scVI takes longer and is not guaranteed to outperform PCA on every dataset.
+Review marker support and biological conservation, not just UMAP appearance.
+See the [method comparison and sources](collaboration/knowledgebase/README.md#14-explain-scvi-versus-a-direct-pca-to-umap-workflow).
 
 ## Bundled knowledge base
 
@@ -51,8 +87,8 @@ See [how agents use the knowledge base](docs/AGENT_KNOWLEDGE.md).
    [analyze your own data](docs/USAGE.md).
 
 Calculations run in your local or server Python environment. Install
-`requirements-scvi.txt` for representation analysis; condition DE has additional
-dependencies.
+`requirements-scvi.txt` for default scVI, or `requirements-harmony.txt` for selected
+Harmony; condition DE has additional dependencies.
 
 Example request:
 
@@ -119,9 +155,10 @@ Example request:
 
 ### Current software checks
 
-Version 0.4.0 passed **42 local tests**, including CPU scVI training with and
-without batches, count preservation, cell-cycle covariate registration, model
-save/reload and candidate graph outputs. Package checks cover knowledge-base
+Version 0.4.0 passed **50 local tests**, including CPU scVI training with and
+without batches, real Harmony, count/expression preservation, cell-cycle handling,
+model save/reload, candidate graphs and backend/device dispatch. GPU availability
+was simulated for dispatch tests; actual GPU training was not tested. Package checks cover knowledge-base
 synchronization, Skill entry points and standalone installation files.
 
 These synthetic tests assess execution, not biological annotation accuracy.
