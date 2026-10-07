@@ -1,10 +1,10 @@
-# Universal scRNA-seq QC and scVI Parameter Decision Knowledge Base
+# Universal scRNA-seq Analysis and Cell Annotation Knowledge Base
 
 Updated: 2026-10-07.
 
 This document is the English edition of the revised analysis policy agreed with
 the owner. It applies across scRNA-seq datasets, including primary tissues, cell
-lines and differentiation experiments, rather than only HSC differentiation.
+lines and differentiation experiments, with no dataset-specific cluster labels or preferred parameter choices.
 
 **Fixed project policy: always score and correct cell cycle unless the user
 explicitly overrides this policy. Preserve raw counts and cell-cycle scores.**
@@ -36,6 +36,10 @@ Establish dataset relationships from the paper, metadata and/or user clarificati
   -> Transfer latent coordinates to the full-gene object
   -> Neighbors -> UMAP -> Leiden
   -> Validate markers, QC, batches, biology, cell cycle and stability
+  -> Follow the annotation plugin's evidence and review workflow
+  -> Investigate unresolved populations with alternative candidates and markers
+  -> Present reference judgments and expression evidence for human review
+  -> Apply reviewed labels; save and display annotation outputs
 ```
 
 Reuse documented intermediate results when their provenance and settings are known.
@@ -252,7 +256,7 @@ Multiple categories alone do not make a field a technical batch.
 | Capture, library, processing batch, plate, sequencing run, lane | Consider when it represents a relevant technical effect |
 | Sample, donor, patient, mouse, replicate | Determine its biological and technical meaning first |
 | Cell type, cluster | Do not use as a batch variable |
-| Tissue, FL/YS, developmental stage, Day0/Day6, treatment, disease, dose, genotype | Preserve as biological variables by default |
+| Tissue, developmental stage, timepoint, treatment, disease, dose, genotype | Preserve as biological variables by default |
 
 Check confounding between technical batch and the biological comparison. Do not
 claim correction can separate effects that the experimental design cannot distinguish.
@@ -336,30 +340,75 @@ GPU utilization during these steps is not evidence of failed training.
 Check arguments against installed Scanpy, scvi-tools, PyTorch and training framework
 versions. An import error is not a model-parameter failure.
 
-## 22. Neighbors
+## 22. Choose n_neighbors
 
-Compute neighbors using `use_rep="X_scvi"`, starting with 30 neighbors.
+Build the graph in a validated representation: use `use_rep="X_scvi"` after
+scVI, or an explicitly selected PCA representation for a conventional workflow.
+Do not build the biological clustering graph from two-dimensional UMAP coordinates.
 
-| Candidate n_neighbors | Intended emphasis |
+For a typical exploratory scVI workflow, 30 is a project starting point.
+Compare a small range such as 15, 30 and 50 when supported by the cell count.
+These are practical candidates, not universal optima or HPA requirements.
+
+| Candidate n_neighbors | Interpretation and check |
 |---|---|
-| 10-15 | Very local structure and small populations |
-| 20 | Subpopulation analysis |
-| 30 | General starting point |
-| 40-50 | Broader topology |
-| Above 50 | Atlas/global structure, requiring explicit justification |
+| 10-15 | Emphasizes local structure; inspect fragmentation and sensitivity to noise |
+| 20-30 | General starting range; inspect both major lineages and small populations |
+| 40-50 | Emphasizes broader connectivity; check that distinct or rare populations remain distinguishable |
+| Above 50 | Use only with a specific rationale and evidence that relevant local structure is preserved |
 
-Keep the value compatible with the cell count and check that rare populations
-are not lost through excessive smoothing.
+Choose using heterogeneity, target granularity, rare-population preservation,
+graph connectivity and robustness, not cell count alone. A smaller neighborhood
+does not guarantee recovery of a rare type. Check whether apparent fragments
+have reproducible marker programs or instead reflect QC, residual cell cycle,
+batch effects or unstable graph connections.
 
-## 23. Leiden and UMAP
+Keep `n_neighbors < n_cells`; reconsider the range after subsetting. Initially
+hold latent coordinates, distance metric and seed fixed while comparing graphs.
+Record the graph key, representation, metric, neighbor count and software version.
+A changed graph requires rerunning Leiden and any UMAP intended to represent that
+graph; it does not by itself require retraining scVI.
 
-Start Leiden resolution at 1.0. Consider 0.5, 0.8, 1.0, 1.2 and 1.5 when justified.
-Resolution has no universal mapping to cell-type granularity. Inspect marker
-coherence, cluster stability, merged lineages and artificial fragmentation of
-continuous states. More clusters are not automatically better.
+If cells merely look too scattered because their plotted dots are tiny, adjust
+point size and figure dimensions first. Point size changes display only;
+`n_neighbors` changes the graph and can change the biological conclusions.
 
-Record random seeds. UMAP is a visualization, not proof that a model or cluster
-assignment is correct.
+## 23. Choose Leiden resolution and interpret UMAP
+
+Leiden partitions the neighbor graph. Higher resolution generally produces finer
+partitions, but a numerical resolution has no universal mapping to cell types.
+Results depend on the graph, representation, cells, backend and random seed.
+
+For a broad initial survey, compare a bounded set such as 0.3, 0.5, 0.8 and 1.0.
+Extend to 1.2 or 1.5 only when finer structure is relevant and supported. These
+values are candidate settings, not an instruction to run every value or select
+the same resolution across datasets.
+
+| Observation | Next decision |
+|---|---|
+| One lineage is split into many clusters with no reproducible distinguishing markers | Compare a lower resolution and inspect QC, batch and cell-cycle effects |
+| Distinct, coherent lineage programs occupy different cells within one cluster | Compare a higher resolution or perform a justified local subclustering analysis |
+| A small cluster has coherent markers and acceptable QC | Preserve and investigate it; small size alone does not justify merging |
+| Cluster boundaries follow a continuous expression gradient | Consider a broad identity plus state labels rather than declaring every partition a distinct type |
+| Major populations change substantially under modest settings or seeds | Revisit the representation, graph and technical effects before final annotation |
+
+Choose a resolution that supports the requested biological granularity with
+coherent markers, interpretable alternatives and reasonable stability. Neither
+the lowest resolution nor the largest number of clusters is inherently best.
+Multiple clusters may legitimately share one broad cell-type label.
+
+When comparing resolution alone, reuse the same graph and UMAP so that only
+cluster labels change. Store each partition under a distinct key, for example
+`leiden_res_0.5`; preserve the selected partition and its settings explicitly.
+Changes to the graph, cell subset or cluster membership invalidate old
+cluster-ID-to-label mappings until reviewed again. Never reuse labels merely
+because the new run has the same number or names of clusters.
+
+UMAP is a display of a high-dimensional representation. Island separation,
+compactness and inter-island distance do not establish identity, lineage
+relationships or differentiation direction. Changes to UMAP `min_dist`, seed,
+point size or layout should not be used to manufacture biological evidence.
+Changing only UMAP display settings does not require rerunning Leiden.
 
 ## 24. Validate technical and biological structure
 
@@ -384,8 +433,8 @@ Candidate comparisons:
 |---|---|
 | HVGs | 2,000 / 3,000 / 4,000 |
 | n_latent | 10 / 20 / 30 |
-| Neighbors | 20 / 30 / 40 |
-| Leiden resolution | 0.8 / 1.0 / 1.2 |
+| Neighbors | 15 / 30 / 50, adjusted to cell count and heterogeneity |
+| Leiden resolution | 0.3 / 0.5 / 0.8 / 1.0; extend only when justified |
 
 Retrain when model inputs or model parameters change. Reuse a validated latent
 representation when changing only neighbors or clustering. Record all attempts
@@ -413,34 +462,27 @@ counts, QC, doublets, batches, HVGs and convergence.
 | Likelihood / dropout | NB / 0.1 |
 | Batch size / maximum epochs | 256 / 400 |
 | Early stopping / patience | ON / 20 |
-| Neighbors / Leiden resolution | 30 / 1.0 |
+| Neighbors | Start at 30 for scVI; compare a bounded range when needed |
+| Leiden resolution | Compare a small candidate set; select using marker coherence and stability |
+| Annotation | Follow the plugin's evidence policy, investigate alternatives, and obtain actual human review |
 
-## 27. FL, YS and hESC examples
+## 27. Transfer principles, not dataset-specific settings
 
-These are historical starting configurations from the analysis discussion, not
-measured results or proof that input files have been validated.
+Keep this knowledge base general. Store accession-specific decisions, cluster
+mappings, chosen parameters and user corrections in the corresponding analysis
+record, not as universal defaults here.
 
-| Dataset | Expected input | HVGs | n_latent | Neighbors | Leiden |
-|---|---|---:|---:|---:|---:|
-| FL | GSE144024_FL_QC.h5ad | 3,000 | 20 | 30 | 1.0 |
-| YS | GSE144024_YS_QC.h5ad | 3,000 | 20 | 30 | 1.0 |
-| hESC Day0 + Day6 | GSE144024_hESC_Day0_Day6_QC.h5ad | 3,000 | 15 | 20 | 0.8 |
+Reuse a previous configuration only after checking assay, species, tissue,
+experimental design, data quality and the requested biological granularity.
+A value that worked in one dataset is a candidate to evaluate elsewhere, not
+evidence that it will work again. Different analysis groups may need different
+settings; matching their cluster counts or UMAP appearance is not a goal.
 
-The earlier script proposed three separate models, with Day0/Day6 together in
-the hESC model. This is a historical configuration, not a confirmed grouping
-decision. Before analysis, consult the original paper and sample metadata, or
-ask the user, to establish how many groups are needed and whether FL, YS, Day0
-and Day6 should be analyzed jointly, separately or in a staged comparison.
-Neither three separate models nor one combined model is the default.
-
-Once grouping is established, choose parameters for each resulting analysis
-group. Use no batch key until reliable technical metadata are identified; do not
-use `day` as a technical batch by default. Apply the fixed cell-cycle correction
-policy to the selected analyses.
-
-The earlier one-copy script did not compute/register cell-cycle scores and does
-not yet implement the final policy. Inspect actual code and data before claiming
-that this has been fixed or that a model has been trained.
+Separate three kinds of statements in reports: a user-selected policy, an
+empirical starting heuristic, and a conclusion supported by the current data.
+Record whether each step was planned, executed, checked or human-reviewed.
+Existing embeddings or filenames do not establish that all current policies,
+including cell-cycle correction, were applied.
 
 ## 28. Import-name conflict troubleshooting
 
@@ -457,7 +499,8 @@ python -c "import scvi; print(scvi.__file__); print(scvi.__version__)"
 
 The path should resolve to the intended installed package. Also avoid script names
 such as `scanpy.py`, `torch.py`, `numpy.py`, `pandas.py` and `anndata.py`.
-The current server-side fix remains unverified until the import check succeeds.
+Do not report the conflict as resolved until this import check succeeds in the
+actual execution environment.
 
 ## 29. Required decision report and artifacts
 
@@ -475,6 +518,10 @@ validation outcome**. Include:
 - HVG list/order, model/training parameters, seeds, software versions and hardware.
 - Training history, latent coordinates, graphs, embedding and cluster labels.
 - Marker, QC, batch, cell-cycle and robustness checks, with unresolved issues.
+- Candidate cell types, positive/contradictory/missing markers, reference coverage,
+  specificity-screen provenance, human review decisions and annotation version.
+- Both saved figures and directly displayed review figures, with the expression
+  representation and cluster key stated.
 - Full-gene H5AD, saved model and matching feature/registration information for
   reloading, figures and a readable report in an isolated output directory.
 
@@ -497,8 +544,195 @@ biological validation and clearly label missing or unverified evidence.
 11. Evaluate biological markers, technical effects and stability beyond UMAP.
 12. Preserve identifiers, feature order, provenance and reproducible outputs.
 13. Report missing inputs, failed checks and unverified results explicitly.
+14. Investigate unresolved populations without forcing an unsupported identity.
+15. Treat external specificity screens as reference evidence, not automatic labels.
+16. Present an evidence-based recommendation and preserve genuine human review.
+17. Keep reusable knowledge separate from dataset-specific decisions.
 
-## 31. Official implementation references
+## 31. Start annotation with the plugin's documented workflow
+
+Read the active [cell annotation skill](../../plugins/scrna-seq-workbench/skills/scrna-cell-annotation/SKILL.md),
+[annotation decisions](../../plugins/scrna-seq-workbench/skills/scrna-cell-annotation/references/annotation.md)
+and [HPA-guided review policy](../../plugins/scrna-seq-workbench/references/hpa-guided-annotation.md).
+Follow their current input, evidence and review contracts before proposing labels.
+This knowledge base supplements those contracts; it does not claim to implement
+new runner behavior.
+
+Confirm species, tissue, developmental or disease context, assay and desired
+granularity. Select a traceable, context-appropriate marker panel. For human
+data, use HPA's documented tissue-specific markers and reference expression when
+appropriate, supplemented by primary literature and matched atlases. HPA is
+human-only: capitalization changes do not validate cross-species marker transfer.
+Adult normal references can lack developmental, malignant or induced states.
+
+Review the plugin's proposals, marker expression, coverage, contradictory
+evidence and review template. Use combinations of available, informative markers;
+one familiar gene or a high heuristic score is insufficient. The plugin requires
+at least two supporting genes for accepted labels; this is its safeguard, not a
+universal numerical rule published by HPA. Scores are relative evidence, not
+calibrated probabilities.
+
+Distinguish cell identity from activation, proliferation, stress and maturation
+state. Prefer a supported broad label when fine detail is uncertain. Do not
+assume that every Leiden partition is a separate cell type.
+
+## 32. Investigate unresolved populations actively
+
+An unresolved label means that the evidence does not yet support a sufficiently
+specific identity. It is neither a QC failure nor proof of a doublet or novel
+cell type. Do not delete cells merely because annotation is difficult.
+
+For each unresolved cluster:
+
+1. Check marker availability, gene identifiers, expression representation, cell
+   number, counts, complexity, mitochondrial fraction and doublet evidence.
+   A missing gene in the input is different from a measured but undetected gene.
+2. Inspect exploratory cluster markers and expression fractions, including
+   comparisons with the most plausible competing populations. A top-marker list
+   dominated by housekeeping, stress or cell-cycle genes may be uninformative.
+3. Expand the candidate set beyond the initial panel. Consult tissue and study
+   context, matched references and primary literature for alternative lineages,
+   progenitors, immature states or context-specific phenotypes. Do not force an
+   expected label when an appropriate reference type is absent.
+4. Build a small discriminating panel for each plausible alternative, including
+   supporting genes and genes that favor competing identities. Use the external
+   specificity skill in Section 33 when reference specificity needs investigation.
+5. Plot these genes on the existing UMAP and summarize detection fractions and
+   mean expression by cluster with dot plots, heatmaps or violins. Determine
+   whether competing programs occur in the same cells or different subregions;
+   separate feature plots alone do not prove coexpression.
+6. If distinct subpopulations are supported, consider local subclustering while
+   preserving parent IDs and provenance. If signals are mixed within cells,
+   assess biological states, ambient RNA and doublets with additional evidence;
+   none of these explanations follows automatically from mixed markers.
+7. Present the best-supported candidate, alternatives, supporting and opposing
+   evidence, limitations and the next discriminating check to the human reviewer.
+
+If evidence remains inadequate, retain an unresolved or broad provisional label.
+Use the active plugin's canonical `Unknown` representation for unresolved/mixed
+output; keep candidate names in evidence fields. Do not silently equate a
+candidate string with an accepted label. Stop adding speculative labels when
+available expression and reference evidence cannot distinguish the alternatives.
+
+## 33. Use the gene specificity skill to evaluate candidate markers
+
+Use [scrnaseq-gene-specificity-screen](https://github.com/Sculptor815/scrnaseq-gene-specificity-screen)
+when a proposed marker panel needs reference specificity assessment or a
+difficult population needs better discriminating genes. Read its `SKILL.md`
+and specificity rules before execution. It evaluates a supplied candidate gene
+list; it does not discover markers from an unspecified transcriptome by itself.
+
+Candidate genes can come from official HPA panels, primary literature, matched
+atlases and exploratory DE in the query. Include alternatives rather than
+screening only genes that support the favored identity. Define explicit target
+cell-type groups using the exact HPA column names, checking coverage and group
+membership before screening. Prefer specific comparison groups to an excessively
+broad lineage group that obscures the distinction of interest.
+
+Run the documented fetch, plotting and screening steps, or reuse an appropriately
+documented cache. Preserve input genes, configuration and target-group order,
+repository revision, reference retrieval information, validation reports,
+expression tables, selected/borderline genes and plots. Download references to
+an isolated analysis directory; do not modify installed plugin/cache contents.
+
+Interpret its output according to its actual rule: selection occurs when the
+cell-type expression peak is assigned to a target group; tissue expression is
+additional annotation and does not filter candidates. Review the inside/outside
+peak ratio, competing peaks, absolute expression and borderline cases. Passing
+this rule does not establish exclusive expression, an official HPA enrichment
+category, or the identity of a query cluster.
+
+A broad target group can select a gene whose peak belongs to a different member
+of that group. A ratio close to one, tied peaks, missing reference values,
+ambiguous identifiers or incomplete population coverage require explicit review.
+Absence from HPA is not evidence of absence in the query; a developmental or
+species-mismatched population may have no suitable HPA counterpart.
+
+Finally, test shortlisted genes in the user's expression data. A useful
+annotation marker needs appropriate query expression, coverage and discrimination
+against the relevant alternatives, not just favorable external reference values.
+Report a screen as unrun, failed or incomplete when appropriate; do not mark a
+gene "validated by the skill" without a traceable successful result.
+
+## 34. Human review determines the final annotation
+
+The agent prepares evidence and reference judgments. Human review determines
+whether a proposed label is accepted, revised, broad-only, mixed or unresolved.
+Do not call an unreviewed proposal final or fabricate a reviewer identity.
+An explicit user correction is a real review decision for the stated population;
+it does not approve every other cluster or turn the decision into an independent
+experimental validation.
+
+Provide a review table with cluster ID and clustering version, cell count,
+proposed broad/detailed identity, alternatives, positive and contradictory
+markers, missing markers, sources, reference limitations, QC assessment,
+subclustering assessment, rationale, confidence and review status. Keep evidence
+confidence separate from human review status: an accepted label need not have
+high evidential confidence.
+
+Complete the plugin's actual review fields and apply reviewed labels through its
+documented workflow. Preserve original cluster IDs and counts. Version the label
+map and retain earlier proposals, review decisions and reasons. Never map labels
+positionally or reuse a mapping after reclustering without verifying membership.
+Regenerate tables, annotated plots and saved annotated data after approved edits.
+Unresolved populations remain visible in reports and analysis denominators;
+apply the plugin's downstream eligibility rules explicitly.
+
+## 35. Figures must support direct review and reproducible saving
+
+Save and directly display the important figures in the active notebook or review
+interface. Saving a file alone does not satisfy a request to view it. If normal
+notebook rendering fails, display the saved PNG explicitly and verify the output.
+
+Use the same UMAP coordinates for cluster labels, annotation labels and candidate
+gene expression within a review version. Include a cluster-ID map alongside
+cell-type labels. Organize marker genes by proposed cell type or competing
+hypothesis, and include a dot plot or heatmap with expression fractions or means.
+State the matrix/layer, normalization, gene identifiers and missing markers.
+Gene-wise scaled colors do not support absolute expression comparisons between
+different genes.
+
+Keep comparable labels colored consistently across related datasets. Use
+readable point sizes and legends; change plotting size before changing analysis
+parameters to address a visual-density complaint. Produce a separate multipage
+marker-review PDF for each analysis group when requested, with cluster reference,
+candidate panels and summary plots. Save annotation UMAPs as PNG and PDF with
+traceable filenames and the annotation version.
+
+PDF-only review supports provisional visual interpretation. Do not infer
+per-cell coexpression, exact expression fractions or new DE statistics from a
+PDF. Identify figures made from original expression data separately from
+annotation legends added to an existing image.
+
+## 36. Separate exploratory markers from condition differential expression
+
+First specify the contrast: cluster versus rest, annotated type versus rest,
+one candidate population versus another, or the same cell type across conditions.
+Specify which datasets are combined and why before running the analysis.
+
+For exploratory markers, use a documented normalized/log expression copy derived
+from verified counts, with explicit `use_raw` and layer settings. Do not use scVI
+latent coordinates as gene expression, and do not restrict markers to HVGs unless
+that limitation is intentional. Export the complete tested-gene table as well
+as filtered positive markers, effect estimates, adjusted p-values and detection
+fractions inside and outside the target group. Treat thresholds as tunable
+screening criteria, not biological truth. Rank-based marker tests following
+clustering are exploratory and do not independently validate the same clusters.
+
+For condition inference, establish biological replicates, pairing, confounding
+and the relevant cell type. Prefer a justified replicate-aware design, such as
+count pseudobulk by biological sample and cell type with a suitable count model.
+Cells are not independent biological replicates. If the required replicate
+structure is unavailable, label descriptive comparisons accordingly.
+
+Registering cell-cycle covariates in scVI does not automatically correct a later
+Wilcoxon test on normalized counts. State which covariates each analysis actually
+models. Preserve the fixed representation-level cell-cycle policy, inspect
+cell-cycle-driven marker results, and choose a suitable downstream model when
+covariate-adjusted inference is required; do not claim residualization happened
+implicitly or feed residuals to count models.
+
+## 37. Implementation and reference sources
 
 The fixed cell-cycle policy and numerical starting values are project decisions.
 These references describe relevant API behavior; consult the version matching
@@ -508,3 +742,9 @@ the installed environment before execution.
 - [Scanpy HVG API](https://scanpy.scverse.org/en/stable/generated/scanpy.pp.highly_variable_genes.html): seurat_v3 count input and batch-aware selection.
 - [Scanpy cell-cycle scoring](https://scanpy.scverse.org/en/stable/generated/scanpy.tl.score_genes_cell_cycle.html): scoring interface and phase labels.
 - [Scanpy Scrublet API](https://scanpy.scverse.org/en/stable/api/generated/scanpy.pp.scrublet.html): doublet-detection interface.
+
+- [Scanpy neighbors API](https://scanpy.readthedocs.io/en/stable/api/generated/scanpy.pp.neighbors.html): representation, neighborhood size and graph storage.
+- [Scanpy Leiden API](https://scanpy.readthedocs.io/en/stable/generated/scanpy.tl.leiden.html): resolution, graph selection, backend and labels.
+- [Scanpy marker ranking API](https://scanpy.readthedocs.io/en/stable/generated/scanpy.tl.rank_genes_groups.html): log-expression input, contrasts and marker outputs.
+- [HPA single-cell transcriptomics methods](https://www.proteinatlas.org/humanproteome/single%2Bcell/single%2Bcell%2Btype/method/transcriptomics): tissue-specific annotation and reference scope.
+- [Gene specificity skill](https://github.com/Sculptor815/scrnaseq-gene-specificity-screen/blob/main/SKILL.md) and [screening rules](https://github.com/Sculptor815/scrnaseq-gene-specificity-screen/blob/main/references/specificity-rules.md): external candidate-marker assessment and its limits.
