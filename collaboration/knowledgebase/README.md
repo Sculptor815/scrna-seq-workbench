@@ -23,7 +23,9 @@ technical batches, biological conditions and cellular heterogeneity before choos
 parameters. Record what was observed, the decision, its reason and its validation.
 
 ```text
-Verify counts and metadata
+Establish dataset relationships from the paper, metadata and/or user clarification
+  -> Define the number of analysis groups and which inputs belong in each group
+  -> Verify counts and metadata
   -> Calculate QC on counts
   -> Apply justified low-quality filters; inspect high outliers
   -> Detect doublets per independent capture/library
@@ -38,6 +40,43 @@ Verify counts and metadata
 
 Reuse documented intermediate results when their provenance and settings are known.
 A filename containing `QC` does not establish which steps were completed.
+
+### 1.1. Establish dataset relationships and analysis groups before analysis
+
+**Do not blindly analyze every input separately or merge all inputs together.**
+Before committing to an analysis plan, determine how the datasets relate to one
+another and to the user's biological question.
+
+Consult the original paper, Methods, supplementary sample tables and repository
+metadata when available. Identify study/accession, organism, tissue or source,
+donor, biological replicate, condition, timepoint, assay/platform, technical
+capture/library and any pairing or overlap between inputs. Distinguish independent
+datasets from technical partitions, subsets or duplicate exports of the same cells.
+
+Use that evidence to specify:
+
+- How many analysis groups are needed and the purpose of each group.
+- Which datasets or samples should be combined and analyzed jointly.
+- Which datasets or samples should be analyzed separately, and why.
+- Which groups will be compared downstream, including any reference/query roles.
+- Whether grouping differs by stage, such as capture-level QC/doublet detection
+  followed by a shared representation or separate condition comparisons.
+
+If the paper and metadata do not resolve the intended grouping, ask the user a
+focused question naming the inputs and plausible groupings. Obtain the missing
+answer before performing grouping-dependent merging, splitting, integration or
+model training. Independent input inspection can continue while clarification
+is pending.
+
+Record a dataset-to-analysis-group map, the rationale and supporting paper
+section/table, metadata field or explicit user instruction. Preserve source
+dataset, sample, donor, condition and timepoint labels when combining inputs.
+Joint analysis does not automatically require batch correction, and an analysis
+group is not automatically a technical batch or a biological replicate.
+
+Do not infer grouping solely from filenames, file count, a shared accession,
+tissue labels or timepoints. A previous script's grouping is a historical choice
+to verify, not sufficient justification to reuse it.
 
 ## 2. Verify raw counts
 
@@ -357,6 +396,7 @@ counts, QC, doublets, batches, HVGs and convergence.
 
 | Parameter | Starting value or policy |
 |---|---|
+| Analysis groups / joint vs. separate analysis | Determine from study relationships and the research question; clarify unresolved choices with the user |
 | Gene minimum detected cells | 3 |
 | Cell minimum genes | 300; calibrate to distributions |
 | Cell minimum counts | 1,000; calibrate to assay/sample |
@@ -386,10 +426,17 @@ measured results or proof that input files have been validated.
 | YS | GSE144024_YS_QC.h5ad | 3,000 | 20 | 30 | 1.0 |
 | hESC Day0 + Day6 | GSE144024_hESC_Day0_Day6_QC.h5ad | 3,000 | 15 | 20 | 0.8 |
 
-The plan fits three separate models, with Day0/Day6 together in the hESC model.
-No joint FL/YS/hESC integration has been established. Use no batch key until
-reliable technical metadata are identified; do not use `day` as a technical batch
-by default. Enable cell-cycle correction for all three analyses.
+The earlier script proposed three separate models, with Day0/Day6 together in
+the hESC model. This is a historical configuration, not a confirmed grouping
+decision. Before analysis, consult the original paper and sample metadata, or
+ask the user, to establish how many groups are needed and whether FL, YS, Day0
+and Day6 should be analyzed jointly, separately or in a staged comparison.
+Neither three separate models nor one combined model is the default.
+
+Once grouping is established, choose parameters for each resulting analysis
+group. Use no batch key until reliable technical metadata are identified; do not
+use `day` as a technical batch by default. Apply the fixed cell-cycle correction
+policy to the selected analyses.
 
 The earlier one-copy script did not compute/register cell-cycle scores and does
 not yet implement the final policy. Inspect actual code and data before claiming
@@ -418,6 +465,9 @@ Produce a table with **parameter, selected value, observed evidence, reason and
 validation outcome**. Include:
 
 - Biological question, organism, assay and sample/library structure.
+- Dataset relationships and dataset-to-analysis-group map: number of groups,
+  joint/separate analysis decisions, stage-specific grouping, rationale and sources
+  or explicit user clarification.
 - Input provenance/hashes and verified count source.
 - Matrix representations and cell/gene numbers before and after each QC step.
 - QC thresholds, exclusions, doublet settings and cell-cycle gene coverage.
@@ -433,18 +483,20 @@ biological validation and clearly label missing or unverified evidence.
 
 ## 30. Agent guardrails
 
-1. Verify count provenance and preserve counts before transformations.
-2. Never use normalized expression or regression residuals as scVI count input.
-3. Score and correct cell cycle under the fixed policy, then validate the outcome.
-4. Never infer technical batch from category count or invent missing metadata.
-5. Do not automatically remove tissue, timepoint, treatment or target biology.
-6. Do not hard-filter HB/ribosomal expression or a fixed upper percentage.
-7. Investigate high-count MAD flags alongside doublet and biological evidence.
-8. Detect doublets at the appropriate independent capture/library level.
-9. Justify parameters with data distributions and experimental design.
-10. Evaluate biological markers, technical effects and stability beyond UMAP.
-11. Preserve identifiers, feature order, provenance and reproducible outputs.
-12. Report missing inputs, failed checks and unverified results explicitly.
+1. Establish dataset relationships and analysis groups from the paper, metadata
+   or user clarification before merging, splitting or training; never group blindly.
+2. Verify count provenance and preserve counts before transformations.
+3. Never use normalized expression or regression residuals as scVI count input.
+4. Score and correct cell cycle under the fixed policy, then validate the outcome.
+5. Never infer technical batch from category count or invent missing metadata.
+6. Do not automatically remove tissue, timepoint, treatment or target biology.
+7. Do not hard-filter HB/ribosomal expression or a fixed upper percentage.
+8. Investigate high-count MAD flags alongside doublet and biological evidence.
+9. Detect doublets at the appropriate independent capture/library level.
+10. Justify parameters with data distributions and experimental design.
+11. Evaluate biological markers, technical effects and stability beyond UMAP.
+12. Preserve identifiers, feature order, provenance and reproducible outputs.
+13. Report missing inputs, failed checks and unverified results explicitly.
 
 ## 31. Official implementation references
 
