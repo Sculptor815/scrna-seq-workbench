@@ -346,9 +346,11 @@ Build the graph in a validated representation: use `use_rep="X_scvi"` after
 scVI, or an explicitly selected PCA representation for a conventional workflow.
 Do not build the biological clustering graph from two-dimensional UMAP coordinates.
 
-For a typical exploratory scVI workflow, 30 is a project starting point.
-Compare a small range such as 15, 30 and 50 when supported by the cell count.
-These are practical candidates, not universal optima or HPA requirements.
+By default, run several candidate values and let the user choose after reviewing
+the results. A practical initial set is 15, 20, 30 and 50, adjusted to the cell
+count, biological question and available resources. The value 30 may serve as a
+comparison baseline, not an automatically selected final setting. These are
+practical candidates, not universal optima or HPA requirements.
 
 | Candidate n_neighbors | Interpretation and check |
 |---|---|
@@ -357,8 +359,9 @@ These are practical candidates, not universal optima or HPA requirements.
 | 40-50 | Emphasizes broader connectivity; check that distinct or rare populations remain distinguishable |
 | Above 50 | Use only with a specific rationale and evidence that relevant local structure is preserved |
 
-Choose using heterogeneity, target granularity, rare-population preservation,
-graph connectivity and robustness, not cell count alone. A smaller neighborhood
+Present a recommendation using heterogeneity, target granularity, rare-population
+preservation, graph connectivity and robustness, not cell count alone. The user
+makes the final choice unless they have explicitly delegated parameter selection. A smaller neighborhood
 does not guarantee recovery of a rare type. Check whether apparent fragments
 have reproducible marker programs or instead reflect QC, residual cell cycle,
 batch effects or unstable graph connections.
@@ -379,10 +382,10 @@ Leiden partitions the neighbor graph. Higher resolution generally produces finer
 partitions, but a numerical resolution has no universal mapping to cell types.
 Results depend on the graph, representation, cells, backend and random seed.
 
-For a broad initial survey, compare a bounded set such as 0.3, 0.5, 0.8 and 1.0.
-Extend to 1.2 or 1.5 only when finer structure is relevant and supported. These
-values are candidate settings, not an instruction to run every value or select
-the same resolution across datasets.
+For a broad initial survey, run a bounded set such as 0.3, 0.5, 0.8 and 1.0,
+and present the alternatives for the user's selection. Extend to 1.2 or 1.5 when
+finer structure is relevant and supported. Adjust the candidate range to the
+analysis; do not select the same resolution across datasets automatically.
 
 | Observation | Next decision |
 |---|---|
@@ -392,8 +395,9 @@ the same resolution across datasets.
 | Cluster boundaries follow a continuous expression gradient | Consider a broad identity plus state labels rather than declaring every partition a distinct type |
 | Major populations change substantially under modest settings or seeds | Revisit the representation, graph and technical effects before final annotation |
 
-Choose a resolution that supports the requested biological granularity with
-coherent markers, interpretable alternatives and reasonable stability. Neither
+Recommend a resolution that supports the requested biological granularity with
+coherent markers, interpretable alternatives and reasonable stability, while
+leaving the final selection to the user unless explicitly delegated. Neither
 the lowest resolution nor the largest number of clusters is inherently best.
 Multiple clusters may legitimately share one broad cell-type label.
 
@@ -426,20 +430,70 @@ parameters solely for an attractive UMAP or a preferred number of clusters.
 
 ## 25. Bounded sensitivity analysis
 
-Change one main parameter at a time initially; a full grid search is not required.
-Candidate comparisons:
+For neighbors and Leiden resolution, the default deliverable is an executed,
+reviewable parameter comparison followed by the user's selection. Merely listing
+possible values or silently choosing one does not satisfy this workflow. An
+exhaustive grid search is not required. Candidate comparisons:
 
 | Parameter | Candidate values |
 |---|---|
 | HVGs | 2,000 / 3,000 / 4,000 |
 | n_latent | 10 / 20 / 30 |
-| Neighbors | 15 / 30 / 50, adjusted to cell count and heterogeneity |
+| Neighbors | 15 / 20 / 30 / 50, adjusted to cell count and heterogeneity |
 | Leiden resolution | 0.3 / 0.5 / 0.8 / 1.0; extend only when justified |
 
 Retrain when model inputs or model parameters change. Reuse a validated latent
 representation when changing only neighbors or clustering. Record all attempts
 and results. If modest changes substantially alter major conclusions, revisit
 counts, QC, doublets, batches, HVGs and convergence.
+
+
+### 25.1. Run comparisons before asking the user to select
+
+Use either a bounded joint grid or a staged comparison:
+
+- **Bounded grid:** for example, four neighbor values crossed with four
+  resolutions produce 16 partitions. Build one graph and UMAP per neighbor
+  value, then run each resolution on that graph. This illustrates the interaction
+  between graph construction and clustering without retraining the latent model.
+- **Staged comparison:** first compare neighbor values at a shared provisional
+  resolution; then compare resolutions on the user's selected or shortlisted
+  graph(s). If the second stage changes the interpretation of the first, revisit
+  the relevant neighbor alternatives rather than treating them as independent.
+
+Hold the input cells, latent representation, distance metric, backend and seeds
+fixed across the initial comparison. Use the same UMAP coordinates for all
+resolutions of a given graph. Neighbor-specific UMAPs may differ in layout, so
+do not interpret their rotation or island positions as biological changes.
+Use consistent plot size, point size and labeling across panels.
+
+Give each candidate a stable identifier and preserve its graph, UMAP and
+cluster labels under distinct keys or in separate artifacts. Label every panel
+with neighbor count, resolution and cluster count. Cluster IDs and their colors
+are arbitrary between partitions; do not imply a one-to-one identity match.
+
+Save and directly display a comparison gallery, such as rows for neighbor values
+and columns for resolutions, alongside a concise table containing:
+
+- Candidate ID, parameters, cluster count and cluster-size distribution.
+- Major marker programs, plausible rare populations and signs of merging or
+  fragmentation, with supporting marker plots for shortlisted alternatives.
+- QC, batch and cell-cycle patterns that could explain the partitions.
+- Stability evidence where assessed, unresolved tradeoffs, and the agent's
+  recommendation with its reason. Mark unperformed checks as unassessed.
+
+Ask the user to select a parameter pair, or separate pairs for separate analysis
+groups, only after providing the concrete comparison. The user may request
+additional values or explicitly delegate the decision. If they have already
+chosen values or delegated selection, honor that instruction without asking again.
+Do not treat a lack of response as selection; keep outputs provisional and
+continue only work that does not depend on the final partition.
+
+After selection, record the chosen pair, selected graph and cluster key, decision
+source and rationale. Save the selected result while preserving alternatives.
+Use that exact partition for downstream cluster annotation and marker tables;
+invalidate earlier label mappings when cluster membership changes. Never claim
+a parameter sweep was executed when only code or a proposed grid was delivered.
 
 ## 26. Default decision table
 
@@ -462,8 +516,8 @@ counts, QC, doublets, batches, HVGs and convergence.
 | Likelihood / dropout | NB / 0.1 |
 | Batch size / maximum epochs | 256 / 400 |
 | Early stopping / patience | ON / 20 |
-| Neighbors | Start at 30 for scVI; compare a bounded range when needed |
-| Leiden resolution | Compare a small candidate set; select using marker coherence and stability |
+| Neighbors | Run multiple valid candidates, display comparisons, and let the user select unless explicitly delegated |
+| Leiden resolution | Run multiple candidates on the chosen/shortlisted graphs; provide evidence and let the user select unless explicitly delegated |
 | Annotation | Follow the plugin's evidence policy, investigate alternatives, and obtain actual human review |
 
 ## 27. Transfer principles, not dataset-specific settings
@@ -540,7 +594,8 @@ biological validation and clearly label missing or unverified evidence.
 7. Do not hard-filter HB/ribosomal expression or a fixed upper percentage.
 8. Investigate high-count MAD flags alongside doublet and biological evidence.
 9. Detect doublets at the appropriate independent capture/library level.
-10. Justify parameters with data distributions and experimental design.
+10. Run and display multiple neighbor/resolution candidates; justify a recommendation
+    and let the user select the final settings unless they have delegated selection.
 11. Evaluate biological markers, technical effects and stability beyond UMAP.
 12. Preserve identifiers, feature order, provenance and reproducible outputs.
 13. Report missing inputs, failed checks and unverified results explicitly.
