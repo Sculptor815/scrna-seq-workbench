@@ -6,13 +6,15 @@ This document is the English edition of the revised analysis policy agreed with
 the owner. It applies across scRNA-seq datasets, including primary tissues, cell
 lines and differentiation experiments, with no dataset-specific cluster labels or preferred parameter choices.
 
-**Fixed project policy: always score and correct cell cycle unless the user
-explicitly overrides this policy. Preserve raw counts and cell-cycle scores.**
+**Fixed project policies: scVI is required for every analysis group, with or
+without technical batches. Always score and correct cell cycle unless the user
+explicitly overrides the cell-cycle policy. Preserve raw counts and cell-cycle scores.**
 
 Numerical values below are starting points that require validation, not universal
-biological thresholds or necessarily software defaults. The cell-cycle rule is an
-owner-selected analysis policy, not a claim that every research question benefits
-from removing cell-cycle variation. This document replaces the previous learning
+biological thresholds or necessarily software defaults. Mandatory scVI and the
+cell-cycle rule are owner-selected analysis policies, not claims that scVI is
+universally optimal or that every question benefits from removing cell-cycle
+variation. This document replaces the previous learning
 cards, templates and review packets. It describes intended analysis behavior;
 updating this document does not implement changes in the analysis runner.
 
@@ -32,7 +34,7 @@ Establish dataset relationships from the paper, metadata and/or user clarificati
   -> Preserve counts; normalize/log-transform a working expression matrix
   -> Score cell cycle before restricting features to HVGs
   -> Select HVGs from counts, accounting for verified technical batches
-  -> Fit scVI with cell-cycle nuisance covariates
+  -> Fit scVI in every analysis group, with cell-cycle nuisance covariates
   -> Transfer latent coordinates to the full-gene object
   -> Neighbors -> UMAP -> Leiden
   -> Validate markers, QC, batches, biology, cell cycle and stability
@@ -81,6 +83,38 @@ group is not automatically a technical batch or a biological replicate.
 Do not infer grouping solely from filenames, file count, a shared accession,
 tissue labels or timepoints. A previous script's grouping is a historical choice
 to verify, not sufficient justification to reuse it.
+
+### 1.2. Required scVI representation, regardless of batch structure
+
+**Every analysis group must pass through scVI before the final neighbor graph,
+Leiden clustering and UMAP used for annotation are generated.** This applies to
+single samples, single batches, datasets with no reliable batch metadata, and
+multiple verified technical batches. scVI is not conditional on a need for batch
+correction; representation learning and the batch-key decision are separate.
+
+- With a justified technical batch field, register that field as `batch_key`.
+- Without one, use `batch_key=None` and still train scVI. Never fabricate a batch
+  column or treat biological condition as a batch merely to satisfy this step.
+- In either case, preserve verified counts and register `S_score` and `G2M_score`
+  as continuous nuisance covariates under the fixed cell-cycle policy.
+- Use `X_scvi` for the final neighbor graph. PCA may support cell-cycle diagnostics
+  or an explicitly identified comparison, but it cannot replace the required scVI
+  representation or satisfy completion of this workflow.
+- Missing dependencies, lack of a GPU, limited resources or a training failure do
+  not authorize a PCA substitution. Resolve dependencies or use a feasible,
+  documented CPU scVI run. If training cannot proceed, report the specific blocker
+  and leave the required stage incomplete; do not label a PCA-only run complete.
+
+A previously trained scVI model/embedding may satisfy this stage only when its
+input cells, feature set, preprocessing, cell-cycle covariates and training
+provenance are verified as suitable for the current analysis group. An embedding
+name alone is insufficient. Changing only neighbor count or Leiden resolution
+does not require retraining an otherwise valid scVI representation.
+
+For historical reports, retain the backend actually used. Mark a PCA-only result
+as not fulfilling the current scVI requirement rather than relabeling it as scVI.
+If an installed plugin cannot implement this policy, report the implementation
+gap and address it before claiming a compliant completed analysis.
 
 ## 2. Verify raw counts
 
@@ -215,7 +249,10 @@ Record gene-set source/version, matched genes and missing genes. If scores are
 missing, non-finite or based on inadequate coverage, resolve or report the problem;
 do not silently substitute zero scores or skip correction.
 
-For scVI:
+The required sequence is cell-cycle scoring on the full normalized/log working
+object, followed by copying the HVG subset (which retains the scores in `obs`),
+then registering the scores with scVI. Scoring alone is not correction. The
+scVI registration must include these covariates even when `batch_key=None`:
 
 ```python
 scvi.model.SCVI.setup_anndata(
@@ -231,9 +268,10 @@ reducing their effects on the latent representation. This is not equivalent to
 linearly residualizing the expression matrix and does not guarantee that all
 cell-cycle signal disappears. Do not feed regression residuals into scVI as counts.
 
-For a conventional PCA route, regress the two scores from a separate normalized
-working matrix, then scale and compute PCA. Preserve counts and account for the
-memory cost of regression/scaling.
+A PCA of cell-cycle genes colored by `phase` can inspect the scores before scVI;
+it does not itself correct cell cycle or replace model training. For an auxiliary
+regressed-PCA comparison, use a separate normalized working matrix and preserve
+counts. Neither this comparison nor its regression satisfies the required scVI step.
 
 ## 14. Validate cell-cycle correction
 
@@ -268,8 +306,10 @@ replicates and the analysis objective supports that choice. Do not automatically
 remove donor effects when individual variation is the research target. Preserve
 donor identities for downstream analysis regardless of representation choices.
 
-If no reliable technical batch is available, use `batch_key=None`. Do not invent
-metadata or substitute tissue, timepoint or condition merely to run integration.
+If no reliable technical batch is available, use `batch_key=None` and still run
+scVI with the required cell-cycle covariates. Do not invent metadata or substitute
+tissue, timepoint or condition merely to run integration. A no-batch scVI analysis
+does not establish that unknown technical effects have been removed.
 
 ## 17. Choose HVGs
 
@@ -334,7 +374,9 @@ training history, convergence and actual stopping epoch.
 
 For a GPU run, verify CUDA availability and device selection before requesting
 `accelerator="gpu", devices=1`. A CPU run is a separately recorded execution
-choice. HVG selection, neighbors, UMAP and Leiden can remain CPU-bound; reduced
+choice that still uses scVI, not a reason to substitute PCA. If no feasible
+training environment is available, report the blocker. HVG selection, neighbors,
+UMAP and Leiden can remain CPU-bound; reduced
 GPU utilization during these steps is not evidence of failed training.
 
 Check arguments against installed Scanpy, scvi-tools, PyTorch and training framework
@@ -342,8 +384,9 @@ versions. An import error is not a model-parameter failure.
 
 ## 22. Choose n_neighbors
 
-Build the graph in a validated representation: use `use_rep="X_scvi"` after
-scVI, or an explicitly selected PCA representation for a conventional workflow.
+Build the final graph using `use_rep="X_scvi"` after validating the required scVI
+representation. Keep any auxiliary PCA comparison under separate graph/output keys;
+it cannot supply the final graph in place of scVI under this policy.
 Do not build the biological clustering graph from two-dimensional UMAP coordinates.
 
 By default, run several candidate values and let the user choose after reviewing
@@ -500,6 +543,7 @@ a parameter sweep was executed when only code or a proposed grid was delivered.
 | Parameter | Starting value or policy |
 |---|---|
 | Analysis groups / joint vs. separate analysis | Determine from study relationships and the research question; clarify unresolved choices with the user |
+| Representation backend | scVI required for every analysis group, with or without technical batches; PCA is auxiliary only |
 | Gene minimum detected cells | 3 |
 | Cell minimum genes | 300; calibrate to distributions |
 | Cell minimum counts | 1,000; calibrate to assay/sample |
@@ -569,6 +613,8 @@ validation outcome**. Include:
 - Matrix representations and cell/gene numbers before and after each QC step.
 - QC thresholds, exclusions, doublet settings and cell-cycle gene coverage.
 - Batch definition, confounding assessment and biological variables preserved.
+- Actual backend (`scvi` for the required representation), verified batch key or
+  `None`, and registered cell-cycle covariates; identify auxiliary PCA separately.
 - HVG list/order, model/training parameters, seeds, software versions and hardware.
 - Training history, latent coordinates, graphs, embedding and cluster labels.
 - Marker, QC, batch, cell-cycle and robustness checks, with unresolved issues.
@@ -603,6 +649,9 @@ biological validation and clearly label missing or unverified evidence.
 15. Treat external specificity screens as reference evidence, not automatic labels.
 16. Present an evidence-based recommendation and preserve genuine human review.
 17. Keep reusable knowledge separate from dataset-specific decisions.
+18. Require scVI for every analysis group regardless of batch structure. Use
+    `batch_key=None` when appropriate, preserve cell-cycle covariates, and never
+    substitute PCA because dependencies, hardware or training are inconvenient.
 
 ## 31. Start annotation with the plugin's documented workflow
 
@@ -789,7 +838,8 @@ implicitly or feed residuals to count models.
 
 ## 37. Implementation and reference sources
 
-The fixed cell-cycle policy and numerical starting values are project decisions.
+Mandatory scVI, the fixed cell-cycle policy and numerical starting values are
+project decisions.
 These references describe relevant API behavior; consult the version matching
 the installed environment before execution.
 
