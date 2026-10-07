@@ -1,7 +1,7 @@
 # Your first analysis
 
 This example creates 400 artificial cells and 100 genes. It checks the Python
-environment and shows the files produced at each stage. It uses a small PCA model
+environment and shows the files produced at each stage. It uses a short CPU scVI model
 and does not download experimental data.
 
 Complete [Installation](INSTALLATION.md) first. Run from the repository root.
@@ -49,20 +49,22 @@ python plugins/scrna-seq-workbench/scripts/scrna.py qc --input work/demo/raw.h5a
 This writes `filtered.h5ad`, a cell exclusion ledger, a gene exclusion ledger and
 `qc_by_sample.png`. Check the retained counts in `report.json`.
 
-## 5. Calculate PCA, clusters and UMAP
+## 5. Train scVI, compare clusters and save UMAP
 
 ```text
-python plugins/scrna-seq-workbench/scripts/scrna.py integrate --input work/demo-qc/filtered.h5ad --backend pca --hvg 80 --latent 5 --outdir work/demo-pca
+python plugins/scrna-seq-workbench/scripts/scrna.py integrate --input work/demo-qc/filtered.h5ad --species human --hvg 80 --latent 5 --max-epochs 2 --no-early-stopping --neighbors 15 --neighbors-grid 15 --resolutions-grid 1 --outdir work/demo-scvi
 ```
 
-Open `work/demo-pca/umap_clusters.png`. The runner selected 80 highly variable
-genes, computed five principal components, then built the neighbor graph, Leiden
-clusters and UMAP. `integrated.h5ad` keeps the QC-retained genes and raw counts.
+Open `work/demo-scvi/umap_clusters.png`. The runner selected 80 highly variable
+genes, trained a five-dimensional scVI model with S/G2M covariates, then built the
+neighbor graph, Leiden clusters and UMAP. Two epochs only test execution, not
+convergence. The single candidate is for this fixture; real analysis defaults to
+multiple candidates for review. Cycle genes here carry artificial expression. `integrated.h5ad` keeps the QC-retained genes and raw counts.
 
 ## 6. Propose cell types
 
 ```text
-python plugins/scrna-seq-workbench/scripts/scrna.py annotate --input work/demo-pca/integrated.h5ad --panel work/demo/panel.json --species human --tissue blood --outdir work/demo-annotation
+python plugins/scrna-seq-workbench/scripts/scrna.py annotate --input work/demo-scvi/integrated.h5ad --panel work/demo/panel.json --species human --tissue blood --outdir work/demo-annotation
 ```
 
 Read the proposal/evidence CSVs and `marker_heatmap.png`. The example panel contains
@@ -77,17 +79,16 @@ Follow [Analyze your own data](USAGE.md) to complete a review and run condition 
 After installing `requirements-de.txt`, run:
 
 ```text
-python scripts/smoke_test.py --backend pca --outdir work/full-smoke
+python scripts/smoke_test.py --backend scvi --outdir work/full-smoke
 ```
 
 This engineering check includes synthetic labels and paired donor DE. It uses the
 legacy review format explicitly for artificial labels; it does not supply a human
-review for experimental data. With scVI installed, `--backend scvi` runs a short
-two-epoch execution check. That short run is insufficient to assess convergence.
+review for experimental data. It runs a short two-epoch scVI execution check. That short run is insufficient to assess convergence.
 
 ## Ask the assistant to run the example
 
-> Use the five scRNA-seq Workbench Skills and the Python environment I supplied.
+> Use the six scRNA-seq Workbench Skills and the Python environment I supplied.
 > Run the example in docs/QUICKSTART.md in fresh work/demo-* folders.
 > Explain what each stage reads and writes, and show the QC plot, UMAP and marker
 > evidence. Keep the annotation proposals provisional.

@@ -34,7 +34,7 @@ Specified values or delegated scope:
 - Actual metadata fields and meanings:
 - QC inspection results and per-sample proposed filters:
 - Evidence, paper-method branch and deviations:
-- PCA/scVI choice and separate dimensions:
+- Required scVI latent dimensions and any auxiliary PCA diagnostics:
 - Batch correction choice and confounding:
 - HVGs, neighbors, resolution, seeds, device and training cap:
 - Subsampling method, count, seed and limitations, if any:

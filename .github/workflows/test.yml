@@ -19,3 +19,15 @@ jobs:
       - run: python scripts/validate_package.py
       - run: python scripts/verify_benchmark.py
       - run: python -m unittest discover -s tests -v
+  scvi-cpu:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: plugins/scrna-seq-workbench/requirements-scvi.txt
+      - run: python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+      - run: python -m pip install -r plugins/scrna-seq-workbench/requirements-scvi.txt
+      - run: python -m unittest discover -s tests -p test_scvi_policy.py -v

@@ -7,6 +7,9 @@ description: Inspect and filter raw scRNA-seq UMI matrices with per-sample thres
 
 # Cell-level quality control
 
+Before analysis, read the [required agent policy](../../../plugins/scrna-seq-workbench/references/agent-policy.md)
+and its stage-specific knowledge-base sections. Apply the current user instructions.
+
 Start or reuse [shared intake](../../../plugins/scrna-seq-workbench/references/analysis-intake.md). Establish the
 sample type, counts provenance, prior filtering and goal before proposing QC.
 Explain [important parameters](../../../plugins/scrna-seq-workbench/references/important-parameters.md), then

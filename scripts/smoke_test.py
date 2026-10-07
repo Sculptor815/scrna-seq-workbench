@@ -9,7 +9,7 @@ import pandas as pd
 
 def main():
     ap=argparse.ArgumentParser(); ap.add_argument('--outdir',type=Path,required=True)
-    ap.add_argument('--backend',choices=['pca','scvi'],default='pca'); args=ap.parse_args()
+    ap.add_argument('--backend',choices=['scvi'],default='scvi'); args=ap.parse_args()
     root=Path(__file__).resolve().parents[1]; runner=root/'plugins/scrna-seq-workbench/scripts/scrna.py'
     out=args.outdir.resolve(); out.mkdir(parents=True,exist_ok=False)
     log=out/'commands.log'
@@ -24,7 +24,8 @@ def main():
     run(runner,'report','--metrics',f/'metrics.json','--source',f/'vendor.txt','--outdir',out/'01-report')
     run(runner,'qc','--input',f/'raw.h5ad','--config',f/'qc.json','--species','human','--outdir',out/'02-qc')
     run(runner,'integrate','--input',out/'02-qc/filtered.h5ad','--backend',args.backend,'--batch-key','batch',
-        '--hvg',80,'--max-epochs',2,'--latent',5,'--outdir',out/'03-integrate')
+        '--species','human','--hvg',80,'--max-epochs',2,'--no-early-stopping','--latent',5,
+        '--neighbors',15,'--neighbors-grid',15,'--resolutions-grid',1,'--outdir',out/'03-integrate')
     integrated=ad.read_h5ad(out/'03-integrate/integrated.h5ad')
     original=ad.read_h5ad(out/'02-qc/filtered.h5ad')
     assert list(integrated.var_names)==list(original.var_names)

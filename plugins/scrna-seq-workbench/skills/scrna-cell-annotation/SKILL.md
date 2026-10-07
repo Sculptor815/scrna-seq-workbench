@@ -5,6 +5,9 @@ description: Propose and review scRNA-seq cluster cell types using tissue-matche
 
 # Cell annotation and review
 
+Before analysis, read the [required agent policy](../../references/agent-policy.md)
+and its stage-specific knowledge-base sections. Apply the current user instructions.
+
 Start or reuse [shared intake](../../references/analysis-intake.md). Establish the
 tissue, species and requested label granularity, and check expected types against
 the available reference/markers before assigning labels. Explain the relevant

@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.4.0 - 2026-10-07
+
+- Require scVI with or without technical batches; reject PCA as an integration backend.
+- Score full-gene S/G2M expression, validate species/identifier coverage and register cycle covariates before fitting.
+- Save cycle diagnostics, training history, reloadable model data and parameter-grid candidates for user review.
+- Bundle the owner knowledge base, route every Skill through a local policy entry point and check synchronization during validation/packaging.
+- Require --species for integration; use a documented custom gene set for mouse/non-symbol IDs.
+- Update active examples and installation guidance; preserve historical benchmarks and submitted reports.
+
 ## 0.3.0 - 2026-10-03
 
 - Add the scrna-research entry point for biological questions, public-study selection and focused analysis.

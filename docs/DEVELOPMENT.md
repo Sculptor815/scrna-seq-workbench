@@ -23,6 +23,7 @@ Edit canonical Skills and regenerate the Harness entries. Run checks from the
 repository root with the environment described in [Installation](INSTALLATION.md):
 
 ```text
+python scripts/sync_knowledgebase.py
 python scripts/sync_adapters.py
 python scripts/validate_package.py
 python scripts/verify_benchmark.py

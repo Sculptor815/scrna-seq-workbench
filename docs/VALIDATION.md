@@ -1,11 +1,12 @@
 # Validation and known limitations
 
-Version 0.3.0 adds a biological-question entry point and a focused donor-expression
-command. The main branch contains the analysis plugin; the benchmark branch adds
-developer scoring. New synthetic tests check equal donor weighting, count preservation,
-missing groups, paired observations, output provenance and the absence of a scoring
-command from the analysis runner. Historical scores are preserved and human HPA
-review is pending. No real-data research improvement is claimed from these checks.
+Version 0.4.0 requires scVI with cell-cycle nuisance covariates and bundles the
+owner knowledge base through all six Skills. New tests exercise species/identifier
+coverage, missing or unexpressed cycle genes, explicit overrides, PCA rejection,
+count preservation and real CPU scVI with and without technical batches, including
+model reload and parameter candidates. The main branch contains the analysis
+plugin; developer scoring remains on the benchmark branch. Historical scores and
+pending HPA review are unchanged. Synthetic tests do not establish biological accuracy.
 Local checks are recorded in [validation.json](../validation.json); each pushed
 commit has its own [Actions results](https://github.com/Sculptor815/scrna-seq-workbench/actions).
 
@@ -21,12 +22,13 @@ five dimension records, 20 metric rows and 23,735 seed-0 cells. It independently
 recalculates broad-label agreement and coverage from the committed coordinate
 tables. Original counts and model training remain outside that offline check.
 
-The regression suite covers counts, metadata, QC, annotation, donor aggregation
-and tamper/dimension failures. A restricted local Windows environment still blocks
-six existing tests that use private temporary directories. The previous release's
-[Windows and Linux run](https://github.com/Sculptor815/scrna-seq-workbench/actions/runs/37012273297)
-passed; new commits need their own CI result. Synthetic execution checks use
-artificial data and measure whether the workflow executes.
+The regression suite covers counts, metadata, QC, annotation, donor aggregation,
+cell cycle, model persistence and tamper/dimension failures. Use the current
+validation.json for results in the execution environment; earlier local results
+are preserved in [the v0.3.0 record](validation-v0.3.0.json). Each new commit needs
+its own CI result. CPU scVI tests run in a dedicated CI job; core environments
+without scVI explicitly skip the real-training test. Synthetic execution checks
+measure execution, not biological accuracy or convergence.
 
 ## Earlier local biological evaluation
 

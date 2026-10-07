@@ -4,7 +4,7 @@ Source: [HPA single-cell transcriptomics methods](https://www.proteinatlas.org/h
 
 ## Published basis
 
-HPA annotates clusters manually using tissue-specific markers, including publication and pathology markers. It assigns detailed and main cell types, displays marker heatmaps, refines selected clusters through subclustering, and omits ambiguous main types from atlas aggregation. Its human tissue scope does not directly validate mouse labels. The documented clustering route uses PCA, 40 components, 15 neighbors and Leiden resolution 1; scVI is a separate Workbench alternative.
+HPA annotates clusters manually using tissue-specific markers, including publication and pathology markers. It assigns detailed and main cell types, displays marker heatmaps, refines selected clusters through subclustering, and omits ambiguous main types from atlas aggregation. Its human tissue scope does not directly validate mouse labels. HPA's documented clustering route uses PCA, 40 components, 15 neighbors and Leiden resolution 1. Workbench instead requires scVI under its owner policy; that requirement is not attributed to HPA.
 
 ## Workbench contract
 

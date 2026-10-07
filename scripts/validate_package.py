@@ -4,6 +4,7 @@ import json
 import re
 from pathlib import Path
 from sync_adapters import synchronize
+from sync_knowledgebase import synchronize as synchronize_knowledgebase
 
 root=Path(__file__).resolve().parents[1]
 plugin=root/'plugins'/'scrna-seq-workbench'
@@ -29,10 +30,12 @@ for path in (root/'.agents/plugins/marketplace.json',root/'.claude-plugin/market
             assert item['version']==data[0]['version']
 skills=list((plugin/'skills').glob('*/SKILL.md'))
 assert len(skills)==6
+assert synchronize_knowledgebase(check=True).exists()
 assert synchronize(check=True)==6
 for skill in skills + list((root/'.dsh/skills').glob('*/SKILL.md')):
     text=skill.read_text(encoding='utf-8')
     assert text.startswith('---\n')
+    assert 'agent-policy.md' in text, f'Skill missing the required policy entry point: {skill}'
     front=text.split('---',2)[1]
     assert re.search(r'^name: '+re.escape(skill.parent.name)+r'$',front,re.M)
     assert re.search(r'^description: .+',front,re.M)

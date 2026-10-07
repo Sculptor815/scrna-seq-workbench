@@ -61,6 +61,9 @@ def stage_run(stage, outdir, parameters, inputs):
     report = {"schema_version": "1.0", "stage": stage, "status": "running", "started_utc": now(),
               "parameters": parameters, "versions": versions(), "inputs": {}, "artifacts": {},
               "warnings": [], "source_sha256": source_hashes()}
+    policy = Path(__file__).resolve().parents[2] / "references/knowledgebase.md"
+    report["knowledge_base"] = {"path": "references/knowledgebase.md", "sha256": sha256(policy),
+                               "scope": "Bundled policy provenance; not proof of agent reading or human review"}
     write_json(out / "report.json", report)
     try:
         for p in inputs:
@@ -97,7 +100,9 @@ def validate_counts(x):
 
 def source_hashes():
     root = Path(__file__).resolve().parents[2]
-    files = list((root / "scripts").rglob("*.py")) + list(root.glob("requirements*.txt"))
+    files = (list((root / "scripts").rglob("*.py")) + list(root.glob("requirements*.txt"))
+             + [root / 'assets/cell_cycle_human.json', root / 'references/knowledgebase.md',
+                root / 'references/agent-policy.md'])
     return {p.relative_to(root).as_posix(): sha256(p) for p in sorted(files)}
 
 

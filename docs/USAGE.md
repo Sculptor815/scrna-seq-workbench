@@ -89,8 +89,9 @@ if you want a written project record.
 | Mitochondrial/hemoglobin thresholds | Choose from the assay, tissue and observed gene coverage. A missing gene set makes its percentage unavailable. |
 | Doublet scoring | Use actual capture IDs and a justified expected rate. Scoring and removal are separate options. |
 | HVGs | Defines which genes fit the representation; all QC-retained genes stay in the output. |
-| `--latent` | Number of PCA components for the PCA backend, or latent dimensions for scVI. There is no separate `--pca-dims` option. |
-| `--batch-key` | A metadata column for batch-aware HVG selection and scVI. A PCA run does not perform batch correction. |
+| `--latent` | scVI latent dimensions; PCA cannot replace this stage. |
+| `--batch-key` | Verified technical metadata for HVGs and scVI; omit it for no-batch scVI. |
+| `--species` / `--cell-cycle-genes` | Human symbols have a bundled preset; mouse/non-symbol IDs need a sourced exact-ID gene set. |
 | Neighbors and Leiden resolution | Change the graph and clustering granularity. Review markers and stability as well as the plot. |
 | Annotation panel and label depth | Determine the candidate types the method can distinguish. Use the correct species and tissue. |
 | DE design | Use paired analysis for the same donors in both groups, or unpaired for independent donors. |
@@ -149,23 +150,30 @@ correct capture key/rate. Add `--remove-doublets` only when you intend removal.
 
 ### 3. Compute a representation, clusters and UMAP
 
-A CPU/PCA baseline is a useful first run:
+Install requirements-scvi.txt and use scVI for every analysis group, including
+single samples or inputs without technical batch metadata:
 
 ```text
-python plugins/scrna-seq-workbench/scripts/scrna.py integrate --input D:/my-study/runs/03-qc/filtered.h5ad --backend pca --hvg 2000 --latent 30 --neighbors 15 --resolution 1 --seed 0 --outdir D:/my-study/runs/04-pca
-```
-
-For scVI, after installing its dependencies:
-
-```text
-python plugins/scrna-seq-workbench/scripts/scrna.py integrate --input D:/my-study/runs/03-qc/filtered.h5ad --backend scvi --hvg 2000 --latent 10 --neighbors 15 --resolution 1 --max-epochs 200 --device cpu --seed 0 --outdir D:/my-study/runs/04-scvi
+python plugins/scrna-seq-workbench/scripts/scrna.py integrate --input D:/my-study/runs/03-qc/filtered.h5ad --species human --hvg 3000 --latent 20 --neighbors 30 --resolution 1 --max-epochs 400 --device cpu --seed 0 --outdir D:/my-study/runs/04-scvi
 ```
 
 Add `--batch-key batch` only when the column exists and represents the technical
-effect you intend to model. Each run writes `integrated.h5ad`, `umap_clusters.png`
-and `report.json`. scVI also saves its model. Inspect cluster markers, sample
-composition and stability when judging the result; visual separation alone is
-insufficient. Keep parameter comparisons in separate directories.
+effect you intend to model. Omitting it still runs scVI. S/G2M scores are computed
+before HVG subsetting and registered as nuisance covariates. Raw counts are preserved.
+For mouse or non-symbol IDs, supply --cell-cycle-genes JSON containing species,
+source, s_genes and g2m_genes with exact matrix identifiers and documented mapping.
+
+Each run writes integrated.h5ad, a reloadable model with its training data, model
+gene order, training history, cycle coverage/scores, pre-scVI cycle PCA, post-scVI
+cycle UMAP and latent correlations. report.json records the bundled policy hash.
+Inspect diagnostics; covariate registration does not prove complete cycle removal.
+
+The default grid compares neighbors 15/20/30/50 and resolutions 0.3/0.5/0.8/1.0.
+Override the ranges with --neighbors-grid and --resolutions-grid. The specified
+--neighbors/--resolution pair is also included as a display baseline, pending
+review. Review parameter_candidates.csv and PNGs with markers and QC, display
+them for the user and follow the [selection recipe](../plugins/scrna-seq-workbench/references/parameter-selection.md)
+before final annotation. A delegated decision must still have a recorded rationale.
 
 ### 4. Propose and review cell types
 
@@ -177,7 +185,7 @@ assistant to document panel sources and missing candidate types.
 python plugins/scrna-seq-workbench/scripts/scrna.py annotate --input D:/my-study/runs/04-scvi/integrated.h5ad --panel D:/my-study/config/markers.json --species human --tissue blood --outdir D:/my-study/runs/05-proposals
 ```
 
-If you used PCA, change the input to `04-pca/integrated.h5ad`. Examine:
+Use the selected H5AD/cluster partition after parameter review. Examine:
 
 - `annotation_proposals.csv`: the candidate assigned to each cluster.
 - `annotation_evidence.csv` and `marker_expression.csv`: candidate scores and measured markers.

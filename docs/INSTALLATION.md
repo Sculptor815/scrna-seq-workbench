@@ -12,7 +12,7 @@ calculations. Installing a plugin does not install Python packages.
 - Internet access for cloning and installing dependencies.
 - A writable folder with room for the environment, input matrices and results.
 
-Start with the CPU/PCA example below; it does not need a GPU or public downloads.
+Start with the CPU scVI example below; it does not need a GPU or public downloads.
 For a real study, memory needs depend on the number of cells and genes. The plugin
 does not automatically reduce your dataset to fit memory.
 
@@ -58,7 +58,7 @@ py -3.12 -m venv .venv
 Install the core dependencies and check the package:
 
 ```powershell
-.\.venv\Scripts\python.exe -m pip install -r plugins/scrna-seq-workbench/requirements.txt
+.\.venv\Scripts\python.exe -m pip install -r plugins/scrna-seq-workbench/requirements-scvi.txt
 .\.venv\Scripts\python.exe scripts/validate_package.py
 .\.venv\Scripts\python.exe scripts/verify_benchmark.py
 ```
@@ -82,7 +82,7 @@ cd ~/projects
 git clone https://github.com/Sculptor815/scrna-seq-workbench.git
 cd scrna-seq-workbench
 python3.12 -m venv .venv
-.venv/bin/python -m pip install -r plugins/scrna-seq-workbench/requirements.txt
+.venv/bin/python -m pip install -r plugins/scrna-seq-workbench/requirements-scvi.txt
 .venv/bin/python scripts/validate_package.py
 .venv/bin/python scripts/verify_benchmark.py
 ```
@@ -91,10 +91,10 @@ Use `.venv/bin/python` wherever the examples below say `python`. If the system
 does not provide `python3.12` or the venv module, install them through your system
 administrator or Python distribution first.
 
-### Add scVI or condition differential expression when needed
+### Required scVI and optional condition differential expression
 
-The core installation supports QC, PCA/UMAP and marker annotation. Add either
-optional component to the same environment:
+requirements-scvi.txt includes the core packages and is required for new
+representation workflows. Add condition DE dependencies when needed:
 
 ```text
 python -m pip install -r plugins/scrna-seq-workbench/requirements-scvi.txt
@@ -116,7 +116,7 @@ For your first session, give it the actual interpreter and checkout paths:
 > Use scRNA-seq Workbench from D:/scrna-seq-workbench.
 > Run Python with D:/scrna-seq-workbench/.venv/Scripts/python.exe.
 > Use D:/scrna-cache for temporary files and package caches.
-> List the five available Skills and check that their scripts can be read.
+> List the six available Skills and check that their scripts can be read.
 > Then help me run the synthetic example in docs/QUICKSTART.md.
 
 Replace the paths if you chose a different location. You can write your requests
@@ -125,7 +125,7 @@ in your preferred language; the bundled documentation is in English.
 ## 4. Run the first example
 
 Follow [Your first analysis](QUICKSTART.md). It creates 400 artificial cells,
-checks QC, computes a PCA/UMAP and proposes two broad cell types. This checks that
+checks QC, trains a short scVI model and computes UMAP and proposes two broad cell types. This checks that
 the environment works before you provide experimental data.
 
 After that, follow [Analyze your own data](USAGE.md), which covers required files,

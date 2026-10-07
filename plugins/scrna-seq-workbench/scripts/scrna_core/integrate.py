@@ -1,55 +1,163 @@
+"""Required scVI representation, nuisance covariates and review candidates."""
 import numpy as np
-from .common import load_counts, lognormalize, require_columns
+from .common import load_counts, lognormalize, require_columns, write_json, safe_name
+from .cell_cycle import score_cell_cycle
+
+
+def validate_parameters(args):
+    if args.backend != 'scvi':
+        raise ValueError('scVI is required; PCA cannot replace the integration stage')
+    positive = [args.hvg, args.latent, args.n_layers, args.neighbors, args.max_epochs,
+                args.batch_size, args.early_stopping_patience]
+    if (any(x < 1 for x in positive) or args.hvg < 3 or args.latent < 2 or args.neighbors < 2
+            or not np.isfinite(args.resolution) or args.resolution <= 0
+            or not 0 <= args.dropout < 1 or not 0 < args.train_size < 1
+            or not 0 <= args.seed < 2**32):
+        raise ValueError('Invalid integration parameters')
+    if any(n < 2 for n in args.neighbors_grid) or any(not np.isfinite(r) or r <= 0 for r in args.resolutions_grid):
+        raise ValueError('Invalid neighbor/resolution grid')
+
+
+def save_umap(a, color, path, title=None):
+    import scanpy as sc
+    import matplotlib.pyplot as plt
+    sc.pl.umap(a, color=color, show=False, title=title)
+    plt.gcf().savefig(path, dpi=150, bbox_inches='tight')
+    plt.close('all')
+
+
+def build_candidates(a, args, report):
+    import scanpy as sc
+    import pandas as pd
+    primary_n = min(args.neighbors, a.n_obs - 1)
+    neighbors = sorted({min(n, a.n_obs - 1) for n in args.neighbors_grid + [args.neighbors]})
+    resolutions = sorted(set(args.resolutions_grid + [args.resolution]))
+    rows = []
+    plots = args.outdir / 'parameter_candidates'
+    plots.mkdir()
+    for n in neighbors:
+        graph = f'neighbors_scvi_n{n}'
+        sc.pp.neighbors(a, use_rep='X_scvi', n_neighbors=n, random_state=args.seed, key_added=graph)
+        sc.tl.umap(a, neighbors_key=graph, random_state=args.seed)
+        embedding = f'X_umap_scvi_n{n}'
+        a.obsm[embedding] = a.obsm['X_umap'].copy()
+        for resolution in resolutions:
+            key = f'leiden_n{n}_r{resolution:g}'
+            sc.tl.leiden(a, neighbors_key=graph, resolution=resolution, random_state=args.seed,
+                         flavor='igraph', directed=False, n_iterations=2, key_added=key)
+            save_umap(a, key, plots / f'{key}.png', title=f'scVI | neighbors={n} | resolution={resolution:g}')
+            rows.append({'neighbors': n, 'resolution': resolution, 'graph_key': graph,
+                         'embedding_key': embedding, 'cluster_key': key,
+                         'n_clusters': int(a.obs[key].nunique()),
+                         'min_cluster_size': int(a.obs[key].value_counts().min()),
+                         'display_baseline': n == primary_n and resolution == args.resolution})
+    primary_graph = f'neighbors_scvi_n{primary_n}'
+    primary_cluster = f'leiden_n{primary_n}_r{args.resolution:g}'
+    a.obsm['X_umap'] = a.obsm[f'X_umap_scvi_n{primary_n}'].copy()
+    a.obs['leiden'] = a.obs[primary_cluster].copy()
+    a.obsp['distances'] = a.obsp[a.uns[primary_graph]['distances_key']].copy()
+    a.obsp['connectivities'] = a.obsp[a.uns[primary_graph]['connectivities_key']].copy()
+    a.uns['neighbors'] = dict(a.uns[primary_graph], distances_key='distances', connectivities_key='connectivities')
+    a.uns['leiden'] = dict(a.uns[primary_cluster])
+    # UMAP parameters are constant across candidates; its coordinates must match the primary graph.
+    a.uns['scrna_parameter_selection'] = {'status': 'pending_review', 'graph_key': primary_graph,
+                                         'cluster_key': primary_cluster, 'neighbors': primary_n,
+                                         'resolution': args.resolution}
+    pd.DataFrame(rows).to_csv(args.outdir / 'parameter_candidates.csv', index=False)
+    report['parameter_candidates'] = rows
+    report['parameter_selection'] = a.uns['scrna_parameter_selection']
+    report['warnings'].append('Default leiden/X_umap are a display baseline; review candidates and record the user selection or delegated decision before final annotation.')
 
 
 def run(args, report):
-    import scanpy as sc
-    import matplotlib.pyplot as plt
-    a=load_counts(args.input)
-    if min(a.shape)<3 or np.any(np.asarray(a.layers["counts"].sum(axis=1)).ravel()<=0):
-        raise ValueError("Integration needs at least three cells/genes and positive counts in each cell")
-    if args.batch_key:
-        require_columns(a.obs,[args.batch_key])
-        a.obs[args.batch_key]=a.obs[args.batch_key].astype("category")
-    if (args.hvg<3 or args.latent<2 or args.neighbors<2 or args.max_epochs<1
-            or not np.isfinite(args.resolution) or args.resolution<=0 or not 0<=args.seed<2**32):
-        raise ValueError("Invalid integration parameters")
-    np.random.seed(args.seed)
-    lognormalize(a)
-    sc.pp.highly_variable_genes(a,n_top_genes=min(args.hvg,a.n_vars),flavor=args.hvg_flavor,
-                               layer="counts" if args.hvg_flavor=="seurat_v3" else None,
-                               batch_key=args.batch_key,subset=False)
-    h=a[:,a.var.highly_variable].copy()
-    if min(h.shape)<3:
-        raise ValueError("Too few HVGs for dimensionality reduction")
-    report.update(n_cells=a.n_obs,n_genes=a.n_vars,n_hvg=h.n_vars,backend=args.backend,
-                  actual_hvg_flavor=args.hvg_flavor,actual_batch_key=args.batch_key)
-    if args.backend=="scvi":
+    validate_parameters(args)
+    try:
         import scvi
-        scvi.settings.seed=args.seed
-        scvi.model.SCVI.setup_anndata(h,layer="counts",batch_key=args.batch_key)
-        model=scvi.model.SCVI(h,n_latent=args.latent,n_layers=2,gene_likelihood="nb")
-        model.train(max_epochs=args.max_epochs,accelerator=args.device,devices=1,
-                    early_stopping=args.max_epochs>=30,batch_size=min(256,a.n_obs))
-        model.save(str(args.outdir/"model"),overwrite=False)
-        latent=model.get_latent_representation()
-        rep="X_scvi"
-    else:
-        sc.pp.scale(h,max_value=10)
-        ncomp=min(args.latent,h.n_vars-1,h.n_obs-1)
-        sc.tl.pca(h,n_comps=ncomp,svd_solver="arpack",random_state=args.seed)
-        latent=h.obsm["X_pca"]; rep="X_pca_baseline"
-        report["warnings"].append("PCA baseline does not perform scVI batch integration.")
-    if not np.isfinite(latent).all():
-        raise ValueError("Non-finite latent coordinates")
-    a.obsm[rep]=latent
-    sc.pp.neighbors(a,use_rep=rep,n_neighbors=min(args.neighbors,a.n_obs-1),random_state=args.seed)
-    sc.tl.leiden(a,resolution=args.resolution,random_state=args.seed,flavor="igraph",directed=False,n_iterations=2)
-    sc.tl.umap(a,random_state=args.seed)
-    a.write_h5ad(args.outdir/"integrated.h5ad")
-    for col in ["leiden"]+([args.batch_key] if args.batch_key else []):
-        sc.pl.umap(a,color=col,show=False)
-        plt.gcf().savefig(args.outdir/("umap_clusters.png" if col=="leiden" else "umap_batch.png"),dpi=120,bbox_inches="tight")
-        plt.close("all")
-    report.update(n_clusters=int(a.obs.leiden.nunique()),cluster_sizes=a.obs.leiden.value_counts().to_dict())
-    report["warnings"].append("UMAP layout and batch mixing alone do not establish biological accuracy; assess preserved cell identities.")
+        import torch
+    except ImportError as exc:
+        raise RuntimeError('scVI is required. Install requirements-scvi.txt in this interpreter; no PCA fallback is allowed.') from exc
+    import scanpy as sc
+    import pandas as pd
+    import matplotlib.pyplot as plt
+    a = load_counts(args.input)
+    if min(a.shape) < 3 or np.any(np.asarray(a.layers['counts'].sum(axis=1)).ravel() <= 0):
+        raise ValueError('Integration needs at least three cells/genes and positive counts in every cell')
+    if args.batch_key:
+        require_columns(a.obs, [args.batch_key])
+        a.obs[args.batch_key] = a.obs[args.batch_key].astype('category')
+    device = ('gpu' if torch.cuda.is_available() else 'cpu') if args.device == 'auto' else args.device
+    if device == 'gpu' and not torch.cuda.is_available():
+        raise ValueError('Requested GPU is unavailable; choose --device cpu for CPU scVI, not PCA')
+    np.random.seed(args.seed)
+    scvi.settings.seed = args.seed
+    lognormalize(a)
+    covariates = score_cell_cycle(a, args, report)
+    if covariates:
+        cc_genes = report['cell_cycle']['s_genes']['informative'] + report['cell_cycle']['g2m_genes']['informative']
+        cc = a[:, cc_genes].copy()
+        sc.pp.scale(cc, max_value=10)
+        sc.tl.pca(cc, n_comps=min(10, cc.n_obs - 1, cc.n_vars - 1), random_state=args.seed)
+        sc.pl.pca(cc, color='phase', show=False)
+        plt.gcf().savefig(args.outdir / 'cell_cycle_pca_before_scvi.png', dpi=150, bbox_inches='tight')
+        plt.close('all')
+    sc.pp.highly_variable_genes(a, n_top_genes=min(args.hvg, a.n_vars), flavor=args.hvg_flavor,
+                               layer='counts' if args.hvg_flavor == 'seurat_v3' else None,
+                               batch_key=args.batch_key, subset=False)
+    h = a[:, a.var.highly_variable].copy()
+    if min(h.shape) < 3:
+        raise ValueError('Too few HVGs for scVI')
+    report.update(n_cells=a.n_obs, n_genes=a.n_vars, n_hvg=h.n_vars, backend='scvi',
+                  actual_hvg_flavor=args.hvg_flavor, actual_batch_key=args.batch_key,
+                  actual_device=device, continuous_covariate_keys=covariates)
+    scvi.model.SCVI.setup_anndata(h, layer='counts', batch_key=args.batch_key,
+                                  continuous_covariate_keys=covariates or None)
+    model = scvi.model.SCVI(h, n_latent=args.latent, n_layers=args.n_layers,
+                            gene_likelihood='nb', dropout_rate=args.dropout)
+    model.train(max_epochs=args.max_epochs, accelerator=device, devices=1,
+                early_stopping=not args.no_early_stopping,
+                early_stopping_patience=args.early_stopping_patience,
+                batch_size=min(args.batch_size, a.n_obs), train_size=args.train_size,
+                check_val_every_n_epoch=1, default_root_dir=str(args.outdir / 'training_logs'))
+    latent = model.get_latent_representation()
+    if not np.array_equal(a.obs_names, h.obs_names):
+        raise ValueError('Cell order changed during scVI fitting')
+    if latent.shape != (a.n_obs, args.latent) or not np.isfinite(latent).all():
+        raise ValueError('Invalid scVI latent coordinates')
+    a.obsm['X_scvi'] = latent
+    model.save(str(args.outdir / 'model'), overwrite=False, save_anndata=True)
+    split = pd.Series('unassigned', index=h.obs_names, name='training_split')
+    for label, indices in [('train', model.train_indices), ('validation', model.validation_indices),
+                           ('test', model.test_indices)]:
+        if indices is not None:
+            split.iloc[np.asarray(indices, dtype=int)] = label
+    split.to_csv(args.outdir / 'training_splits.csv', index_label='cell_id')
+    pd.Series(h.var_names, name='gene').to_csv(args.outdir / 'model_genes.csv', index=False)
+    history_dir = args.outdir / 'training_history'
+    history_dir.mkdir()
+    for name, values in model.history.items():
+        if hasattr(values, 'to_csv'):
+            values.to_csv(history_dir / f'{safe_name(name)}.csv')
+    report['training'] = {'max_epochs': args.max_epochs, 'epochs_completed': int(model.trainer.current_epoch),
+                          'early_stopping': not args.no_early_stopping, 'patience': args.early_stopping_patience,
+                          'train_size': args.train_size, 'validation_size': 1 - args.train_size,
+                          'batch_size': min(args.batch_size, a.n_obs), 'monitor': 'elbo_validation',
+                          'actual_split_counts': {str(k): int(v) for k, v in split.value_counts().items()},
+                          'convergence': 'Review history; a budget or stopping criterion is not proof of convergence'}
+    if covariates:
+        report['cell_cycle']['status'] = 'registered_and_trained'
+        write_json(args.outdir / 'cell_cycle_coverage.json', report['cell_cycle'])
+        latent_frame = pd.DataFrame(latent, columns=[f'latent_{i}' for i in range(args.latent)])
+        correlations = {key: latent_frame.corrwith(pd.Series(a.obs[key].to_numpy())) for key in covariates}
+        pd.DataFrame(correlations).to_csv(args.outdir / 'cell_cycle_latent_correlations.csv', index_label='dimension')
+    build_candidates(a, args, report)
+    save_umap(a, 'leiden', args.outdir / 'umap_clusters.png')
+    if args.batch_key:
+        save_umap(a, args.batch_key, args.outdir / 'umap_batch.png')
+    if covariates:
+        save_umap(a, ['phase', 'S_score', 'G2M_score'], args.outdir / 'umap_cell_cycle.png')
+    a.uns['scrna_integration'] = {'backend': 'scvi', 'batch_key': args.batch_key or '',
+                                 'continuous_covariate_keys': covariates,
+                                 'cell_cycle_status': report['cell_cycle']['status']}
+    a.write_h5ad(args.outdir / 'integrated.h5ad')
+    report.update(n_clusters=int(a.obs.leiden.nunique()), cluster_sizes=a.obs.leiden.value_counts().to_dict())
+    report['warnings'].append('Covariate registration does not guarantee removal of cell-cycle signal; inspect diagnostics within biological groups. UMAP and batch mixing alone do not establish biological accuracy.')

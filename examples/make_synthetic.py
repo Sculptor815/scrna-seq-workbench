@@ -26,7 +26,10 @@ def main():
                               'donor_id':f'd{d}','condition':condition,'truth_cell_type':ct,'batch':f'b{d%2}'}]*25)
     a=ad.AnnData(sparse.csr_matrix(np.vstack(matrices)),obs=pd.DataFrame(rows))
     a.obs_names=[f'synthetic_c{i}' for i in range(a.n_obs)]
-    a.var_names=['CD3D','CD3E','TRAC','MS4A1','CD79A','CD79B','MT-CO1']+[f'G{i}' for i in range(93)]
+    cycle=json.loads((Path(__file__).resolve().parents[1]/'plugins/scrna-seq-workbench/assets/cell_cycle_human.json').read_text())
+    # Named cycle features exercise scoring only; these random counts are not biological evidence.
+    a.var_names=(['CD3D','CD3E','TRAC','MS4A1','CD79A','CD79B','MT-CO1']
+                 +cycle['s_genes'][:10]+cycle['g2m_genes'][:10]+[f'G{i}' for i in range(73)])
     a.layers['counts']=a.X.copy()
     a.uns['synthetic_only']=True
     a.write_h5ad(args.outdir/'raw.h5ad')

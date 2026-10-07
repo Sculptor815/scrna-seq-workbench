@@ -48,6 +48,9 @@ def main():
             assert not any(n.endswith('/score.py') for n in z.namelist()), 'Scoring must stay outside the plugin'
             assert f'{source.name}/plugin.json' in z.namelist()
             assert f'{source.name}/.claude-plugin/plugin.json' in z.namelist()
+            assert f'{source.name}/references/knowledgebase.md' in z.namelist()
+            assert f'{source.name}/references/agent-policy.md' in z.namelist()
+            assert f'{source.name}/assets/cell_cycle_human.json' in z.namelist()
         prefix=f'{source.name}/' + ('plugins/scrna-seq-workbench/' if args.format == 'repository' else '')
         versions={json.loads(z.read(prefix+p))['version'] for p in
                   ('plugin.json','.codex-plugin/plugin.json','.claude-plugin/plugin.json')}

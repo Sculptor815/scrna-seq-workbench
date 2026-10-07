@@ -5,6 +5,9 @@ description: Investigate a biological question using public or user-provided scR
 
 # Investigate a biological question
 
+Before analysis, read the [required agent policy](../../references/agent-policy.md)
+and its stage-specific knowledge-base sections. Apply the current user instructions.
+
 Start from what the user wants to learn. Establish the organism, tissue or disease,
 proposed mechanism or genes, and comparison that would inform their next experiment.
 Read existing context and files before asking for missing facts. Users can delegate
@@ -34,7 +37,9 @@ requirements; respect the user's storage location and budget.
 
 Use [analysis routes](../../references/research-analysis.md) to choose the shortest
 defensible route. Existing documented labels and counts can support an initial
-expression summary without retraining scVI. Inspect their provenance and limitations.
+expression summary without retraining scVI. Inspect their provenance and limitations;
+this is not a new complete clustering workflow. For new clustering, scVI with
+cell-cycle covariates is required. Reuse a model only after checking its provenance.
 For new matrices, use the bundled sequencing-report-review, scrna-qc,
 scrna-scvi-umap, scrna-cell-annotation and scrna-condition-de Skills as needed.
 Do not run every stage merely because it exists.

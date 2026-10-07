@@ -7,6 +7,9 @@ description: Review sequencing-company scRNA-seq delivery reports (MGI DNBelab, 
 
 # Sequencing delivery report review
 
+Before analysis, read the [required agent policy](../../../plugins/scrna-seq-workbench/references/agent-policy.md)
+and its stage-specific knowledge-base sections. Apply the current user instructions.
+
 For a new analysis, begin with [shared intake](../../../plugins/scrna-seq-workbench/references/analysis-intake.md):
 explain the necessary files and ask for missing sample/assay facts and the user's
 analysis goal. Reuse answers across all five Skills. A report-only request needs

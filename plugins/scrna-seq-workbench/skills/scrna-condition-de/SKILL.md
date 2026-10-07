@@ -5,6 +5,9 @@ description: Perform condition differential expression from reviewed scRNA-seq l
 
 # Donor-level condition differential expression
 
+Before analysis, read the [required agent policy](../../references/agent-policy.md)
+and its stage-specific knowledge-base sections. Apply the current user instructions.
+
 Start or reuse [shared intake](../../references/analysis-intake.md). Resolve the
 actual case/control levels, direction, donor pairing, independent replicate counts
 and confounding before fitting; explain the DE [parameters and supported designs](../../references/important-parameters.md).

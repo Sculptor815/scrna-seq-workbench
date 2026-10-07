@@ -1,18 +1,25 @@
-# v0.3.0 - biological questions and focused analysis
+# v0.4.0 - required scVI, cell-cycle covariates and bundled agent knowledge
 
-The new scrna-research entry point guides study selection and routes a biological
-question to the relevant analysis stages. It supports delegated routine settings,
-documents dataset suitability and evidence, and distinguishes exploratory results
-from stronger inference. Study discovery uses the host's existing search tools.
+New representations now require scVI in every analysis group, including inputs
+without technical batch metadata. Integration scores cell cycle before HVG
+subsetting and registers S_score/G2M_score with the count model. It preserves the
+full-gene count object, saves a reloadable model and exports cycle diagnostics,
+training history and neighbor/resolution candidates for review.
 
-The new research command exports donor expression, equal-donor condition summaries
-and an HTML report from declared counts and documented labels. It preserves input
-files, identifies missing genes and retains low-support groups in the detailed
-table. It does not assign inferential significance or validate labels.
+The six Skills load a bundled policy entry point and the relevant knowledge-base
+sections. The collaboration knowledge base remains the single maintenance source;
+synchronization and archive checks prevent stale or missing plugin copies.
 
-Developer evaluation is separate on the benchmark branch under benchmarks/research. Its calculator consumes
-documented final reviews and reports weighted ratings and eligibility. It is excluded
-from plugin archives and never invoked by user analysis Skills. No new scientific
-benchmark scores are claimed. Historical evidence and HPA review status are unchanged.
+Breaking CLI changes: --species is required for integrate; --backend pca is rejected.
+Use requirements-scvi.txt in the execution environment. Human symbols have a
+bundled cycle preset; mouse or other gene identifiers require documented mapping.
+Defaults now use 3,000 seurat_v3 HVGs, 20 latent dimensions, a 400-epoch budget,
+early stopping with patience 20, and candidate parameter grids. These are starting
+settings, not universal biological optima. Cycle exceptions require a recorded
+explicit user override. Model/candidate completion does not imply convergence or
+human approval.
 
-See docs/RESEARCH_WORKFLOW.md for usage and validation.json for release checks.
+See [agent knowledge setup](docs/AGENT_KNOWLEDGE.md), [usage](docs/USAGE.md) and
+validation.json for the exact checks. Historical analysis reports and benchmark
+results are not rewritten. Host loading, GPU training and biological accuracy
+are not established by the package or synthetic tests.

@@ -2,7 +2,7 @@
 
 Investigate biological questions with public or user-provided single-cell RNA-seq
 data. This analysis plugin works with **Codex**, **Claude Code** and **DeepSeek Harness**.
-Version **0.3.0 - research preview**.
+Version **0.4.0 - research preview**.
 
 Start with a hypothesis, tissue or disease, and what you want to learn. The
 `scrna-research` entry point guides your assistant to find relevant studies, check
@@ -19,8 +19,9 @@ welcome; a count matrix is not required to begin finding suitable studies.
 5. Use [Analyze your own data](docs/USAGE.md) when you need the individual analysis stages.
 
 Installing the plugin adds instructions and scripts. Its calculations use a
-Python environment on your computer or server. scVI and differential expression
-have additional dependencies described in the installation tutorial.
+Python environment on your computer or server. New representation workflows require
+scVI and its dependencies; condition DE has additional dependencies. See the
+installation tutorial and [how agents receive the knowledge base](docs/AGENT_KNOWLEDGE.md).
 
 ## What it does
 
@@ -29,7 +30,7 @@ have additional dependencies described in the installation tutorial.
 | `scrna-research` | Biological question, context and any data/resource limits | Study shortlist, focused analysis and an evidence-based explanation |
 | `sequencing-report-review` | Vendor report and sample details | A summary of sequencing metrics, source evidence and missing files |
 | `scrna-qc` | UMI counts, species and sample metadata | QC measurements, filtering records and a filtered H5AD |
-| `scrna-scvi-umap` | Filtered counts and a batch definition if needed | scVI or PCA representation, Leiden clusters and UMAP plots |
+| `scrna-scvi-umap` | Filtered counts and a batch definition if needed | Required scVI with cell-cycle covariates, candidate Leiden clusters and UMAP plots |
 | `scrna-cell-annotation` | Clusters and a tissue-matched marker panel or HPA table | Candidate cell types, marker evidence and a review form |
 | `scrna-condition-de` | Reviewed cell types, conditions and biological donor IDs | Donor-level pseudobulk counts and PyDESeq2 results |
 

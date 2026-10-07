@@ -24,19 +24,27 @@ gene universes may differ from a processed public matrix.
 
 ## Representation and clustering
 
-PCA -> neighbors -> Leiden/UMAP and counts -> scVI -> neighbors -> Leiden/UMAP are
-different routes. The current scVI branch does not train on PCA coordinates.
+The required route is counts -> scVI -> neighbors -> Leiden/UMAP for every analysis
+group. PCA is auxiliary only. scVI does not train on PCA coordinates. Cell-cycle
+scores from full-gene log expression are registered before training; inspect their
+coverage and post-training diagnostics. See the [policy entry point](agent-policy.md).
 
 | Setting | Current CLI default | Decision to explain |
 |---|---|---|
-| backend | scvi | scVI, explicit PCA baseline, or a planned comparison |
-| latent | 10 | PCA components for pca; latent dimensions for scvi. Record separately; actual PCA dimensions may be capped |
-| hvg / hvg-flavor | 2000 / seurat | Feature space; seurat uses lognorm, seurat_v3 uses counts and needs scikit-misc |
-| batch-key | Unset | Meaning of a real metadata column and its relation to condition/donor. PCA does not perform scVI batch correction |
-| neighbors | 15 | Local versus broader structure; actual value is capped by cell count |
-| resolution | 1 | Leiden granularity; more clusters do not imply more true cell types |
-| max-epochs | 200 | Training budget; early stopping enabled by this wrapper when the cap is at least 30. A cap does not prove convergence |
-| seed / device | 0 / cpu | Repeatability, sensitivity checks and an actually available GPU environment |
+| backend | scvi only | No PCA substitution, regardless of batch availability |
+| species / cycle genes | Explicit species; human symbol preset | Mouse/non-symbol IDs need a documented exact mapping JSON |
+| min-cycle-genes | 5 per phase | Execution minimum, not biological validation; inspect missing genes |
+| latent / n-layers / dropout | 20 / 2 / 0.1 | Adapt to complexity; preserve selected model parameters |
+| hvg / hvg-flavor | 3000 / seurat_v3 | Raw counts by default; explicit seurat uses lognorm |
+| batch-key | Unset (None) | Verified technical metadata only; scVI still runs without it |
+| neighbors / resolution | 30 / 1 | Display baseline, pending review; not automatic final acceptance |
+| neighbors-grid | 15 20 30 50 | Capped/deduplicated at n_cells - 1; adjust explicitly |
+| resolutions-grid | 0.3 0.5 0.8 1.0 | Same graph/UMAP per neighbor setting; review candidates |
+| max-epochs / batch-size | 400 / 256 | Budget and minibatch size; inspect training history |
+| early stopping / patience | On / 20 | --no-early-stopping is explicit; stopping does not prove convergence |
+| train-size | 0.9 | Validation uses the remaining cells; record seed and split |
+| seed / device | 0 / cpu | GPU requires availability; auto resolves and records CPU/GPU |
+| skip-cell-cycle | Off | Requires an actual user override and nonempty recorded reason |
 
 Inspect condition/batch/donor relationships before correction. Missing types across
 batches can be biological. The CLI uses the library defaults for UMAP min_dist

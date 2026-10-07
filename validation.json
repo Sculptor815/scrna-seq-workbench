@@ -1,68 +1,81 @@
 {
-  "version": "0.3.0",
-  "checked_on": "2026-10-03",
-  "platform": "Windows, restricted local execution",
-  "python": "3.12.14",
+  "version": "0.4.0",
+  "checked_on": "2026-10-07",
+  "platform": "Windows CPU, isolated local Python environment",
+  "versions": {
+    "python": "3.13.5",
+    "scvi-tools": "1.5.1",
+    "torch": "2.14.1",
+    "scanpy": "1.12.4",
+    "anndata": "0.13.4",
+    "scikit-misc": "0.5.3"
+  },
   "structural_checks": {
     "status": "passed",
     "canonical_skills": 6,
-    "deepseek_project_adapters": 6,
-    "english_markdown_files": 43
+    "deepseek_adapters": 6,
+    "english_markdown_files": 68,
+    "knowledgebase_sync": "passed",
+    "relative_links": "passed"
+  },
+  "dependency_check": {
+    "status": "passed",
+    "command": "python -m pip check"
+  },
+  "core_and_scvi_suite": {
+    "status": "passed",
+    "tests": 42,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "final_scvi_regression": {
+    "status": "passed",
+    "tests": 7,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "reason": "Rechecked after isolating training logs and recording actual train/validation/test splits"
+  },
+  "real_training": {
+    "backend": "scvi",
+    "device": "cpu",
+    "cases": [
+      "no batch key",
+      "two verified synthetic batches"
+    ],
+    "epochs_per_case": 2,
+    "cells_per_case": 120,
+    "checks": [
+      "raw counts unchanged",
+      "full gene and cell order retained",
+      "S_score/G2M_score registered in saved model",
+      "latent dimensions and finite coordinates",
+      "four candidate graph/resolution combinations per case",
+      "model save/load reproduces latent coordinates",
+      "training split counts recorded",
+      "cycle diagnostics saved"
+    ],
+    "limitation": "Synthetic execution and persistence only; two epochs do not establish convergence or biological cell-cycle removal"
   },
   "benchmark_verification": {
     "status": "passed",
-    "frozen_plugin_version": "0.1.0",
     "frozen_source_files": 37,
     "artifact_hashes": 69,
-    "datasets": 5,
     "historical_runs": 20,
     "seed_0_cells": 23735,
-    "scope": "Original source bytes, committed artifact inventory/hashes, stage dimensions, seed-0 agreement and coverage. No training rerun."
+    "scope": "Historical evidence integrity only; no retraining of real datasets"
   },
-  "core_suite": {
-    "attempted": 35,
-    "passed": 29,
-    "errors": 6,
-    "failures": 0,
-    "skipped": 0,
-    "status": "incomplete_due_to_environment",
-    "affected_tests": [
-      "test_report_and_qc_cli (test_workflows.CLI.test_report_and_qc_cli)",
-      "test_10x_duplicate_symbols_are_not_silently_renamed (test_workflows.Invariants.test_10x_duplicate_symbols_are_not_silently_renamed)",
-      "test_annotation_and_review_preserve_clusters (test_workflows.Invariants.test_annotation_and_review_preserve_clusters)",
-      "test_failed_run_records_failure_and_refuses_overwrite (test_workflows.Invariants.test_failed_run_records_failure_and_refuses_overwrite)",
-      "test_metadata_alignment_rejects_missing_cells (test_workflows.Invariants.test_metadata_alignment_rejects_missing_cells)",
-      "test_output_cannot_contaminate_input_directory (test_workflows.Invariants.test_output_cannot_contaminate_input_directory)"
-    ],
-    "reason": "Six unchanged tempfile-dependent tests encounter Windows sandbox PermissionError. See this commit GitHub CI for a clean runner."
-  },
-  "research_tests": {
-    "status": "passed",
-    "tests": 7,
-    "scope": "Synthetic arithmetic, donor weighting, paired conditions, missing groups/genes, input hash preservation, HTML escaping, saved outputs, overwrite refusal and analysis CLI separation."
-  },
-  "developer_scoring": {
-    "location": "benchmark branch",
-    "included_in_analysis_plugin": false,
-    "expert_scored_sessions": 0
-  },
-  "previous_release_ci": {
-    "version": "0.2.1",
-    "url": "https://github.com/Sculptor815/scrna-seq-workbench/actions/runs/37018164297",
-    "conclusion": "success"
-  },
+  "previous_release": "docs/validation-v0.3.0.json",
   "github_ci": {
     "url": "https://github.com/Sculptor815/scrna-seq-workbench/actions",
-    "status": "See the workflow run for the commit being evaluated. This file records pre-push local validation."
+    "status": "Check the workflow for the current commit; this file records local validation"
   },
-  "not_executed_for_this_release": [
-    "new scVI training",
-    "real-data research benchmark",
-    "expert scoring of research cases",
-    "live acceptance in all three hosts",
-    "clean-machine dependency installation",
-    "GPU execution"
+  "not_executed": [
+    "GPU training",
+    "real-data analysis rerun",
+    "new biological accuracy assessment",
+    "live loading/acceptance in all supported hosts"
   ],
-  "dataset_licenses": "Specific licenses for the exact downloaded copies remain unverified; per-study status is recorded in benchmarks/dataset_sources.json.",
-  "human_hpa_review": "pending"
+  "human_hpa_review": "No human review fabricated; historical review status unchanged"
 }

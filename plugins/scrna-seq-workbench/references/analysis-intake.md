@@ -4,6 +4,11 @@ Read for a new project or entry into an intermediate stage. Reuse existing answe
 collect only information needed for the requested scope. This is a conversational
 workflow shared by the research entry point and individual analysis Skills.
 
+Read the [required agent policy](agent-policy.md) and the relevant knowledge-base
+sections before choosing stages. Record how datasets form analysis groups from
+papers/metadata or user clarification; every new representation requires scVI,
+even without batches.
+
 ## Ask about facts before technical numbers
 
 Read the supplied files first. Distinguish user statements, verified file evidence
@@ -34,7 +39,7 @@ filters. Read the relevant sections of [important parameters](important-paramete
 Show a compact table: parameter, proposed/user value, evidence, likely impact and status.
 Statuses can be unknown, proposed, user-specified, accepted, delegated, or unavailable.
 
-Explain per-sample filters, PCA versus scVI dimensions, batch-column meaning,
+Explain per-sample filters, scVI dimensions, batch-column meaning,
 HVGs, neighbors, resolution, seed and training budget as applicable. Disclose any
 subsampling: amount, selection method, seed and effect on rare types. A 6000-cell
 benchmark cap is not a production default. Report actual values if software caps a setting.
@@ -60,7 +65,7 @@ approve future cell labels. Revised settings need a new run directory.
 | Counts but no vendor report | Inspect matrix with known provenance | Cannot verify sequencing saturation/alignment quality |
 | Unknown counts provenance or normalized data only | Locate original counts and processing history | Do not fit a count model or counts DE |
 | No matching mitochondrial genes | Check identifiers and other metrics | Mark MT QC unavailable; do not interpret zero as good quality |
-| Undefined batch | Clarify or deliberately explore without correction | No arbitrary substitution of condition/donor/sample as batch |
+| Undefined batch | Clarify or run scVI with batch_key=None and cycle covariates | No arbitrary substitution of condition/donor/sample as batch |
 | Complete batch/condition confounding | Describe the design and explore | No claim to separate technical and treatment effects |
 | Missing annotation context/reference | Inspect data and request relevant evidence | No universal PBMC panel or forced fine labels |
 | Missing donors/insufficient replicates | Descriptive analysis within scope | No donor-level DE; never invent donors |

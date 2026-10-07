@@ -11,9 +11,11 @@ scVI receives only raw counts; the output preserves every retained gene for
 annotation and pseudobulk. scVI seed is set before model creation and training.
 GPU kernels/environment changes can still change numerical results.
 
-Cell-cycle regression/covariates are deliberately not automatic in this release.
-If proliferation is part of the question, removing it can erase the desired
-signal. UMAP distance/global geometry and visually mixed batches are not a
+The owner policy requires cell-cycle scoring on full-gene log expression and
+S_score/G2M_score nuisance covariates in scVI, even with batch_key=None. Inspect
+the matched/missing gene report and residual associations; registration alone
+does not prove removal. An explicit user exception requires a recorded reason.
+Raw count layers remain unchanged. UMAP distance/global geometry and visually mixed batches are not a
 standalone biological validation. Evaluate label conservation, rare cells and
 batch mixing jointly on suitable reference data.
 
