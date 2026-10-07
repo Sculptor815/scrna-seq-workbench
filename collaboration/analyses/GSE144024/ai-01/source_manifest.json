@@ -1,0 +1,57 @@
+{
+  "run": "ai-01",
+  "archived_on": "2026-10-07",
+  "scope": "Report-only archive: original HTML, display figures and English summary. No cell-level tables, expression datasets or bulk result-table exports are published.",
+  "files": [
+    {
+      "archive_path": "original/Human_HSC_report.html",
+      "bytes": 5079876,
+      "sha256": "aca140e8e055b1d41409e37d7ca0ee408e782f8cb86075064cf75d151ab2c648",
+      "preservation": "Byte-identical original report or display figure"
+    },
+    {
+      "archive_path": "original/figures/04_umap_overview.png",
+      "bytes": 1196348,
+      "sha256": "294c1e8c12fe1931d1ab3f82623f8095c430e64c9140dc9fc03af5f171821ce9",
+      "preservation": "Byte-identical original report or display figure"
+    },
+    {
+      "archive_path": "original/figures/02_group_marker_dotplot.png",
+      "bytes": 165670,
+      "sha256": "b9eeda063af97d570d1b885af388ca57c39956f89e8836b88411dccac8f09859",
+      "preservation": "Byte-identical original report or display figure"
+    }
+  ],
+  "original_html_links_to_local_supporting_files": [
+    {
+      "report": "original/Human_HSC_report.html",
+      "local_link": "tables/qc_summary.csv",
+      "status": "Supporting local file, not published in the report-only archive"
+    },
+    {
+      "report": "original/Human_HSC_report.html",
+      "local_link": "tables/candidate_composition_percent.csv",
+      "status": "Supporting local file, not published in the report-only archive"
+    },
+    {
+      "report": "original/Human_HSC_report.html",
+      "local_link": "tables/key_markers_by_group.csv",
+      "status": "Supporting local file, not published in the report-only archive"
+    },
+    {
+      "report": "original/Human_HSC_report.html",
+      "local_link": "tables/cluster_review_summary.csv",
+      "status": "Supporting local file, not published in the report-only archive"
+    },
+    {
+      "report": "original/Human_HSC_report.html",
+      "local_link": "tables/marker_source_coverage.csv",
+      "status": "Supporting local file, not published in the report-only archive"
+    },
+    {
+      "report": "original/Human_HSC_report.html",
+      "local_link": "04_annotation/hpa_review.template.csv",
+      "status": "Supporting local file, not published in the report-only archive"
+    }
+  ]
+}

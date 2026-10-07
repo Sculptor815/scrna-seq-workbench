@@ -1,17 +1,15 @@
 # GSE144024 analysis records
 
-This directory keeps the user-designated manual analysis and two future AI analyses as separate, traceable submissions. Study-specific results live here; general analysis rules remain in the [knowledge base](../../knowledgebase/README.md).
+The manual submission and two supplied AI reports are archived separately. General analysis policies remain in the [knowledge base](../../knowledgebase/README.md).
 
-| Record | Status | Contents |
+| Record | Scope | Status |
 |---|---|---|
-| [Manual v1](manual-v1/README.md) | Submitted; archived on 2026-10-07 | English report, original QC/marker/annotation artifacts, extracted tables and a knowledge-base supplement checklist |
-| [AI analysis 1](ai-01/README.md) | Awaiting user submission | No analysis results yet |
-| [AI analysis 2](ai-02/README.md) | Awaiting user submission | No analysis results yet |
+| [Manual v1](manual-v1/README.md) | Separate FL, YS and joint hESC Day0/Day6 scVI outputs | User-designated final manual submission; unchanged |
+| [AI analysis 1](ai-01/README.md) | Four sources jointly fitted with PCA; 47,855 cells, 37 clusters | Supplied report; candidate annotation awaiting human review |
+| [AI analysis 2](ai-02/README.md) | Independent FL, YS and hESC PCA analyses; 28, 21 and 26 clusters | Supplied second report; candidate annotation awaiting human review |
 
-## Adding the AI analyses
+Each AI record provides an English summary, unchanged original Chinese HTML reports, selected original display figures and a checksum manifest. Download HTML for browser viewing. Original links to supporting local tables/configurations are documented in the manifests but those files, cell-level data, expression matrices and bulk result exports are not published in this report-only packet.
 
-Preserve each run's actual outputs and record its model/agent version, inputs, prompts, parameter choices, annotation/review process, runtime and resources. Use the same report headings: grouping and inputs; QC and retained cells; representation and clustering; annotation and marker evidence; DE; limitations; artifact provenance.
+The manual record is unchanged. No new manual-versus-AI scoring, re-annotation or ranking was performed. Internal comparisons already present in the source AI reports are preserved with their original scope. AI analysis 2 extends the first analysis, rather than representing a blinded independent run.
 
-State whether a run started from raw counts, QC-filtered data or existing embeddings, whether cell/gene universes match, and whether the agent saw the manual labels. Keep human edits distinguishable from original AI output. Do not populate unsubmitted runs with estimates or scores.
-
-When comparison is requested later, align cell IDs and label granularity before calculating agreement. Different Leiden IDs are not label matches; different retained-cell sets require an explicit common-cell denominator and retention analysis. Agreement with this manual baseline is not independently established biological accuracy. No comparison or ranking has been performed here.
+For any later comparison, establish shared cell IDs, actual preprocessing, label granularity, model/prompt provenance and human involvement first. Agreement with this manual baseline is not independently established biological accuracy.

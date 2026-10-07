@@ -1,0 +1,216 @@
+{
+  "run": "ai-02",
+  "archived_on": "2026-10-07",
+  "scope": "Report-only archive: original HTML, display figures and English summary. No cell-level tables, expression datasets or bulk result-table exports are published.",
+  "files": [
+    {
+      "archive_path": "original/Human_HSC_separate_report.html",
+      "bytes": 3927820,
+      "sha256": "dc6d6e3c285757b7fedb59c597d025066a039ba10649ed60f3e8626d58537534",
+      "preservation": "Byte-identical original report or display figure"
+    },
+    {
+      "archive_path": "original/FL/FL_report.html",
+      "bytes": 1708103,
+      "sha256": "0b88fee26a97982e9533c7ce44d67d605bf052eeda918154474441f1d540144e",
+      "preservation": "Byte-identical original report or display figure"
+    },
+    {
+      "archive_path": "original/YS/YS_report.html",
+      "bytes": 1434972,
+      "sha256": "03874bb653c656092899baced4b4234944df7a6a533c394255029a47372feee5",
+      "preservation": "Byte-identical original report or display figure"
+    },
+    {
+      "archive_path": "original/hESC/hESC_report.html",
+      "bytes": 2028033,
+      "sha256": "d6823e635dd9b1413c2f38d79f1628ab31ae75e1a8f2ca0016eb3e0404ebf4ad",
+      "preservation": "Byte-identical original report or display figure"
+    },
+    {
+      "archive_path": "original/FL/figures/01_independent_umap.png",
+      "bytes": 964061,
+      "sha256": "1bfc2240ed4283b36b63b23bfed8e8cbb3c3ab6c1c59128a42ef04ea7354b97d",
+      "preservation": "Byte-identical original report or display figure"
+    },
+    {
+      "archive_path": "original/YS/figures/01_independent_umap.png",
+      "bytes": 811207,
+      "sha256": "a4461f85ca5e7eb851ed801500820b6e9afbbc41b6a6cc6fdfa18a93cbb6be41",
+      "preservation": "Byte-identical original report or display figure"
+    },
+    {
+      "archive_path": "original/hESC/figures/01_independent_umap.png",
+      "bytes": 1166551,
+      "sha256": "f858311ac12dd0d533670513723ae1cf6d388fcd1a9b6c131936f281dc8abdb2",
+      "preservation": "Byte-identical original report or display figure"
+    }
+  ],
+  "original_html_links_to_local_supporting_files": [
+    {
+      "report": "original/Human_HSC_separate_report.html",
+      "local_link": "cohort_summary.csv",
+      "status": "Supporting local file, not published in the report-only archive"
+    },
+    {
+      "report": "original/Human_HSC_separate_report.html",
+      "local_link": "analysis_intake.md",
+      "status": "Supporting local file, not published in the report-only archive"
+    },
+    {
+      "report": "original/Human_HSC_separate_report.html",
+      "local_link": "config/markers_expanded.json",
+      "status": "Supporting local file, not published in the report-only archive"
+    },
+    {
+      "report": "original/FL/FL_report.html",
+      "local_link": "tables/cluster_review.csv",
+      "status": "Supporting local file, not published in the report-only archive"
+    },
+    {
+      "report": "original/FL/FL_report.html",
+      "local_link": "tables/cell_metadata.csv.gz",
+      "status": "Supporting local file, not published in the report-only archive"
+    },
+    {
+      "report": "original/FL/FL_report.html",
+      "local_link": "tables/composition_counts.csv",
+      "status": "Supporting local file, not published in the report-only archive"
+    },
+    {
+      "report": "original/FL/FL_report.html",
+      "local_link": "tables/composition_percent.csv",
+      "status": "Supporting local file, not published in the report-only archive"
+    },
+    {
+      "report": "original/FL/FL_report.html",
+      "local_link": "tables/cluster_source_markers.csv",
+      "status": "Supporting local file, not published in the report-only archive"
+    },
+    {
+      "report": "original/FL/FL_report.html",
+      "local_link": "tables/marker_coverage.csv",
+      "status": "Supporting local file, not published in the report-only archive"
+    },
+    {
+      "report": "original/FL/FL_report.html",
+      "local_link": "tables/agent_cautions.csv",
+      "status": "Supporting local file, not published in the report-only archive"
+    },
+    {
+      "report": "original/FL/FL_report.html",
+      "local_link": "04_annotation/hpa_review.template.csv",
+      "status": "Supporting local file, not published in the report-only archive"
+    },
+    {
+      "report": "original/FL/FL_report.html",
+      "local_link": "04_annotation/report.json",
+      "status": "Supporting local file, not published in the report-only archive"
+    },
+    {
+      "report": "original/FL/FL_report.html",
+      "local_link": "../config/markers_expanded.json",
+      "status": "Supporting local file, not published in the report-only archive"
+    },
+    {
+      "report": "original/YS/YS_report.html",
+      "local_link": "tables/cluster_review.csv",
+      "status": "Supporting local file, not published in the report-only archive"
+    },
+    {
+      "report": "original/YS/YS_report.html",
+      "local_link": "tables/cell_metadata.csv.gz",
+      "status": "Supporting local file, not published in the report-only archive"
+    },
+    {
+      "report": "original/YS/YS_report.html",
+      "local_link": "tables/composition_counts.csv",
+      "status": "Supporting local file, not published in the report-only archive"
+    },
+    {
+      "report": "original/YS/YS_report.html",
+      "local_link": "tables/composition_percent.csv",
+      "status": "Supporting local file, not published in the report-only archive"
+    },
+    {
+      "report": "original/YS/YS_report.html",
+      "local_link": "tables/cluster_source_markers.csv",
+      "status": "Supporting local file, not published in the report-only archive"
+    },
+    {
+      "report": "original/YS/YS_report.html",
+      "local_link": "tables/marker_coverage.csv",
+      "status": "Supporting local file, not published in the report-only archive"
+    },
+    {
+      "report": "original/YS/YS_report.html",
+      "local_link": "tables/agent_cautions.csv",
+      "status": "Supporting local file, not published in the report-only archive"
+    },
+    {
+      "report": "original/YS/YS_report.html",
+      "local_link": "04_annotation/hpa_review.template.csv",
+      "status": "Supporting local file, not published in the report-only archive"
+    },
+    {
+      "report": "original/YS/YS_report.html",
+      "local_link": "04_annotation/report.json",
+      "status": "Supporting local file, not published in the report-only archive"
+    },
+    {
+      "report": "original/YS/YS_report.html",
+      "local_link": "../config/markers_expanded.json",
+      "status": "Supporting local file, not published in the report-only archive"
+    },
+    {
+      "report": "original/hESC/hESC_report.html",
+      "local_link": "tables/cluster_review.csv",
+      "status": "Supporting local file, not published in the report-only archive"
+    },
+    {
+      "report": "original/hESC/hESC_report.html",
+      "local_link": "tables/cell_metadata.csv.gz",
+      "status": "Supporting local file, not published in the report-only archive"
+    },
+    {
+      "report": "original/hESC/hESC_report.html",
+      "local_link": "tables/composition_counts.csv",
+      "status": "Supporting local file, not published in the report-only archive"
+    },
+    {
+      "report": "original/hESC/hESC_report.html",
+      "local_link": "tables/composition_percent.csv",
+      "status": "Supporting local file, not published in the report-only archive"
+    },
+    {
+      "report": "original/hESC/hESC_report.html",
+      "local_link": "tables/cluster_source_markers.csv",
+      "status": "Supporting local file, not published in the report-only archive"
+    },
+    {
+      "report": "original/hESC/hESC_report.html",
+      "local_link": "tables/marker_coverage.csv",
+      "status": "Supporting local file, not published in the report-only archive"
+    },
+    {
+      "report": "original/hESC/hESC_report.html",
+      "local_link": "tables/agent_cautions.csv",
+      "status": "Supporting local file, not published in the report-only archive"
+    },
+    {
+      "report": "original/hESC/hESC_report.html",
+      "local_link": "04_annotation/hpa_review.template.csv",
+      "status": "Supporting local file, not published in the report-only archive"
+    },
+    {
+      "report": "original/hESC/hESC_report.html",
+      "local_link": "04_annotation/report.json",
+      "status": "Supporting local file, not published in the report-only archive"
+    },
+    {
+      "report": "original/hESC/hESC_report.html",
+      "local_link": "../config/markers_expanded.json",
+      "status": "Supporting local file, not published in the report-only archive"
+    }
+  ]
+}
