@@ -88,7 +88,7 @@ FASTQ alignment and FCS/flow cytometry are outside this first scope.
 
 ## Knowledge and retrieval
 
-Use the [knowledge authoring guide](knowledgebase/README.md). Preserve procedures,
+Use the [QC and scVI decision knowledge base](knowledgebase/README.md). Preserve procedures,
 conditions, units and citations together when preparing searchable passages.
 Begin with reviewed text and lexical retrieval for exact gene/accession/tool
 names. Add semantic or hybrid retrieval only after comparison on held-out
